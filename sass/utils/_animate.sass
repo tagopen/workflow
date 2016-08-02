@@ -1,0 +1,50 @@
+// разъежающий text-decoration с центра в стороны
+=a_text-decoration
+  &:before
+    content: ''
+    position: absolute
+    display: block
+    margin-left: 50%
+    margin-right: 50%
+    height: 2px
+    left: 0
+    right: 0
+    bottom: -12px
+    background-color: #3949ab
+    +transition(all .3s ease-out)
+  &:hover
+    &:before
+      margin-left: 0
+      margin-right: 0
+// Выезжающий text-decoration с лева на право
+=a_text-decoration-left
+  &:before
+    content: ''
+    position: absolute
+    display: block
+    width: 0
+    height: 2px
+    left: 0
+    bottom: -12px
+    background-color: #3949ab
+    +transition(all .3s ease-out)
+    &:hover
+      &:before
+        w100%
+
+// Выплывающий border !!!!!!!!!Баг со сторонами. Выпадает не с указанной стороны
+=a_border($side: bottom, $border-width: 5, $border-color: #ff8c00)
+  $direction: #{0 -$border-width + 'px'}
+  @switch $side
+    @when top
+      $direction: #{0 $border-width + 'px'}
+    @when right
+      $direction: #{$border-width + 'px' 0}
+    @when bottom
+      $direction: #{0 -$border-width + 'px'}
+    @when left
+      $direction: #{-$border-width + 'px' 0}
+
+  +transition(all .3s ease-out)
+  &:hover
+    +bs(inset $direction $border-color)
