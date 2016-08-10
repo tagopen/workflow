@@ -107,7 +107,7 @@ $('.dropdown, .dropup').each(function() {
 });*/
 
 // Equal height
-$(window).on('resize', function(){
+$( window ).on( 'resize', function() {
   // For all screen
   //setEqualHeight($(".work-item"));
 
@@ -122,7 +122,7 @@ $(window).on('resize', function(){
   // Only 992px+
   if( $( window ).width() >= 992 ) {
   }
-}).resize();
+}).trigger('resize');
 /*$('.slider').slick({
   dots: true,
   infinite: true,
