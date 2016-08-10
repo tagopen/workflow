@@ -94,7 +94,7 @@ $.reject = function(options) {
 		},
 
 		// Path where images are located
-		imagePath: './images/',
+		imagePath: '../img/',
 		// Background color for overlay
 		overlayBgColor: '#000',
 		// Background transparency (0-1)
