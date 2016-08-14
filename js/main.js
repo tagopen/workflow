@@ -4,7 +4,20 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 // Equal Height function
-function setEqualHeight(columns)
+$.fn.equialHeight = function() {
+  var $tallestcolumn = 0;
+  var $currentHeight = 0;
+  $.each($(this), function (index, value) {
+    $currentHeight = $(this).height();
+    if($currentHeight > $tallestcolumn)
+    {
+      $tallestcolumn = $currentHeight;
+    }
+  });
+  $(this).height($tallestcolumn);
+  return $(this);
+}
+/*function setEqualHeight(columns)
 {
   var $tallestcolumn = 0;
   var $currentHeight = 0;
@@ -20,7 +33,7 @@ function setEqualHeight(columns)
     );
   columns.height($tallestcolumn);
 }
-
+*/
 
 // Old browser notification
 $(function() { 
@@ -107,22 +120,8 @@ $('.dropdown, .dropup').each(function() {
 });*/
 
 // Equal height
-$( window ).on( 'resize', function() {
-  // For all screen
-  //setEqualHeight($(".work-item"));
+/*$('.equial').equialHeight();*/
 
-  // Only 767px-
-  if( $( window ).width() <= 767 ) {
-  }
-
-  // Only 768px+
-  if( $( window ).width() >= 768 ) {
-  }
-
-  // Only 992px+
-  if( $( window ).width() >= 992 ) {
-  }
-}).trigger('resize');
 /*$('.slider').slick({
   dots: true,
   infinite: true,
