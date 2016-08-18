@@ -125,6 +125,19 @@
 	-o-transform: $what
 	transform: $what
 
+// GRAYSCALE
+=grayscale($gray: 100%)
+	-webkit-filter: grayscale($gray)
+	-moz-filter: grayscale($gray)
+	-ms-filter: grayscale($gray)
+	-o-filter: grayscale($gray)
+	filter: grayscale($gray)
+	@if ($gray == 100%)
+		filter: gray /* IE 6-9 */
+	@else
+		filter: none
+
+
 =tr($what)
 	+transition($what)
 
