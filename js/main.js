@@ -3,37 +3,6 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
-// Equal Height function
-$.fn.equialHeight = function() {
-  var $tallestcolumn = 0;
-  var $currentHeight = 0;
-  $.each($(this), function (index, value) {
-    $currentHeight = $(this).height();
-    if($currentHeight > $tallestcolumn)
-    {
-      $tallestcolumn = $currentHeight;
-    }
-  });
-  $(this).height($tallestcolumn);
-  return $(this);
-}
-/*function setEqualHeight(columns)
-{
-  var $tallestcolumn = 0;
-  var $currentHeight = 0;
-  columns.each(
-    function()
-    {
-      $currentHeight = $(this).height();
-      if($currentHeight > $tallestcolumn)
-      {
-        $tallestcolumn = $currentHeight;
-      }
-    }
-    );
-  columns.height($tallestcolumn);
-}
-*/
 
 // Old browser notification
 $(function() { 
