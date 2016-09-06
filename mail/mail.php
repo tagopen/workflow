@@ -23,6 +23,10 @@
     'host_dir'      => HTTP_SERVER,
     );
 
+  if (!empty($_POST["user_form"])) {
+    $post['user_form'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+  }
+
   if (!empty($_POST["email"])) {
     $post['user_email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
   }
