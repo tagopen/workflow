@@ -13,7 +13,7 @@ $(function() {
             var name = $form.find("input[name=name]").val();
             var email = $form.find("input[name=email]").val();
             var phone = $form.find("input[name=phone]").val();
-            var message = $form.find("input[name=message]").val();
+            var message = $form.find("[name=message]").val();
             var firstName = name; // For Success/Failure Message
             // Check for white space in name for Success/Fail message
             if (firstName.indexOf(' ') >= 0) {
