@@ -1,0 +1,35 @@
+{
+  "name": "start-tempalate",
+  "version": "1.1.0",
+  "description": "Что следует ожидать в следующих релизах:\r 1. Измененная тема слайдера slick-theme.sass\r 2. Вынесенные все стили sass в отдельные файлы.\r 3. Modernizr для svg графики.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/security2431/start-template.git"
+  },
+  "author": "Security2431",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/security2431/start-template/issues"
+  },
+  "homepage": "https://github.com/security2431/start-template#readme",
+  "devDependencies": {
+    "browser-sync": "^2.15.0",
+    "critical": "^0.8.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-cache": "^0.4.5",
+    "gulp-compass": "^2.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-imagemin": "^3.0.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglifyjs": "^0.6.2",
+    "imagemin-pngquant": "^5.0.0"
+  }
+}
