@@ -19,6 +19,11 @@ gulp.task('sass', function() {
       sass: 'app/sass',
       image: 'app/img'
     }))
+    .on('error', function(error) {
+      // Would like to catch the error here 
+      console.log(error);
+      this.emit('end');
+    })
     .pipe(autoprefixer(['last 15 versions', '>1%', 'ie 9'], {cascade: true}))
     .pipe(gulp.dest('app/css'))
     .pipe(browserSync.reload({stream: true}))
