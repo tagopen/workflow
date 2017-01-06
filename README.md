@@ -1,5 +1,5 @@
 #Базовый шаблон для верстальщика
-![Gulp сборщик](http://github.com/tagopen/workflow/img/inro.png)
+![Gulp сборщик](https://github.com/tagopen/workflow/blob/master/app/img/intro.png)
 
 ## Установка программного обеспечения
 * Для начала работы нужно скачать и установить Node.js [https://nodejs.org/en/]:https://nodejs.org/en/
