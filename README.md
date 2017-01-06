@@ -2,7 +2,7 @@
 ![Gulp сборщик](https://github.com/tagopen/workflow/blob/master/app/img/intro.png)
 
 ## Установка программного обеспечения
-* Для начала работы нужно скачать и установить Node.js [https://nodejs.org/en/]:https://nodejs.org/en/
+* Для начала работы нужно скачать и установить Node.js [https://nodejs.org/en/](https://nodejs.org/en/)
 * Открываем консоль и устанавливаем глобально gulp, команндой: `npm install gulp -g`
 
 ## Настройка рабочей директории
