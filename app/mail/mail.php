@@ -1,10 +1,10 @@
 <?php
-  if (is_file('../lib/class.phpmailer.php')) {
-    require_once("../lib/class.phpmailer.php");
+  if (is_file('lib/class.phpmailer.php')) {
+    require_once("lib/class.phpmailer.php");
   }
 
-  if (is_file('../lib/class.smtp.php')) {
-    require_once("../lib/class.smtp.php");
+  if (is_file('lib/class.smtp.php')) {
+    require_once("lib/class.smtp.php");
   }
 
   $http_host = $_SERVER['HTTP_HOST'];
