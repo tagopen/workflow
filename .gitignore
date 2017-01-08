@@ -3,8 +3,11 @@
 *.zip
 
 # sass cache
-.sass-cache
+app/.sass-cache
 
 # Folders to ignore
 bower_components
 node_modules
+
+# bower libs
+app/libs
