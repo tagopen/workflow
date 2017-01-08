@@ -12,3 +12,7 @@
 4. Вводим команду `gulp watch` для запуска задачи gulp
 
 Gulp работает, можно приступать к верстке.
+
+Все предложения или баги присывайте в раздел [Issues](https://github.com/tagopen/workflow/issues)
+
+Больше информации в разделе [Wiki](https://github.com/tagopen/workflow/wiki)
