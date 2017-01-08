@@ -19,6 +19,7 @@
     "jquery": "^3.1.1"
   },
   "devDependencies": {
-    "components-font-awesome": "^4.7.0"
+    "components-font-awesome": "^4.7.0",
+    "slick-carousel": "^1.6.0"
   }
 }
