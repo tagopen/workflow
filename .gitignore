@@ -11,3 +11,6 @@ node_modules
 
 # bower libs
 app/libs
+
+#gulp setting
+settings.js
