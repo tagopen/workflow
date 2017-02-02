@@ -24,12 +24,22 @@
     "gulp-autoprefixer": "^3.1.1",
     "gulp-bower": "0.0.13",
     "gulp-cache": "^0.4.5",
+    "gulp-clean-css": "^2.3.2",
     "gulp-concat": "^2.6.0",
-    "gulp-cssnano": "^2.1.2",
+    "gulp-html-minifier2": "^1.1.8",
+    "gulp-if": "^2.0.2",
     "gulp-imagemin": "^3.0.3",
+    "gulp-inject-string": "^1.1.0",
+    "gulp-javascript-obfuscator": "^1.1.2",
+    "gulp-load-plugins": "^1.4.0",
+    "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
-    "gulp-uglify": "^2.0.0",
-    "imagemin-pngquant": "^5.0.0"
+    "gulp-selectors": "^0.1.9",
+    "gulp-uglifyjs": "^0.6.2",
+    "gulp-useref": "^3.1.2",
+    "gulp-util": "^3.0.8",
+    "imagemin-pngquant": "^5.0.0",
+    "vinyl-ftp": "^0.5.0"
   }
 }
