@@ -28,7 +28,7 @@ gulp.task('scripts', ['bower'], function() {
 });
 
 gulp.task('pug', function() {
-  return gulp.src('app/views/**/*.pug')
+  return gulp.src('app/views/*.pug')
   .pipe($.plumber())
   .pipe($.pug( {basedir: 'app', pretty: true}))
   .pipe(gulp.dest('app/'))
