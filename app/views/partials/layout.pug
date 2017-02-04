@@ -52,6 +52,7 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     link(rel='stylesheet' href='css/bootstrap.css')
     // Font-Awesome CSS
     link(rel='stylesheet' href='css/font-awesome.css')
+    block styles
     // Custom CSS 
     link(rel='stylesheet' href='css/style.css')
 
@@ -65,6 +66,8 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     <![endif]-->
 
   body
+    block content
+    block footer
     // build:js js/bundle.min.js
 
     // jQuery
@@ -73,6 +76,7 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     script(src='js/bootstrap.js')
     // Old browsers reject JavaScript
     script(src='js/jquery.reject.js')
+    block scripts
     // Validation Form JavaScript
     script(src='js/jqBootstrapValidation.js')
     script(src='js/contact_me.js')
