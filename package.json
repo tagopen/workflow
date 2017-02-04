@@ -33,6 +33,7 @@
     "gulp-javascript-obfuscator": "^1.1.2",
     "gulp-load-plugins": "^1.4.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-pug": "^3.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-selectors": "^0.1.9",

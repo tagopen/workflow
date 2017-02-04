@@ -2,8 +2,8 @@ var gulp          = require('gulp'),
     browserSync   = require('browser-sync'),
     del           = require('del'),
     pngquant      = require('imagemin-pngquant'),
-    critical      = require('critical'),
-    ftp           = require( 'vinyl-ftp' )
+    critical      = require('critical').stream,
+    ftp           = require( 'vinyl-ftp' ),
     $             = require('gulp-load-plugins')({scope: 'devDependencies', lazy: 'false'});
 
 gulp.task('sass', function() {
@@ -16,7 +16,7 @@ gulp.task('sass', function() {
     }))
     .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
     .pipe(gulp.dest('app/css'))
-    .pipe(browserSync.reload({stream: true}))
+    .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('scripts', ['bower'], function() {
@@ -25,6 +25,14 @@ gulp.task('scripts', ['bower'], function() {
     ])
   .pipe($.plumber())
   .pipe(gulp.dest('app/js'));
+});
+
+gulp.task('pug', function() {
+  return gulp.src('app/views/**/*.pug')
+  .pipe($.plumber())
+  .pipe($.pug( {basedir: 'app', pretty: true}))
+  .pipe(gulp.dest('app/'))
+  .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('bower', function() {
@@ -38,7 +46,7 @@ gulp.task('css-libs', ['sass'], function() {
   .pipe(gulp.dest('app/css'));
 });
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync',  ['pug', 'sass'], function() {
   browserSync({
     server: {
       baseDir: 'app'
@@ -74,7 +82,7 @@ gulp.task('img', function() {
     .pipe(gulp.dest('dist/img'));
 })
 
-gulp.task('deploy', function() {
+gulp.task('ftp', function() {
   var options = require("./settings.js");
 
   var conn = ftp.create( {
@@ -92,11 +100,11 @@ gulp.task('deploy', function() {
 
 gulp.task('watch', ['browser-sync', 'scripts', 'css-libs'], function() {
   gulp.watch('app/sass/**/*.+(scss|sass)', ['sass']);
-  gulp.watch('app/*.html', browserSync.reload);
+  gulp.watch('app/views/**/*.pug', ['pug']);
   gulp.watch('app/js/**/*.js', browserSync.reload);
 });
 
-gulp.task('build', ['clean', 'img', 'scripts', 'sass'], function() {
+gulp.task('build', ['clean', 'views', 'img', 'scripts', 'sass'], function() {
   var buildCss = gulp.src([
       'app/css/**/*.css'
     ])
@@ -124,13 +132,33 @@ gulp.task('build', ['clean', 'img', 'scripts', 'sass'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('dev', ['clean', 'img', 'sass', 'scripts'], function() {
+gulp.task('dev', ['clean', 'views', 'img', 'sass', 'scripts'], function() {
 
-  
+  var buildCss = gulp.src(['app/css/**/*.css'])  
+    .pipe($.plumber())
+    .pipe($.cleanCss())
+    .pipe($.concat({path: 'bundle.min.css', cwd: ''}))
+    .pipe(gulp.dest('demo/css'));
+
+  var buildFonts = gulp.src('app/font/**/*')
+    .pipe($.plumber())
+    .pipe(gulp.dest('demo/font'));
+
+  var buildJs = gulp.src(['app/js/**/*.js'])
+    .pipe($.plumber())
+    //.pipe($.uglifyjs())
+    //.pipe($.javascriptObfuscator({
+    //    compact: true
+    //}))
+    .pipe($.concat({path: 'bundle.min.js', cwd: ''}))
+    .pipe(gulp.dest('demo/js')); 
 
   var buildHtml = gulp.src('app/*.html')
     .pipe($.plumber())
-    .pipe($.useref())
-    .pipe($.if('*.js', $.uglifyjs()))
-    .pipe(gulp.dest('dist'));
+    .pipe($.htmlMinifier2({collapseWhitespace: true}))
+    .pipe(gulp.dest('demo'));
+
+  var buildcritical = gulp.src('dist/*.html')
+    .pipe(critical({base: 'dist/', inline: true, css: ['dist/css/*.css']}))
+    .pipe(gulp.dest('demo'));
 });
