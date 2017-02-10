@@ -1,18 +1,19 @@
 nav.navbar
-  div.container-fluid
+  div.container
     //Brand and toggle get grouped for better mobile display
     div.navbar-header
-      button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse")
+      button.navbar-toggle(type='button' data-toggle='collapse' data-target='.navbar-ex1-collapse')
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      button
-      a.logo(href="#")
+      a.logo(href='#')
+        img.img-responsive.logo__img(src='img/logo/logo.png' alt='logo')
     // Collect the nav links, forms, and other content for toggling
     div.collapse.navbar-collapse.navbar-ex1-collapse
-      ul.nav.navbar-nav
-        li.active: a(href="#") Link
-        li: a(href="#") Link
-      ul.nav.navbar-nav.navbar-right
-        li: a(href="#") Link
+      ul.nav.nav-navbar
+        li.nav-navbar__item.nav-navbar__item--active: a.nav-navbar__link(href='#') Link
+        li.nav-navbar__item: a.nav-navbar__link(href='#') Link
+      ul.nav.nav-navbar.navbar-right
+        li.nav-navbar__item.nav-navbar__item--active: a.nav-navbar__link(href='#') Link
+        li.nav-navbar__item: a.nav-navbar__link(href='#') Link
