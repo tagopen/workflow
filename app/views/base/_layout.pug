@@ -1,7 +1,8 @@
+include ../utils/_variables.pug
 doctype html
 html(lang='ru' prefix='og: http://ogp.me/ns#')
   head
-    title Главная страница
+    title= title
     meta(http-equiv='Content-Type' content='text/html; charset=utf-8')/
 
     // Meta SEO - Description, Keywords, Title
@@ -49,6 +50,7 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     // build:css css/bundle.min.css
 
     // Bootstrap CSS
+    link(rel='stylesheet' href='css/fonts.css')
     link(rel='stylesheet' href='css/bootstrap.css')
     // Font-Awesome CSS
     link(rel='stylesheet' href='css/font-awesome.css')
@@ -65,11 +67,16 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-  body
-    block content
-    block footer
+  body.body
+    div.wrapper
+      block content
+    footer.footer
+      block footer
+
     // build:js js/bundle.min.js
 
+    //Modernizr JavaScript
+    script(src='js/modernizr-custom.js')
     // jQuery
     script(src='js/jquery.js')
     // Bootstrap JavaScript
@@ -77,9 +84,6 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     // Old browsers reject JavaScript
     script(src='js/jquery.reject.js')
     block scripts
-    // Validation Form JavaScript
-    script(src='js/jqBootstrapValidation.js')
-    script(src='js/contact_me.js')
     // Slick-Slider JavaScript
     script(src='js/slick.js')
     // Custom JavaScript
