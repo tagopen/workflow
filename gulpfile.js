@@ -21,7 +21,9 @@ gulp.task('sass', function() {
 
 gulp.task('scripts', ['bower'], function() {
   return gulp.src([
-      'app/libs/jquery/dist/jquery.js'
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/slick-carousel/slick/slick.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js'
     ])
   .pipe($.plumber())
   .pipe(gulp.dest('app/js'));
@@ -35,9 +37,61 @@ gulp.task('pug', function() {
   .pipe(browserSync.reload({stream: true}));
 });
 
+gulp.task('fonts', function () {
+  return gulp.src(['app/fonts/**/*.{woff,woff2}'])
+    .pipe($.cssfont64())
+    .pipe($.concat({path: 'fonts.css', cwd: ''}))
+    .pipe(gulp.dest('app/css/'))
+    .pipe(browserSync.stream());
+});
+
 gulp.task('bower', function() {
   return $.bower();
 });
+
+gulp.task('sprites', function () {
+  return gulp.src('assets/svg/*.svg')
+    .pipe(svgSprite({
+      svgId: "svg-%f"
+    }))
+    .pipe(gulp.dest("assets"));
+});
+
+gulp.task('svgSprite', function () {
+  return gulp.src('app/img/icons/**/*.svg')
+    .pipe($.svgmin({
+      js2svg: {
+        pretty: true
+      }
+    }))
+    .pipe($.cheerio({
+      run: function ($) {
+        $('[fill]').removeAttr('fill');
+        $('[stroke]').removeAttr('stroke');
+        $('[style]').removeAttr('style');
+      },
+      parserOptions: {xmlMode: true}
+    }))
+    .pipe($.replace('&gt;', '>'))
+    // build svg sprite
+    .pipe($.svgSprites({
+      preview: false,
+      selector: "ic--%f",
+      mode: {
+        symbol: {
+          sprite: "../sprite.svg",
+          render: {
+            scss: {
+              dest:'../../../sass/_sprite.scss',
+              template: '../sass/base/_sprite_template.scss'
+            }
+          }
+        }
+      }
+    }))
+    .pipe(gulp.dest('app/img'));
+});
+
 
 gulp.task('css-libs', ['sass'], function() {
   return gulp.src([
@@ -98,13 +152,19 @@ gulp.task('ftp', function() {
     .pipe(conn.dest(options.uploadPath));
 });
 
-gulp.task('watch', ['browser-sync', 'scripts', 'css-libs'], function() {
-  gulp.watch('app/sass/**/*.+(scss|sass)', ['sass']);
-  gulp.watch('app/views/**/*.pug', ['pug']);
-  gulp.watch('app/js/**/*.js', browserSync.reload);
+gulp.task('test', function() {
+  console.log($);
 });
 
-gulp.task('build', ['clean', 'views', 'img', 'scripts', 'sass'], function() {
+gulp.task('watch', ['browser-sync', 'pug', 'fonts', 'sass',  'scripts', 'css-libs'], function() {
+  gulp.watch('app/sass/**/*.+(scss|sass)', ['sass']);
+  gulp.watch('app/views/**/*.pug', ['pug']);
+  gulp.watch('app/fonts/**/*', ['fonts']);
+  gulp.watch('app/js/**/*.js', browserSync.reload);
+
+});
+
+gulp.task('build', ['clean', 'pug', 'img', 'scripts', 'sass'], function() {
   var buildCss = gulp.src([
       'app/css/**/*.css'
     ])
@@ -125,40 +185,57 @@ gulp.task('build', ['clean', 'views', 'img', 'scripts', 'sass'], function() {
     //.pipe($.uglify())
     .pipe(gulp.dest('dist/js'));
 
-  var buildHtml =gulp.src('app/*.html')
+  var buildHtml = gulp.src('app/*.html')
     .pipe(useref())
     .pipe(gulpif('*.js', uglifyjs()))
     .pipe(gulpif('*.css', cleanCss()))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('dev', ['clean', 'views', 'img', 'sass', 'scripts'], function() {
+gulp.task('dev', ['clean', 'pug', 'fonts', 'img', 'sass', 'scripts'], function() {
 
-  var buildCss = gulp.src(['app/css/**/*.css'])  
-    .pipe($.plumber())
-    .pipe($.cleanCss())
-    .pipe($.concat({path: 'bundle.min.css', cwd: ''}))
-    .pipe(gulp.dest('demo/css'));
+  //var buildCss = gulp.src(['app/css/**/*.css'])  
+  //  .pipe($.plumber())
+  //  .pipe($.cleanCss())
+  //  .pipe($.concat({path: 'bundle.min.css', cwd: ''}))
+  //  .pipe(gulp.dest('demo/css'));
 
-  var buildFonts = gulp.src('app/font/**/*')
-    .pipe($.plumber())
-    .pipe(gulp.dest('demo/font'));
-
-  var buildJs = gulp.src(['app/js/**/*.js'])
-    .pipe($.plumber())
+  //var buildJs = gulp.src(['app/js/**/*.js'])
+  //  .pipe($.plumber())
     //.pipe($.uglifyjs())
     //.pipe($.javascriptObfuscator({
     //    compact: true
     //}))
-    .pipe($.concat({path: 'bundle.min.js', cwd: ''}))
-    .pipe(gulp.dest('demo/js')); 
+  //  .pipe($.concat({path: 'bundle.min.js', cwd: ''}))
+  // .pipe(gulp.dest('demo/js'));
 
-  var buildHtml = gulp.src('app/*.html')
-    .pipe($.plumber())
-    .pipe($.htmlMinifier2({collapseWhitespace: true}))
-    .pipe(gulp.dest('demo'));
-
-  var buildcritical = gulp.src('dist/*.html')
-    .pipe(critical({base: 'dist/', inline: true, css: ['dist/css/*.css']}))
-    .pipe(gulp.dest('demo'));
+  var BuildJs =  gulp.src('app/**/*.html')
+    .pipe($.plumber({
+      handleError: function (err) {
+        console.log(err);
+        this.emit('end');
+      }
+    }))
+    .pipe($.useref({searchPath: 'app/'}))
+    //.pipe($.selectors.run())
+    .pipe($.if('*.js', $.uglifyjs()))
+    .pipe($.if('*.css', $.cssnano({
+            discardComments: {removeAll: true}
+        })
+    ))
+    .pipe($.if('*.html', $.htmlMinifier({
+        collapseWhitespace:               true, 
+        collapseInlineTagWhitespace:      true,
+        removeAttributeQuotes:            true,
+        conservativeCollapse:             true,
+        processConditionalComments:       true, 
+        removeComments:                   true,
+        removeEmptyAttributes:            true,
+        sortAttributes:                   true,
+        sortClassName:                    true,
+        removeStyleLinkTypeAttributes:    true,
+        removeScriptTypeAttributes:       true
+      })
+    ))
+    .pipe(gulp.dest('dist'));
 });
