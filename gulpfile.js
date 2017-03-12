@@ -209,7 +209,10 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'img', 'sass', 'scripts'], function()
   //  .pipe($.concat({path: 'bundle.min.js', cwd: ''}))
   // .pipe(gulp.dest('demo/js'));
 
-  var BuildJs =  gulp.src('app/**/*.html')
+  var buildmail = gulp.src('app/mail/**/*')
+    .pipe(gulp.dest('dist/mail'));
+
+  var BuildJs =  gulp.src('app/*.html')
     .pipe($.plumber({
       handleError: function (err) {
         console.log(err);
