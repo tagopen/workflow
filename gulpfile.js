@@ -12,7 +12,8 @@ gulp.task('sass', function() {
     .pipe($.sass({
       css: 'app/css',
       sass: 'app/sass',
-      image: 'app/img'
+      image: 'app/img',
+      outputStyle: 'expanded'
     }))
     .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
     .pipe(gulp.dest('app/css'))
