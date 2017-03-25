@@ -49,17 +49,10 @@ gulp.task('bower', function() {
   return $.bower();
 });
 
-gulp.task('sprite', function () {
-  return gulp.src('app/img/icons/*.png')
-  .pipe($.spritesmith({
-    imgName: 'sprite.png',
-    cssName: 'sprite.sass'
-  }))
-  .pipe(gulp.dest('app/img/'));
-});
 gulp.task('sprite', function() {
   var spriteData = 
     gulp.src('app/img/icons/*.png')
+      .pipe($.plumber())
       .pipe($.spritesmith({
         imgName: 'sprite.png',
         cssName: '_sprite.sass'
