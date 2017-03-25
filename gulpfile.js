@@ -49,6 +49,30 @@ gulp.task('bower', function() {
   return $.bower();
 });
 
+gulp.task('sprite', function () {
+  return gulp.src('app/img/icons/*.png')
+  .pipe($.spritesmith({
+    imgName: 'sprite.png',
+    cssName: 'sprite.sass'
+  }))
+  .pipe(gulp.dest('app/img/'));
+});
+gulp.task('sprite', function() {
+  var spriteData = 
+    gulp.src('app/img/icons/*.png')
+      .pipe($.spritesmith({
+        imgName: 'sprite.png',
+        cssName: '_sprite.sass'
+      }));
+
+  spriteData.img
+    .pipe(gulp.dest('app/img/'));
+  spriteData.css
+    .pipe($.replace(/^\.icon-/gm, '.ic--'))
+    .pipe(gulp.dest('app/sass/utils/'));
+});
+
+
 gulp.task('sprites', function () {
   return gulp.src('assets/svg/*.svg')
     .pipe(svgSprite({
@@ -156,7 +180,8 @@ gulp.task('test', function() {
   console.log($);
 });
 
-gulp.task('watch', ['browser-sync', 'pug', 'fonts', 'sass',  'scripts', 'css-libs'], function() {
+gulp.task('watch', ['browser-sync', 'pug', 'fonts', 'sprite', 'sass',  'scripts', 'css-libs'], function() {
+  gulp.watch(['img/icons/*.png'], ['sprite']);
   gulp.watch('app/sass/**/*.+(scss|sass)', ['sass']);
   gulp.watch('app/views/**/*.pug', ['pug']);
   gulp.watch('app/fonts/**/*', ['fonts']);
@@ -192,7 +217,7 @@ gulp.task('build', ['clean', 'pug', 'img', 'scripts', 'sass'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('dev', ['clean', 'pug', 'fonts', 'img', 'sass', 'scripts'], function() {
+gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], function() {
 
   //var buildCss = gulp.src(['app/css/**/*.css'])  
   //  .pipe($.plumber())
