@@ -45,6 +45,7 @@
     "gulp-uglifyjs": "^0.6.2",
     "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.8",
+    "gulp.spritesmith": "^6.4.0",
     "imagemin-pngquant": "^5.0.0",
     "vinyl-ftp": "^0.5.0"
   }
