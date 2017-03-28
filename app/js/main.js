@@ -81,9 +81,12 @@
   });*/
 
   // Closes the Responsive Menu on Menu Item Click
-  /*$('.navbar-collapse ul li a').click(function() {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').click(function() {
+    $('.navbar-collapse ul li a').click(function(){ 
       $('.navbar-toggle:visible').click();
-  });*/
+      $('.navbar-toggle:visible').click();
+    });
+  });
 
   // Equal height
   /*$('.equial').equialHeight();*/
