@@ -1,20 +1,24 @@
 include ../utils/_variables.pug
+each value, key in content
+  if (relativePath === key)
+    - page = value
 block variables
+
 doctype html
 html(lang='ru' prefix='og: http://ogp.me/ns#')
   head
-    title= title
-    meta(http-equiv='Content-Type' content='text/html; charset=utf-8')/
+    title= page.title
+    meta(http-equiv='Content-Type' content='text/html; charset=' + content.site.meta.charset)/
 
     // Meta SEO - Description, Keywords, Title
-    meta(name='title' content='')/
-    meta(name='description' content='')/
-    meta(name='keywords' content='')/
+    meta(name='title' content= page.title)/
+    meta(name='description' content= page.meta.description)/
+    meta(name='keywords' content= page.meta.keywords)/
 
     // Multilanguage localization
     link(rel='alternate' href='/' hreflang='x-default')/
-    link(rel='alternate' href='/en/' hreflang='en')/
-    link(rel='alternate' href='/ru/' hreflang='ru')/
+    //- link(rel='alternate' href='/en/' hreflang='en')/
+    //- link(rel='alternate' href='/ru/' hreflang='ru')/
     
     // Mobile viewport optimization
     meta(name='viewport' content='width=device-width, initial-scale=1')/
@@ -23,30 +27,27 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     //[if IEMobile]><meta http-equiv='cleartype' content='on' /><![endif]
 
     // Replace favicon.ico and apple-touch-icon.png
-    link(rel='shortcut icon' type='image/png' href='img/logo/favicon.png')
-    link(rel='apple-touch-icon' type='image/png' href='img/logo/apple-touch-icon.png')
+    link(rel='shortcut icon' type='image/png' href='img/logo/' + content.site.meta.favicon)
+    link(rel='apple-touch-icon' type='image/png' href='img/logo/' + content.site.meta.appleTouchIcon)
 
     // Disables automatic  of possible phone numbers and address in Safari on iOS
     meta(name='format-detection' content='telephone=no')/
     meta(name='format-detection' content='address=no')/
 
     // Microformats Open Graph
-    meta(property='og:title' content='My Site')/
-    meta(property='og:site_name' content='My Site')/
-    meta(property='og:description' content='My Site is cool')/
-    meta(property='og:type' content='website')/
-    meta(property='og:locale' content='ru_RU')/
-    meta(property='og:locale:alternate' content='en_US')/
-    meta(property='og:image' content='img/logo/microformat.png')/
-    meta(property='og:image:type' content='image/png')/
-    meta(property='og:url' content='http://url.com')/
+    meta(property='og:title' content= page.meta.openGraph.title)/
+    meta(property='og:site_name' content= page.meta.openGraph.siteName)/
+    meta(property='og:description' content= page.meta.openGraph.description)/
+    meta(property='og:type' content= page.meta.openGraph.type)/
+    meta(property='og:locale' content= page.meta.openGraph.locale)/
+    //- meta(property='og:locale:alternate' content='en_US')/
+    meta(property='og:image' content= content.site.hostname + '/img/logo/microformat.png' + page.meta.openGraph.image)/
+    meta(property='og:image:type' content= page.meta.openGraph.imageType)/
+    meta(property='og:url' content= page.meta.openGraph.url)/
 
     // Microformats Twitter Cards
-    meta(name='twitter:card' content='summary')/
-    meta(name='twitter:site' content='@flickr')/
-    meta(name='twitter:title' content='My Site')/
-    meta(name='twitter:description' content='My Site is cool')/
-    meta(name='twitter:image' content='img/logo/microformat.png')/
+    each value, key in page.meta.twitter
+      meta(name='twitter:'+key content= value)/
     
     // build:css css/bundle.min.css
 
@@ -72,6 +73,7 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     div.wrapper
       block content
     block footer
+    block modal
     include _loaded.pug
 
     // build:js js/bundle.min.js
