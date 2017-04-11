@@ -28,6 +28,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-cssfont64": "0.0.1",
     "gulp-cssnano": "^2.1.2",
+    "gulp-data": "^1.2.1",
     "gulp-html-minifier": "^0.1.8",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^3.0.3",
