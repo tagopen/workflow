@@ -12,8 +12,10 @@ nav.navbar
     // Collect the nav links, forms, and other content for toggling
     div.collapse.navbar-collapse.navbar-ex1-collapse
       ul.nav.nav-navbar
-        li.nav-navbar__item.nav-navbar__item--active: a.nav-navbar__link(href='#') Link
-        li.nav-navbar__item: a.nav-navbar__link(href='#') Link
+        each value, i in content.site.nav.links
+          li.nav-navbar__item(class= {"nav-navbar__item--active": i === 0})
+            a.nav-navbar__link(href= value.href)= value.displayName
       ul.nav.nav-navbar.navbar-right
-        li.nav-navbar__item.nav-navbar__item--active: a.nav-navbar__link(href='#') Link
-        li.nav-navbar__item: a.nav-navbar__link(href='#') Link
+         each value, i in content.site.navRight.links
+          li.nav-navbar__item(class= {"nav-navbar__item--active": i === 0})
+            a.nav-navbar__link(href= value.href)= value.displayName
