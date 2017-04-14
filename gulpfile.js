@@ -134,14 +134,31 @@ gulp.task('browser-sync',  ['pug', 'sass'], function() {
     notify: false
   });
 });
-/*
+
 // Generate & Inline Critical-path CSS
 gulp.task('critical', function () {
   return gulp.src('dist/*.html')
-  .pipe(critical({base: 'dist/', inline: true, css: ['dist/styles/components.css','dist/styles/main.css']}))
-  .pipe(gulp.dest('dist'));
+    .pipe(critical({
+      base: 'dist/', 
+      inline: true, 
+      dimensions: [{
+        width: 320,
+        height: 480
+      },{
+        width: 768,
+        height: 1024
+      },{
+        width: 1280,
+        height: 960
+      }],
+        css: ['dist/css/bundle.min.css'],
+        minify: true,
+        extract: false,
+        ignore: ['font-face']
+      }))
+    .pipe(gulp.dest('dist'));
 });
-*/
+
 gulp.task('clean', function () {
   return del.sync('dist');
 });
@@ -239,7 +256,7 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
   var buildmail = gulp.src('app/mail/**/*')
     .pipe(gulp.dest('dist/mail'));
 
-  var BuildJs =  gulp.src('app/*.html')
+  return gulp.src('app/*.html')
     .pipe($.plumber({
       handleError: function (err) {
         console.log(err);
@@ -264,7 +281,9 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
         sortAttributes:                   true,
         sortClassName:                    true,
         removeStyleLinkTypeAttributes:    true,
-        removeScriptTypeAttributes:       true
+        removeScriptTypeAttributes:       true,
+        minifyJS:                         true,
+        minifyCSS:                        true
       })
     ))
     .pipe(gulp.dest('dist'));
