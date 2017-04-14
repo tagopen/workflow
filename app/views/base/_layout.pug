@@ -2,13 +2,15 @@ include ../utils/_variables.pug
 each value, key in content
   if (relativePath === key)
     - page = value
+unless (page.meta)
+  - page.meta = content.site.meta
 block variables
 
 doctype html
 html(lang='ru' prefix='og: http://ogp.me/ns#')
   head
     title= page.title
-    meta(http-equiv='Content-Type' content='text/html; charset=' + content.site.meta.charset)/
+    meta(http-equiv='Content-Type' content='text/html;charset=' + content.site.meta.charset)/
 
     // Meta SEO - Description, Keywords, Title
     meta(name='title' content= page.title)/
