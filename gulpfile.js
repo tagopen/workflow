@@ -3,7 +3,7 @@ var gulp          = require('gulp'),
     del           = require('del'),
     pngquant      = require('imagemin-pngquant'),
     critical      = require('critical').stream,
-    ftp           = require( 'vinyl-ftp' ),
+    ftp           = require('vinyl-ftp'),
     $             = require('gulp-load-plugins')({scope: 'devDependencies', lazy: 'false'});
 
 gulp.task('sass', function() {
@@ -49,7 +49,7 @@ gulp.task('pug', function() {
 
 gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**/*.{woff,woff2}'])
-    .pipe($.cssfont64())
+    .pipe($.font2css.default())
     .pipe($.concat({path: 'fonts.css', cwd: ''}))
     .pipe(gulp.dest('app/css/'))
     .pipe(browserSync.stream());
@@ -65,7 +65,8 @@ gulp.task('sprite', function() {
       .pipe($.plumber())
       .pipe($.spritesmith({
         imgName: 'sprite.png',
-        cssName: '_sprite.sass'
+        cssName: '_sprite.sass',
+        padding: 10
       }));
 
   spriteData.img
