@@ -60,29 +60,24 @@ gulp.task('bower', function() {
 });
 
 gulp.task('sprite', function() {
-  var spriteData = 
-    gulp.src('app/img/icons/*.png')
-      .pipe($.plumber())
-      .pipe($.spritesmith({
-        imgName: 'sprite.png',
-        cssName: '_sprite.sass',
-        padding: 10
-      }));
-
-  spriteData.img
-    .pipe(gulp.dest('app/img/'));
-  spriteData.css
-    .pipe($.replace(/^\.icon-/gm, '.ic--'))
-    .pipe(gulp.dest('app/sass/utils/'));
-});
-
-
-gulp.task('sprites', function () {
-  return gulp.src('assets/svg/*.svg')
-    .pipe(svgSprite({
-      svgId: "svg-%f"
+  gulp.src('app/img/icons/*.png')
+    .pipe($.plumber())
+    .pipe($.spritesmith({
+      imgName: 'sprite.png',
+      imgPath: 'app/img/sprite.png',
+      retinaSrcFilter: ['app/img/icons/*@2x.png'],
+      retinaImgName: 'sprite@2x.png',
+      cssName: '_sprite.sass',
+      cssFormat: 'sass',
+      padding: 10
     }))
-    .pipe(gulp.dest("assets"));
+    .pipe($.if('*.png', 
+      gulp.dest('app/img/')
+    ))
+    .pipe($.if('*.css', 
+      $.replace(/^\.icon-/gm, '.ic--'), 
+      gulp.dest('app/sass/utils/')
+    ));
 });
 
 gulp.task('svgSprite', function () {
@@ -202,7 +197,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('watch', ['browser-sync', 'pug', 'fonts', 'sprite', 'sass',  'scripts', 'css-libs'], function() {
-  gulp.watch(['img/icons/*.png'], ['sprite']);
+  gulp.watch(['app/img/icons/*.png'], ['sprite']);
   gulp.watch('app/sass/**/*.+(scss|sass)', ['sass']);
   gulp.watch('app/views/**/*.pug', ['pug']);
   gulp.watch('app/fonts/**/*', ['fonts']);

@@ -322,6 +322,18 @@
     left: 0
     right: 0
     margin: auto
+//sprite mixin
+=bs($sprite)
+  $sprite-offset-x: nth($sprite, 3)
+  $sprite-offset-y: nth($sprite, 4)
+  $sprite-width: nth($sprite, 5)
+  $sprite-height: nth($sprite, 6)
+  $sprite-image: nth($sprite, 9)
+  $sprite-name: nth($sprite, 10)
+
+  width: $sprite-width
+  height: $sprite-height
+  background: url(../img/#{$sprite-image}) $sprite-offset-x $sprite-offset-y no-repeat
 
 =debug
   *
