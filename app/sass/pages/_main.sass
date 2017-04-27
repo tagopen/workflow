@@ -7,9 +7,19 @@
 .form-group.error
   .form-control
     border-color: $form-control-error-border-color
+[type=submit]:disabled
+  animation: progress-bar-stripes 2s linear infinite
+  background-image: $btn-submit-loading-bg
+  background-size: 40px 40px
+@keyframes progress-bar-stripes
+  from
+    background-position: 40px 0
+  to
+    background-position: 0 0
 +cm('modal')
 .modal
   -webkit-overflow-scrolling: touch
   transform: translateZ(0)
-
 +comment("home page style")
+.body
+  order: 1

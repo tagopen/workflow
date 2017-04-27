@@ -10,11 +10,11 @@ $(function() {
       $form.find("[type=submit]").prop("disabled", true).button('loading'); //prevent submit behaviour and display preloading
       
       // get values from FORM
-      var form  = $form.find('[type=submit]').attr("name"),
-        name  = $form.find("[name=name]").val(),
-        email   = $form.find("[name=email]").val(),
-        phone   = $form.find("[name=phone]").val(),
-        message = $form.find("[name=message]").val();
+      var form    = $form.find('[type=submit]').attr("name"),
+          name    = $form.find("[name=name]").val(),
+          email   = $form.find("[name=email]").val(),
+          phone   = $form.find("[name=phone]").val(),
+          message = $form.find("[name=message]").val();
 
       $.ajax({
         url: "././mail/mail.php",
