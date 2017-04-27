@@ -1,9 +1,15 @@
 +comment('general style')
 +ic
++cm('form')
 .text-danger
-  color: #e74c3c
+  color: $text-danger
   text-align: left
+.form-group.error
+  .form-control
+    border-color: $form-control-error-border-color
++cm('modal')
 .modal
   -webkit-overflow-scrolling: touch
   transform: translateZ(0)
+
 +comment("home page style")
