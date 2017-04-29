@@ -6,6 +6,31 @@ var gulp          = require('gulp'),
     ftp           = require('vinyl-ftp'),
     $             = require('gulp-load-plugins')({scope: 'devDependencies', lazy: 'false'});
 
+var path = {
+  build: {
+    html: 'dist/',
+    js: 'dist/js/',
+    css: 'dist/css/',
+    img: 'dist/img/',
+    fonts: 'dist/fonts/'
+  },
+  src: {
+    html: 'app/**/*.html',
+    js: 'app/js/**/*.*',
+    css: 'app/css/**/*.*',
+    img: 'app/img/**/*.*',
+    fonts: 'app/fonts/**/*.*'
+  },
+  watch: {
+    html: 'app/**/*.html',
+    js: 'app/js/**/*.js',
+    style: 'app/sass/**/*.+(scss|sass)',
+    img: 'app/img/**/*.*',
+    fonts: 'app/fonts/**/*.*'
+  },
+  clean: './dist'
+};
+
 gulp.task('sass', function() {
   return gulp.src(['app/sass/**/*.+(scss|sass)'])
     .pipe($.plumber())
