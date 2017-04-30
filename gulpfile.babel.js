@@ -209,7 +209,7 @@ gulp.task('img', function() {
       svgoPlugins:   [{removeViewBox: false}],
       use:           [pngquant()]
     })))
-    .pipe(gulp.dest(dirs.src.img));
+    .pipe(gulp.dest(path.build.img));
 })
 
 gulp.task('ftp', () => {
