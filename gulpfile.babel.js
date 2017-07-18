@@ -63,16 +63,14 @@ gulp.task('sass', () => {
    .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('scripts', ['bower'], () => {
- return gulp.src([
-     'bower_components/jquery/dist/jquery.js',
-     'bower_components/fancybox/dist/jquery.fancybox.js',
-     'bower_components/slick-carousel/slick/slick.js',
-     'bower_components/bootstrap/dist/js/bootstrap.js',
-     'bower_components/matchHeight/dist/jquery.matchHeight.js'
-   ])
- .pipe($.plumber())
- .pipe(gulp.dest(path.src.js));
+gulp.task('scripts', () => {
+  return gulp.src([
+    'node_modules/tether/dist/js/tether.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js',
+    'node_modules/jquery/dist/jquery.js'
+  ])
+  .pipe($.plumber())
+  .pipe(gulp.dest(path.src.js));
 });
 
 gulp.task('pug', () => {

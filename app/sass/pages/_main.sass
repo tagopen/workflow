@@ -16,10 +16,16 @@
     background-position: 40px 0
   to
     background-position: 0 0
-+cm('modal')
-.modal
-  -webkit-overflow-scrolling: touch
-  transform: translateZ(0)
-+comment("home page style")
+//+cm('modal')
+//.modal
+//  -webkit-overflow-scrolling: touch
+//  transform: translateZ(0)
 .body
-  order: 1
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+.main
+  flex: 1
++comment("home page style")
+.header
+  font-size: 10px

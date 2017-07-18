@@ -72,15 +72,16 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     <![endif]-->
 
   body.body
-    div.wrapper
+    block header
+    main.main
       block content
     block footer
     block modal
 
     // build:js js/bundle.min.js
 
-    //Modernizr JavaScript
-    script(src='js/modernizr-custom.js')
+    // Tether JavaScript
+    script(src='js/tether.js')
     // jQuery
     script(src='js/jquery.js')
     // Bootstrap JavaScript
@@ -88,12 +89,8 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     // Old browsers reject JavaScript
     script(src='js/jquery.reject.js')
     block scripts
-    // Match Height JavaScript
-    script(src='js/jquery.matchHeight.js')
-    // Slick-Slider JavaScript
-    script(src='js/slick.js')
-    // Fancybox JavaScript
-    script(src='js/jquery.fancybox.js')
+    //- Slick-Slider JavaScript
+    //- script(src='js/slick.js')
     // Custom JavaScript
     script(src='js/main.js')
 
