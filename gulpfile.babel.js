@@ -39,7 +39,8 @@ const path = {
     html:           dirs.src + '/*.html',
     js:             dirs.src + '/js/**/*.js',
     style:          dirs.src + '/sass/**/*.+(scss|sass)',
-    template:       dirs.src + '/views/*.pug',
+    template:       dirs.src + '/views/**/*.pug',
+    pug:            dirs.src + '/views/*.pug',
     img:            dirs.src + '/img/**/*.*',
     spritePng:      dirs.src + 'img/icons/**/*.png',
     fonts:          dirs.src + '/fonts/**/*.{woff,woff2}',
@@ -74,7 +75,7 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('pug', () => {
- return gulp.src(path.watch.template)
+ return gulp.src(path.watch.pug)
  .pipe($.plumber())
  .pipe($.data(function (file) {
    return {
