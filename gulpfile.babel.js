@@ -42,7 +42,7 @@ const path = {
     template:       dirs.src + '/views/**/*.pug',
     pug:            dirs.src + '/views/*.pug',
     img:            dirs.src + '/img/**/*.*',
-    spritePng:      dirs.src + 'img/icons/**/*.png',
+    spritePng:      dirs.src + '/img/icons/**/*.png',
     fonts:          dirs.src + '/fonts/**/*.{woff,woff2}',
     mail:           dirs.src + '/mail/**/*'
   },
