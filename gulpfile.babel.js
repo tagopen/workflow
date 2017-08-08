@@ -232,12 +232,13 @@ gulp.task('test', () => {
   console.log($);
 });
 
-gulp.task('watch', ['browser-sync', 'pug', 'fonts', 'sprite', 'sass',  'scripts'], () => {
+gulp.task('watch', ['browser-sync', 'fonts', 'sprite', 'scripts'], () => {
   gulp.watch(path.watch.spritePng, ['sprite']);
   gulp.watch(path.watch.style, ['sass']);
   gulp.watch(path.watch.template, ['pug']);
   gulp.watch(path.watch.fonts, ['fonts']);
   gulp.watch(path.watch.js, browserSync.reload);
+  gulp.watch(path.watch.html).on('change', browserSync.reload);
 });
 
 //gulp.task('build', ['clean', 'pug', 'img', 'scripts', 'sass'], function() {
