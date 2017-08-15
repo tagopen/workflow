@@ -57,7 +57,7 @@
     "vinyl-ftp": "^0.6.0"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "4.0.0-alpha.6",
     "bootstrap-validator": "^0.11.9",
     "fancybox": "^3.0.0",
     "font-awesome": "^4.7.0",
