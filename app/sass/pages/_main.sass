@@ -16,10 +16,15 @@
     background-position: 40px 0
   to
     background-position: 0 0
-//+cm('modal')
-//.modal
-//  -webkit-overflow-scrolling: touch
-//  transform: translateZ(0)
++cm('modal')
+.modal
+  -webkit-overflow-scrolling: touch
+  transform: translateZ(0)
+.modal.show 
+  display: flex !important
+.modal-dialog
+  position: relative
+  margin: auto
 .body
   display: flex
   flex-direction: column
