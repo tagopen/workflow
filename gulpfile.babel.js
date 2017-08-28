@@ -178,7 +178,7 @@ gulp.task('browser-sync',  ['pug', 'sass'], function() {
 // Generate & Inline Critical-path CSS
 gulp.task('critical', function () {
  return gulp.src(path.build.html)
-   .pipe(critical({
+   .pipe(critical.stream({
      base: 'dist/', 
      inline: true, 
      dimensions: [{
@@ -191,7 +191,7 @@ gulp.task('critical', function () {
        width: 1280,
        height: 960
      }],
-       css: [path.dest.critical],
+       css: [path.build.critical],
        minify: true,
        extract: false,
        ignore: ['font-face']
