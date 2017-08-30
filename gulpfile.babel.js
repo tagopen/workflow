@@ -187,7 +187,11 @@ gulp.task('svgSprite', function () {
     shape: {
       spacing: {
         padding: 5
-      }
+      },
+      dimension   : {     // Set maximum dimensions
+        maxWidth  : 32,
+        maxHeight : 32
+      },
     },
     mode: {
       css: {
