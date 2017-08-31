@@ -70,6 +70,7 @@ gulp.task('scripts', () => {
     'node_modules/bootstrap/dist/js/bootstrap.js',
     'node_modules/jquery/dist/jquery.js',
     'node_modules/bootstrap-validator/dist/validator.js',
+    //'node_modules/jquery.cookie/jquery.cookie.js',
     //'node_modules/matchHeight/dist/jquery.matchHeight.js',
     //'node_modules/bootstrap-slider/dist/bootstrap-slider.js',
     //'node_modules/slick-carousel/slick/slick.js',
