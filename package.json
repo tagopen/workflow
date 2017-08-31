@@ -62,6 +62,7 @@
     "fancybox": "^3.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "jquery.cookie": "^1.4.1",
     "tether": "^1.4.0"
   }
 }
