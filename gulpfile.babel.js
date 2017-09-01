@@ -47,21 +47,22 @@ const path = {
     mail:           dirs.src + '/mail/**/*'
   },
   clean:            dirs.dest,
-  ftp:              dirs.dest + '**/*'
+  ftp:              dirs.dest + '**/*',
+  outputDir:        dirs.src
 };
 
 gulp.task('sass', () => {
- return gulp.src([path.watch.sass])
-   .pipe($.plumber())
-   .pipe($.sass({
-     css:           path.src.css,
-     sass:          path.src.sass,
-     image:         path.src.img,
-     outputStyle:   'expanded'
-   }))
-   .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
-   .pipe(gulp.dest(path.src.css))
-   .pipe(browserSync.reload({stream: true}));
+  return gulp.src([path.watch.sass])
+    .pipe($.plumber())
+    .pipe($.sass({
+      css:           path.src.css,
+      sass:          path.src.sass,
+      image:         path.src.img,
+      outputStyle:   'expanded'
+    }))
+    .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
+    .pipe(gulp.dest(path.src.css))
+    .pipe(browserSync.stream());
 });
 
 gulp.task('scripts', () => {
@@ -95,8 +96,14 @@ gulp.task('pug', () => {
    basedir:     dirs.src,
    pretty:      true
  }))
- .pipe(gulp.dest(path.src.html))
- .pipe(browserSync.reload({stream: true}));
+ .pipe(gulp.dest(path.src.html));
+});
+
+// create a task that ensures the `js` task is complete before
+// reloading browsers
+gulp.task('pug:watch', ['pug'], function (done) {
+    browserSync.reload();
+    done();
 });
 
 gulp.task('fonts', () => {
@@ -167,10 +174,12 @@ gulp.task('sprite', function() {
 //    .pipe(gulp.dest('app/img'));
 //});
 
-gulp.task('browser-sync',  ['pug', 'sass'], function() {
+gulp.task('server', function() {
   browserSync({
     server: {
-      baseDir: dirs.src
+      baseDir: dirs.src,
+      reloadDelay: 2000,
+      browser: "google chrome"
     },
     notify: false
   });
@@ -253,7 +262,7 @@ gulp.task('watch', function(){
     });
 
     $.watch([path.watch.template], function(event, cb) {
-        gulp.start('pug');
+        gulp.start('pug:watch');
     });
 
     $.watch([path.watch.fonts], function(event, cb) {
@@ -336,3 +345,14 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
     ))
    .pipe(gulp.dest(dirs.dest));
 });
+
+gulp.task('build', [
+    'scripts',
+    'pug',
+    'sass',
+    'fonts',
+    'img',
+    'sprite',
+]);
+
+gulp.task('default', ['build', 'watch', 'server']);
