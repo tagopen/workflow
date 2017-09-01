@@ -38,9 +38,8 @@ const path = {
   watch: {
     html:           dirs.src + '/*.html',
     js:             dirs.src + '/js/**/*.js',
-    style:          dirs.src + '/sass/**/*.+(scss|sass)',
-    template:       dirs.src + '/views/**/*.pug',
-    pug:            dirs.src + '/views/*.pug',
+    sass:           dirs.src + '/sass/**/*.+(scss|sass)',
+    pug:            dirs.src + '/views/**/*.pug',
     img:            dirs.src + '/img/**/*.*',
     spritePng:      dirs.src + '/img/icons/**/*.png',
     fonts:          dirs.src + '/fonts/**/*.{woff,woff2}',
@@ -51,7 +50,7 @@ const path = {
 };
 
 gulp.task('sass', () => {
- return gulp.src([path.watch.style])
+ return gulp.src([path.watch.sass])
    .pipe($.plumber())
    .pipe($.sass({
      css:           path.src.css,
@@ -241,13 +240,29 @@ gulp.task('test', () => {
   console.log($);
 });
 
-gulp.task('watch', ['browser-sync', 'fonts', 'sprite', 'scripts'], () => {
-  gulp.watch(path.watch.spritePng, ['sprite']);
-  gulp.watch(path.watch.style, ['sass']);
-  gulp.watch(path.watch.template, ['pug']);
-  gulp.watch(path.watch.fonts, ['fonts']);
-  gulp.watch(path.watch.js, browserSync.reload);
-  gulp.watch(path.watch.html).on('change', browserSync.reload);
+// watch
+gulp.task('watch', function(){
+
+    $.watch([path.watch.spritePng], function(event, cb) {
+        gulp.start('sprite');
+    });
+
+    $.watch([path.watch.sass], function(event, cb) {
+        gulp.start('sass');
+    });
+
+    $.watch([path.watch.pug], function(event, cb) {
+        gulp.start('pug');
+    });
+
+    $.watch([path.watch.fonts], function(event, cb) {
+        gulp.start('fonts');
+    });
+
+     //билдим js в случае изменения
+    $.watch([path.watch.js], function(event, cb) {
+      browserSync.reload;
+    });
 });
 
 //gulp.task('build', ['clean', 'pug', 'img', 'scripts', 'sass'], function() {
