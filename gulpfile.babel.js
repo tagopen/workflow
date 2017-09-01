@@ -39,7 +39,8 @@ const path = {
     html:           dirs.src + '/*.html',
     js:             dirs.src + '/js/**/*.js',
     sass:           dirs.src + '/sass/**/*.+(scss|sass)',
-    pug:            dirs.src + '/views/**/*.pug',
+    template:       dirs.src + '/views/**/*',
+    pug:            dirs.src + '/views/*.pug',
     img:            dirs.src + '/img/**/*.*',
     spritePng:      dirs.src + '/img/icons/**/*.png',
     fonts:          dirs.src + '/fonts/**/*.{woff,woff2}',
@@ -251,7 +252,7 @@ gulp.task('watch', function(){
         gulp.start('sass');
     });
 
-    $.watch([path.watch.pug], function(event, cb) {
+    $.watch([path.watch.template], function(event, cb) {
         gulp.start('pug');
     });
 
