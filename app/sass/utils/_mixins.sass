@@ -334,6 +334,18 @@
   width: $sprite-width
   height: $sprite-height
   background: url(../img/#{$sprite-image}) $sprite-offset-x $sprite-offset-y no-repeat
+//sprite mixin
+=svg($sprite)
+  $sprite-offset-x: nth($sprite, 4) - 5
+  $sprite-offset-y: nth($sprite, 5) - 5
+  $sprite-width: nth($sprite, 2)
+  $sprite-height: nth($sprite, 3)
+  $sprite-image: nth($sprite, 6)
+  $sprite-name: nth($sprite, 1)
+
+  width: $sprite-width
+  height: $sprite-height
+  background: url(#{$sprite-image}) $sprite-offset-x $sprite-offset-y no-repeat
 
 =debug
   *
@@ -384,3 +396,7 @@
 
 =cm($comment)
   /* #{$comment} */
+
+//px to em
+@function em($pixels, $context: 16)
+  @return #{$pixels/$context}em

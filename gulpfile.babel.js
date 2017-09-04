@@ -33,8 +33,8 @@ const path = {
     sass:           dirs.src + '/sass/',
     pug:            dirs.src + '/views/',
     fonts:          dirs.src + '/fonts/',
-    sprite:         dirs.src + '/sass/utils',
-    svgTemplate:    dirs.src + '/sass/utils/_spritesvg_template.scss',
+    sprite:         dirs.src + '/sass/utils/',
+    svgTemplate:    dirs.src + '/sass/utils/_sprite-svg-template.scss',
   },
   watch: {
     html:           dirs.src + '/*.html',
@@ -124,14 +124,17 @@ gulp.task('sprite', function() {
  gulp.src(path.watch.spritePng)
    .pipe($.plumber())
    .pipe($.spritesmith({
-     imgName: '../../img/sprite.png',
+     imgName: 'sprite.png',
      //retinaSrcFilter: ['app/img/icons/*@2x.png'],
      //retinaImgName: 'sprite@2x.png',
      cssName: '_sprite.sass',
      cssFormat: 'sass',
      padding: 10
    }))
-   .pipe($.if('*.+(css|scss|sass)', 
+   .pipe($.if('*.png', 
+     gulp.dest(path.src.img)
+   ))
+   .pipe($.if('*.css', 
      $.replace(/^\.icon-/gm, '.ic--'), 
      gulp.dest(path.src.sprite)
    ));
@@ -139,25 +142,26 @@ gulp.task('sprite', function() {
 
 gulp.task('svg', function () {
  return gulp.src(path.watch.spriteSvg)
-   .pipe($.svgmin({
-     js2svg: {
-       pretty: true
-     }
-   }))
-   .pipe($.cheerio({
-     run: function ($) {
-       $('[fill]').removeAttr('fill');
-       $('[stroke]').removeAttr('stroke');
-       $('[style]').removeAttr('style');
-     },
-     parserOptions: {xmlMode: true}
-   }))
-   .pipe($.replace('&gt;', '>'))
-   // build svg sprite
-  .pipe($.svgSprite({
+    .pipe($.plumber())
+    .pipe($.svgmin({
+      js2svg: {
+        pretty: true
+      }
+    }))
+    .pipe($.cheerio({
+      run: function ($) {
+        $('[fill]').removeAttr('fill');
+        $('[stroke]').removeAttr('stroke');
+        $('[style]').removeAttr('style');
+      },
+      parserOptions: {xmlMode: true}
+    }))
+    .pipe($.replace('&gt;', '>'))
+    // build svg sprite
+   .pipe($.svgSprite({
     shape: {
       spacing: {
-        padding: 5
+        padding: 5,
       },
       dimension   : {     // Set maximum dimensions
         maxWidth  : 32,
@@ -175,6 +179,11 @@ gulp.task('svg', function () {
             dest: "../sass/utils/_spriteSvg.scss",
             template: path.src.svgTemplate
           }
+        }
+      },
+      view: {
+        render: {
+          scss  : true
         }
       }
     },
@@ -362,12 +371,13 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
 });
 
 gulp.task('build', [
+    'sprite',
+    'svg',
     'scripts',
     'pug',
     'sass',
     'fonts',
-    'img',
-    'sprite',
+    //'img',
 ]);
 
 gulp.task('default', ['build', 'watch', 'server']);

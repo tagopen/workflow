@@ -1,0 +1,68 @@
+// arrow-left
+$svg-arrow-left-name: "arrow-left";
+$svg-arrow-left-width: em(9.39);
+$svg-arrow-left-height: em(32);
+$svg-arrow-left-offset-x: 0px;
+$svg-arrow-left-offset-y: 0px;
+$svg-arrow-left-image: "../img/sprite.svg";
+$svg-arrow-left: ( "arrow-left", em(9.39), em(32), 0px, 0px, "../img/sprite.svg" );
+
+// art
+$svg-art-name: "art";
+$svg-art-width: em(19.73);
+$svg-art-height: em(32);
+$svg-art-offset-x: -19.39px;
+$svg-art-offset-y: 0px;
+$svg-art-image: "../img/sprite.svg";
+$svg-art: ( "art", em(19.73), em(32), -19.39px, 0px, "../img/sprite.svg" );
+
+// feature-1
+$svg-feature-1-name: "feature-1";
+$svg-feature-1-width: em(30.67);
+$svg-feature-1-height: em(32);
+$svg-feature-1-offset-x: -49.120000000000005px;
+$svg-feature-1-offset-y: 0px;
+$svg-feature-1-image: "../img/sprite.svg";
+$svg-feature-1: ( "feature-1", em(30.67), em(32), -49.120000000000005px, 0px, "../img/sprite.svg" );
+
+// feature-2
+$svg-feature-2-name: "feature-2";
+$svg-feature-2-width: em(32);
+$svg-feature-2-height: em(32);
+$svg-feature-2-offset-x: 0px;
+$svg-feature-2-offset-y: -42px;
+$svg-feature-2-image: "../img/sprite.svg";
+$svg-feature-2: ( "feature-2", em(32), em(32), 0px, -42px, "../img/sprite.svg" );
+
+// feature-3
+$svg-feature-3-name: "feature-3";
+$svg-feature-3-width: em(32);
+$svg-feature-3-height: em(32);
+$svg-feature-3-offset-x: -42px;
+$svg-feature-3-offset-y: -42px;
+$svg-feature-3-image: "../img/sprite.svg";
+$svg-feature-3: ( "feature-3", em(32), em(32), -42px, -42px, "../img/sprite.svg" );
+
+// feature-5
+$svg-feature-5-name: "feature-5";
+$svg-feature-5-width: em(32);
+$svg-feature-5-height: em(32);
+$svg-feature-5-offset-x: -89.79px;
+$svg-feature-5-offset-y: 0px;
+$svg-feature-5-image: "../img/sprite.svg";
+$svg-feature-5: ( "feature-5", em(32), em(32), -89.79px, 0px, "../img/sprite.svg" );
+
+// feature-6
+$svg-feature-6-name: "feature-6";
+$svg-feature-6-width: em(32);
+$svg-feature-6-height: em(23.15);
+$svg-feature-6-offset-x: -89.79px;
+$svg-feature-6-offset-y: -42px;
+$svg-feature-6-image: "../img/sprite.svg";
+$svg-feature-6: ( "feature-6", em(32), em(23.15), -89.79px, -42px, "../img/sprite.svg" );
+
+
+$svg-spritesheet-width: 132px;
+$svg-spritesheet-height: 84px;
+$svg-spritesheet-image: "../img/sprite.svg";
+$svg-spritesheet-sprites: ( $svg-arrow-left,  $svg-art,  $svg-feature-1,  $svg-feature-2,  $svg-feature-3,  $svg-feature-5,  $svg-feature-6,  );
