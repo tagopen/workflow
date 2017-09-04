@@ -1,5 +1,5 @@
 $(function() {
-  $('.contactForm').validator().on('submit', function (e) {
+  $('.contactForm').validator({focus: false}).on('submit', function (e) {
     var $form = $(this);
     if (e.isDefaultPrevented()) {
       // handle the invalid form...
