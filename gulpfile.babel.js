@@ -122,18 +122,14 @@ gulp.task('sprite', function() {
  gulp.src(path.watch.spritePng)
    .pipe($.plumber())
    .pipe($.spritesmith({
-     imgName: 'sprite.png',
-     //imgPath: 'app/img/sprite.png',
+     imgName: '../../img/sprite.png',
      //retinaSrcFilter: ['app/img/icons/*@2x.png'],
      //retinaImgName: 'sprite@2x.png',
      cssName: '_sprite.sass',
      cssFormat: 'sass',
      padding: 10
    }))
-   .pipe($.if('*.png', 
-     gulp.dest(path.src.img)
-   ))
-   .pipe($.if('*.css', 
+   .pipe($.if('*.+(css|scss|sass)', 
      $.replace(/^\.icon-/gm, '.ic--'), 
      gulp.dest(path.src.sprite)
    ));
