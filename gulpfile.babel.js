@@ -33,7 +33,8 @@ const path = {
     sass:           dirs.src + '/sass/',
     pug:            dirs.src + '/views/',
     fonts:          dirs.src + '/fonts/',
-    sprite:         dirs.src + '/sass/utils'
+    sprite:         dirs.src + '/sass/utils',
+    svgTemplate:    dirs.src + '/sass/utils/_spritesvg_template.scss',
   },
   watch: {
     html:           dirs.src + '/*.html',
@@ -43,6 +44,7 @@ const path = {
     pug:            dirs.src + '/views/*.pug',
     img:            dirs.src + '/img/**/*.*',
     spritePng:      dirs.src + '/img/icons/**/*.png',
+    spriteSvg:      dirs.src + '/img/icons/svg/**/*.svg',
     fonts:          dirs.src + '/fonts/**/*.{woff,woff2}',
     mail:           dirs.src + '/mail/**/*'
   },
@@ -135,40 +137,53 @@ gulp.task('sprite', function() {
    ));
 });
 
-//gulp.task('svgSprite', function () {
-//  return gulp.src('app/img/icons/**/*.svg')
-//    .pipe($.svgmin({
-//      js2svg: {
-//        pretty: true
-//      }
-//    }))
-//    .pipe($.cheerio({
-//      run: function ($) {
-//        $('[fill]').removeAttr('fill');
-//        $('[stroke]').removeAttr('stroke');
-//        $('[style]').removeAttr('style');
-//      },
-//      parserOptions: {xmlMode: true}
-//    }))
-//    .pipe($.replace('&gt;', '>'))
-//    // build svg sprite
-//    .pipe($.svgSprites({
-//      preview: false,
-//      selector: "ic--%f",
-//      mode: {
-//        symbol: {
-//          sprite: "../sprite.svg",
-//          render: {
-//            scss: {
-//              dest:'../../../sass/_sprite.scss',
-//              template: '../sass/base/_sprite_template.scss'
-//            }
-//          }
-//        }
-//      }
-//    }))
-//    .pipe(gulp.dest('app/img'));
-//});
+gulp.task('svg', function () {
+ return gulp.src(path.watch.spriteSvg)
+   .pipe($.svgmin({
+     js2svg: {
+       pretty: true
+     }
+   }))
+   .pipe($.cheerio({
+     run: function ($) {
+       $('[fill]').removeAttr('fill');
+       $('[stroke]').removeAttr('stroke');
+       $('[style]').removeAttr('style');
+     },
+     parserOptions: {xmlMode: true}
+   }))
+   .pipe($.replace('&gt;', '>'))
+   // build svg sprite
+  .pipe($.svgSprite({
+    shape: {
+      spacing: {
+        padding: 5
+      },
+      dimension   : {     // Set maximum dimensions
+        maxWidth  : 32,
+        maxHeight : 32
+      },
+    },
+    mode: {
+      css: {
+        dest: "./",
+        layout: "packed",
+        sprite: "sprite.svg",
+        bust: false,
+        render: {
+          scss: {
+            dest: "../sass/utils/_spriteSvg.scss",
+            template: path.src.svgTemplate
+          }
+        }
+      }
+    },
+    variables: {
+      mapname: "icons"
+    }
+  }))
+   .pipe(gulp.dest(path.src.img));
+});
 
 gulp.task('server', function() {
   browserSync({
@@ -251,6 +266,10 @@ gulp.task('watch', function(){
 
     $.watch([path.watch.spritePng], function(event, cb) {
         gulp.start('sprite');
+    });
+
+    $.watch([path.watch.spriteSvg], function(event, cb) {
+        gulp.start('svg');
     });
 
     $.watch([path.watch.sass], function(event, cb) {
