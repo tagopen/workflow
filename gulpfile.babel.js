@@ -95,7 +95,7 @@ gulp.task('pug', () => {
    }
  }))
  .pipe($.pug({
-   basedir:     dirs.src,
+   basedir:     path.src.pug,
    pretty:      true
  }))
  .pipe(gulp.dest(path.src.html));
