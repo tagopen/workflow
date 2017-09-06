@@ -322,6 +322,13 @@
     left: 0
     right: 0
     margin: auto
+=svg
+  .svg
+    display: inline-block
+    vertical-align: middle
+    width: 1em
+    height: 1em
+    fill: currentColor
 //sprite mixin
 =bs($sprite)
   $sprite-offset-x: nth($sprite, 3)
@@ -335,7 +342,7 @@
   height: $sprite-height
   background: url(../img/#{$sprite-image}) $sprite-offset-x $sprite-offset-y no-repeat
 //sprite mixin
-=svg($sprite)
+=bsvg($sprite)
   $sprite-offset-x: nth($sprite, 4) - 5
   $sprite-offset-y: nth($sprite, 5) - 5
   $sprite-width: nth($sprite, 2)
@@ -349,11 +356,9 @@
 
 //sprite mixin inline symbols
 =svgi($sprite)
-  $sprite-offset-x: nth($sprite, 4) - 5
-  $sprite-offset-y: nth($sprite, 5) - 5
   $sprite-width: nth($sprite, 2)
   $sprite-height: nth($sprite, 3)
-  $sprite-image: nth($sprite, 6)
+  $sprite-image: nth($sprite, 4)
   $sprite-name: nth($sprite, 1)
 
   width: $sprite-width

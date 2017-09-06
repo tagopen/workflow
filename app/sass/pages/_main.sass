@@ -1,11 +1,19 @@
 +comment('general style')
-+ic
+
++cm('png icons')
++ic 
+
++cm('svg icons')
++svg
+@each $sprite in $svg-spritesheet-sprites
+  .svg--#{nth($sprite, 1)}
+    +svgi($sprite)
 +cm('form')
 .text-danger
   color: $text-danger
   text-align: left
 .form-group.error
-  .form-control
+  .form-control 
     border-color: $form-control-error-border-color
 [type=submit]:disabled
   animation: progress-bar-stripes 2s linear infinite
@@ -33,5 +41,3 @@
 .main
   flex: 1
 +comment("home page style")
-.header
-  font-size: 10px

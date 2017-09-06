@@ -169,7 +169,12 @@ gulp.task('svg', function () {
       },
     },
     mode: {
-      css: {
+      view: {
+        render: {
+          scss  : true
+        },
+      },
+      symbol: {
         dest: "./",
         layout: "packed",
         sprite: "sprite.svg",
@@ -181,13 +186,7 @@ gulp.task('svg', function () {
           }
         }
       },
-      view: {
-        render: {
-          scss  : true
-        },
-
-      },
-      symbol: true
+      inline: true,
     },
     variables: {
       mapname: "icons"
