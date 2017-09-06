@@ -41,7 +41,7 @@ const path = {
     js:             dirs.src + '/js/**/*.js',
     sass:           dirs.src + '/sass/**/*.+(scss|sass)',
     template:       dirs.src + '/views/**/*',
-    pug:            dirs.src + '/views/*.pug',
+    pug:            dirs.src + '/views/**/[^_]*.pug',
     img:            dirs.src + '/img/**/*.*',
     spritePng:      dirs.src + '/img/icons/**/*.png',
     spriteSvg:      dirs.src + '/img/icons/svg/**/*.svg',
