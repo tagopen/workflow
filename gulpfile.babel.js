@@ -161,11 +161,11 @@ gulp.task('svg', function () {
    .pipe($.svgSprite({
     shape: {
       spacing: {
-        padding: 5,
+        padding: 0,
       },
       dimension   : {     // Set maximum dimensions
         maxWidth  : 32,
-        maxHeight : 32
+        maxHeight : 32,
       },
     },
     mode: {
@@ -184,8 +184,10 @@ gulp.task('svg', function () {
       view: {
         render: {
           scss  : true
-        }
-      }
+        },
+
+      },
+      symbol: true
     },
     variables: {
       mapname: "icons"
