@@ -10,7 +10,26 @@
         meta: {
           charset: "utf-8",
           favicon: "favicon.png",
-          appleTouchIcon: "apple-touch-icon.png"
+          appleTouchIcon: "apple-touch-icon.png",
+          description: "",
+          keywords: "",
+          title: "Workflow",
+          openGraph: {
+            title: "Site name",
+            description: "Описание сайта",
+            type: "website",
+            locale: "ru_RU",
+            image:  hostname + "img/logo/microformat.png",
+            "image:type": "image/png",
+            url: hostname
+          },
+          twitter: {
+            card: "summary",
+            site: "@flickr",
+            title: "My Site",
+            description: "My Site is cool",
+            image: hostname + "img/logo/microformat.png"
+          }
         },
         nav: {
           links: [
@@ -47,12 +66,11 @@
           keywords: "",
           openGraph: {
             title: "Site name",
-            siteName: "Site name",
             description: "Описание сайта",
             type: "website",
             locale: "ru_RU",
-            image: "microformat.png",
-            imageType: "image/png",
+            image:  hostname + "img/logo/microformat.png",
+            "image:type": "image/png",
             url: hostname
           },
           twitter: {
@@ -60,8 +78,9 @@
             site: "@flickr",
             title: "My Site",
             description: "My Site is cool",
-            image: hostname + "/img/logo/microformat.png"
+            image: hostname + "img/logo/microformat.png"
           }
         }
       }, //- index
+
     }

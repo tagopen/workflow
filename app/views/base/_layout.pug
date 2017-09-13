@@ -14,9 +14,9 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     meta(http-equiv='Content-Type' content='text/html;charset=' + content.site.meta.charset)/
 
     // Meta SEO - Description, Keywords, Title
-    meta(name='title' content= page.title)/
-    meta(name='description' content= page.meta.description)/
-    meta(name='keywords' content= page.meta.keywords)/
+    meta(name='title' content=page.title ? page.title  : relativePath + " - " + content.site.meta.title)/
+    meta(name='description' content=page.meta.description ? page.meta.description : relativePath + content.site.meta.description)/
+    meta(name='keywords' content= page.meta.keywords ? page.meta.keywords : relativePath + " - " + content.site.meta.keywords)/
 
     // Multilanguage localization
     link(rel='alternate' href='/' hreflang='x-default')/
@@ -38,19 +38,12 @@ html(lang='ru' prefix='og: http://ogp.me/ns#')
     meta(name='format-detection' content='address=no')/
 
     // Microformats Open Graph
-    meta(property='og:title' content= page.meta.openGraph.title)/
-    meta(property='og:site_name' content= page.meta.openGraph.siteName)/
-    meta(property='og:description' content= page.meta.openGraph.description)/
-    meta(property='og:type' content= page.meta.openGraph.type)/
-    meta(property='og:locale' content= page.meta.openGraph.locale)/
-    //- meta(property='og:locale:alternate' content='en_US')/
-    meta(property='og:image' content= content.site.hostname + '/img/logo/' + page.meta.openGraph.image)/
-    meta(property='og:image:type' content= page.meta.openGraph.imageType)/
-    meta(property='og:url' content= page.meta.openGraph.url)/
-
+    each value, key in (page.meta.openGraph ? page.meta.openGraph : content.site.meta.openGraph)
+      meta(property='og:' + key, content=value)/
+    
     // Microformats Twitter Cards
-    each value, key in page.meta.twitter
-      meta(name='twitter:'+key content= value)/
+    each value, key in (page.meta.twitter ? page.meta.twitter : content.site.meta.twitter)
+      meta(name='twitter:' + key, content= value)/
     
     // build:css css/bundle.min.css
     
