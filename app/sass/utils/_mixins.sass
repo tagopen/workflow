@@ -54,7 +54,7 @@
     @content
 
 =box
-  +box-sizing(border-box)
+  box-sizing: border-box
 
 // Центрирование блока по горизонтали и по вертикали
 =vcenter
@@ -142,7 +142,13 @@
     display: table
     clear: both
   *zoom: 1
-
+=cls  
+  &:before,     
+  &:after     
+    content: " "      
+    display: table      
+  &:after,      
+    clear: both
 =placeholder-color($color)
   &:-moz-placeholder,
   &::-moz-placeholder
@@ -305,11 +311,24 @@
   filter: alpha(opactiy=($trans * 100))
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})"
 
+=col($value, $grid-cols: 24)
+  position: relative
+  min-height: 1px
+  padding-left: $columns-margin
+  padding-right: $columns-margin
+  float: left
+  width: 100% * $value / $grid-cols
+=offset($value, $grid-cols: 24)
+  margin-left: 100% * $value / $grid-cols
 =ic
   .ic
     display: inline-block
-    vertical-align: middle
-    text-align: center
+    vertical-align: top
+    font: normal normal normal 16px/1 inherit
+    font-size: inherit
+    text-rendering: auto
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
     &:before
       content: ''
       display: inline-block
@@ -325,7 +344,13 @@
 =svg
   .svg
     display: inline-block
-    vertical-align: middle
+    vertical-align: top
+    font-weight: normal 
+    line-height: 1
+    font-size: 16px
+    text-rendering: auto
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
     width: 1em
     height: 1em
     fill: currentColor
