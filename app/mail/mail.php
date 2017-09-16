@@ -14,7 +14,7 @@
 
   $http_host = $_SERVER["HTTP_HOST"];
   $body = "";
-  $post_data = array();
+  $data = array();
 
   if ( substr($http_host, 0, 4)=="www.") {
     $host_name = substr($http_host, 4);
@@ -50,44 +50,66 @@
 
   if ( (!empty($_POST["form"])) && (isset($_POST["form"])) ) {
     $post["user_form"] = $_POST["form"];
-    $body .= "Форма: " . $post["user_form"] . chr(10) . chr(13);
-    $post_data["Форма:"] = $post["user_form"];
+
+    $stack = array(
+      "key"   => "Форма: ",
+      "value" => $post["user_form"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["email"])) && (isset($_POST["email"])) ) {
     $post["user_email"] = $_POST["email"];
-    $body .= "Email: " . $post["user_email"] . chr(10) . chr(13);
-    $post_data["Email:"] = $post["user_email"];
+    $stack = array(
+      "key"   => "Email: ",
+      "value" => $post["user_email"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["phone"])) && (isset($_POST["phone"])) ) {
     $post["user_phone"] = $_POST["phone"];
-    $body .= "Телефон: " . $post["user_phone"] . chr(10) . chr(13);
-    $post_data["Телефон:"] = $post["user_phone"];
+    $stack = array(
+      "key"   => "Телефон: ",
+      "value" => $post["user_phone"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["name"])) && (isset($_POST["name"])) ) {
     $post["user_name"] = $_POST["name"];
-    $body .= "Имя: " . $post["user_name"] . chr(10) . chr(13);
-    $post_data["Имя:"] = $post["user_name"];
+    $stack = array(
+      "key"   => "Имя: ",
+      "value" => $post["user_name"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["message"])) && (isset($_POST["message"])) ) {
     $post["user_message"] = $_POST["message"];
-    $body .= "Сообщение: " . $post["user_message"] . chr(10) . chr(13);
-    $post_data["Сообщение:"] = $post["user_message"];
+    $stack = array(
+      "key"   => "Сообщение: ",
+      "value" => $post["user_message"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["method"])) && (isset($_POST["method"])) ) {
     $post["user_method"] = $_POST["method"];
-    $body .= "Как связаться: " . $post["user_method"] . chr(10) . chr(13);
-    $post_data["Как связаться:"] = $post["user_method"];
+    $stack = array(
+      "key"   => "Как связаться: ",
+      "value" => $post["user_method"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["time"])) && (isset($_POST["time"])) ) {
     $post["user_time"] = $_POST["time"];
-    $body .= "Удобное время: " . $post["user_time"] . chr(10) . chr(13);
-    $post_data["Удобное время:"] = $post["user_time"];
+    $stack = array(
+      "key"   => "Удобное время: ",
+      "value" => $post["user_time"]
+    );
+    array_push($data, $stack);
   }
 
   if ( !empty($_POST["period"])  && (isset($_POST["period"])) ) {
@@ -96,8 +118,11 @@
     } else {
       $post["period"] = $_POST["period"];
     }
-    $body .= "Когда позвонить: " . $post["period"] . chr(10) . chr(13);
-    $post_data["Когда позвонить:"] = $post["period"];
+    $stack = array(
+      "key"   => "Когда позвонить: ",
+      "value" => $post["period"]
+    );
+    array_push($data, $stack);
   }
 
   if ( !empty($_POST["material"])  && (isset($_POST["material"])) ) {
@@ -106,24 +131,41 @@
     } else {
       $post["material"] = $_POST["material"];
     }
-    $body .= "Чем зашивать: " . $post["material"] . chr(10) . chr(13);
-    $post_data["Чем зашивать:"] = $post["material"];
+    $stack = array(
+      "key"   => "Чем зашивать: ",
+      "value" => $post["material"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["range1"])) && (isset($_POST["range1"])) ) {
     $post["user_range1"] = $_POST["range1"];
-    $body .= "Длина ворот: " . $post["user_range1"] . chr(10) . chr(13);
-    $post_data["Длина ворот:"] = $post["user_range1"];
+    $stack = array(
+      "key"   => "Длина ворот: ",
+      "value" => $post["user_range1"]
+    );
+    array_push($data, $stack);
   }
 
   if ( (!empty($_POST["range2"])) && (isset($_POST["range2"])) ) {
     $post["user_range2"] = $_POST["range2"];
-    $body .= "Высота ворот: " . $post["user_range2"] . chr(10) . chr(13);
-    $post_data["Высота ворот:"] = $post["user_range2"];
+    $stack = array(
+      "key"   => "Высота ворот: ",
+      "value" => $post["user_range2"]
+    );
+    array_push($data, $stack);
   }
 
-  $body .= "Форма отправлена с сайта: " . $post["host_referer"];
-  $post_data["Форма отправлена с сайта:"] = $post["host_referer"];
+
+  $stack = array(
+    "key"   => "Форма отправлена с сайта: ",
+    "value" => $post["host_referer"]
+  );
+  array_push($data, $stack);
+
+  foreach ($data as $key => $value) {
+    $body .= $value['key'] . $value['value'] . chr(10) . chr(13);
+  }
 
   $mail = new PHPMailer();
   $mail->CharSet = "UTF-8";
@@ -136,7 +178,7 @@
   $mail->isHTML(true);
   $mail->Subject      = HOST_NAME;
   $NewsLetterClass    = new NewsLetterClass();
-  $mail->Body         = $NewsLetterClass->generateHTMLLetter($post_data);
+  $mail->Body         = $NewsLetterClass->generateHTMLLetter($data);
   $mail->AltBody      = $body;
 
   if(!$mail->send()) {
