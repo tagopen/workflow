@@ -5,7 +5,7 @@
   $(function() {
     $.reject({
       reject: {
-        msie: 9
+        msie: 10
       },
       imagePath: 'img/icons/jReject/',
       display: [ 'chrome','firefox','safari','opera' ],
