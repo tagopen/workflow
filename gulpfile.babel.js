@@ -170,11 +170,7 @@ gulp.task('svg', function () {
       },
     },
     mode: {
-      view: {
-        render: {
-          scss  : true
-        },
-      },
+      view: false,
       symbol: {
         dest: "./",
         layout: "packed",
