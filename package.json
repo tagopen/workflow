@@ -21,6 +21,7 @@
     "babel-core": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.24.1",
+    "bemto.pug": "^2.1.0",
     "browser-sync": "^2.18.8",
     "critical": "^0.8.4",
     "del": "^2.2.2",
@@ -41,6 +42,7 @@
     "gulp-javascript-obfuscator": "^1.1.2",
     "gulp-load-plugins": "^1.5.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-plumber-notifier": "0.0.3",
     "gulp-pug": "^3.3.0",
     "gulp-pxtorem": "^3.0.0",
     "gulp-rcs": "^1.0.1",
@@ -56,8 +58,7 @@
     "gulp-watch": "^4.3.11",
     "gulp.spritesmith": "^6.4.0",
     "imagemin-pngquant": "^5.0.0",
-    "vinyl-ftp": "^0.6.0",
-    "bemto.pug": "^2.1.0"
+    "vinyl-ftp": "^0.6.0"
   },
   "dependencies": {
     "bootstrap": "4.0.0-alpha.6",
