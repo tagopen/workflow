@@ -56,6 +56,7 @@ const path = {
 gulp.task('sass', () => {
   return gulp.src([path.watch.sass])
     .pipe($.plumber())
+    .pipe($.plumberNotifier())
     .pipe($.sass({
       css:           path.src.css,
       sass:          path.src.sass,
@@ -84,12 +85,14 @@ gulp.task('scripts', () => {
     //'node_modules/bootstrap-datepicker/dist/locales/*'
   ])
   .pipe($.plumber())
+    .pipe($.plumberNotifier())
   .pipe(gulp.dest(path.src.js));
 });
 
 gulp.task('pug', () => {
  return gulp.src(path.watch.pug)
  .pipe($.plumber())
+    .pipe($.plumberNotifier())
  .pipe($.data(function (file) {
    return {
      relativePath: file.history[0].replace(file.base, '').split(".")[0]
@@ -124,6 +127,7 @@ gulp.task('bower', () => {
 gulp.task('sprite', function() {
  gulp.src(path.watch.spritePng)
    .pipe($.plumber())
+    .pipe($.plumberNotifier())
    .pipe($.spritesmith({
      imgName: 'sprite.png',
      //retinaSrcFilter: ['app/img/icons/*@2x.png'],
@@ -144,6 +148,7 @@ gulp.task('sprite', function() {
 gulp.task('svg', function () {
  return gulp.src(path.watch.spriteSvg)
     .pipe($.plumber())
+    .pipe($.plumberNotifier())
     .pipe($.svgmin({
       js2svg: {
         pretty: true
@@ -170,11 +175,7 @@ gulp.task('svg', function () {
       },
     },
     mode: {
-      view: {
-        render: {
-          scss  : true
-        },
-      },
+      view: false,
       symbol: {
         dest: "./",
         layout: "packed",
@@ -242,6 +243,7 @@ gulp.task('clear', function () {
 gulp.task('img', function() {
   return gulp.src(path.watch.img)
     .pipe($.plumber())
+    .pipe($.plumberNotifier())
     .pipe($.cache($.imagemin({
       interlaced:    true,
       progressive:   true,
@@ -341,6 +343,7 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
         this.emit('end');
       }
     }))
+    .pipe($.plumberNotifier())
     .pipe($.useref({
       searchPath: dirs.src
     }))
