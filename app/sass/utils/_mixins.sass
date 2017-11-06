@@ -1,6 +1,6 @@
 
 // Media Query width
-=r($width)
+=r($width, $max-width: 0)
   @media only screen and (min-width: $width+ "px")
     @content
 =rx($width)
@@ -21,32 +21,12 @@
   text-overflow: ellipsis
   white-space: nowrap
 
-%pseudo
-  position: relative
-  &:before,&:after
-    content: ' '
-    position: absolute
-    top: 0
-    left: 0
-        
-=pseudo
-  @extend %pseudo
-
 =coverdiv
   position: absolute
   top: 0
   left: 0
   width: 100%
   height: 100%
-
-=cover
-  background-size: cover
-
-=contain
-  background-size: contain
-
-=size($width: 100%, $height: 100%)
-  background-size: $width $height
 
 // retina, also available as +hdpi
 =retina
@@ -56,54 +36,6 @@
 =box
   box-sizing: border-box
 
-// Центрирование блока по горизонтали и по вертикали
-=vcenter
-  position: absolute
-  top: 50%
-  left: 50%
-  +translate(-50%,-50%)
-
-// simple gradient
-=g($color1, $color2)
-  +background-image(linear-gradient($color1, $color2))
-
-=gh($color1, $color2)
-  +background-image(linear-gradient(left, $color1, $color2))
-
-// font-family
-=font($alias, $name, $font-style:normal, $font-weight:normal)
-  @font-face
-    font-family: $alias
-    src: url("../font/" + $name + "/" + $name + ".eot")
-    src: url("../font/" + $name + "/" + $name + ".eot?#iefix") format("embedded-opentype"), url("../font/" + $name + "/" + $name + ".woff2") format("woff2"), url("../font/" + $name + "/" + $name + ".woff") format("woff"), url("../font/" + $name + "/" + $name + ".ttf") format("truetype")
-    font-weight: $font-weight
-    font-style: $font-style
-
-// ROTATE
-=rotate($deg: 0, $m11: 0, $m12: 0, $m21: 0, $m22: 0)
-  transform: rotate($deg + deg)
-  filter: progid:DXImageTransform.Microsoft.Matrix(M11=$m11, M12=$m12,M21=$m21, M22=$m22, sizingMethod='auto expand')
-  zoom: 1
-
-// TRANSITION
-=transition($what)
-  transition: $what
-
-// TRANSFORM
-=transform($what)
-  transform: $what
-
-// GRAYSCALE
-=grayscale($gray: 100%)
-  filter: grayscale($gray)
-  @if ($gray == 100%)
-    filter: gray /* IE 6-9 */
-  @else
-    filter: none
-
-=tr($what)
-  +transition($what)
-
 =hide-text
   font: 0/0 a
   text-shadow: none
@@ -112,36 +44,6 @@
 =hidetext
   +hide-text
 
-=justify
-  text-align: justify
-  line-height: 0
-  font-size: 0
-  text-justify: newspaper
-  zoom: 1
-  text-align-last: justify
-  &:after
-    content: ""
-    display: inline-block
-    width: 100%
-    height: 0px
-    visibility: hidden
-    overflow: hidden
-=vertical
-  text-align: center
-  font-size: 0
-  &:before
-    content: ""
-    display: inline-block
-    vertical-align: middle
-    width: 0
-    height: 100%
-
-=clr
-  &:after
-    content: " "
-    display: table
-    clear: both
-  *zoom: 1
 =cls  
   &:before,     
   &:after     
@@ -149,167 +51,15 @@
     display: table      
   &:after,      
     clear: both
-=placeholder-color($color)
-  &:-moz-placeholder,
-  &::-moz-placeholder
-    color: $color
-    opacity: 1
-  &::-webkit-input-placeholder
-    color: $color
 
 =placeholder
-  &:-ms-input-placeholder
-    @content
-  &:-moz-placeholder
-    @content
-  &::-moz-placeholder
-    @content
-  &::-webkit-input-placeholder
-    @content
   &::placeholder
     @content
 
-=placeholder-animation
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &:-moz-placeholder,
-  &:-ms-input-placeholder
-    text-indent: 0px
-    transition: text-indent 0.3s ease
-  &:focus::-webkit-input-placeholder,
-  &:focus::-moz-placeholder,
-  &:focus:-moz-placeholder,
-  &:focus:-ms-input-placeholder      
-    text-indent: 500px
-    transition: text-indent 0.3s ease
-
-
-=unselectable
-  user-select: none
-
-=touchaction($what)
-  touch-action: $what
-
-=nosel
-  +unselectable
-
 =prevent-text
-  -ms-word-break: break-all
   word-break: break-all
   word-break: break-word
-  -webkit-hyphens: auto
-  -moz-hyphens: auto
   hyphens: auto
-
-=font-smoothing($val: antialiased)
-  -webkit-font-smoothing: $val
-  -moz-font-smoothing: $val
-  -ms-font-smoothing: $val
-  -o-font-smoothing: $val
-
-=selection
-  & ::selection
-    @content
-  & ::-moz-selection
-    @content
-
-=sel
-  +selection
-
-=scrollbar
-  &::-webkit-scrollbar
-    @content
-
-=scrollbar-track
-  &::-webkit-scrollbar-track
-    @content
-
-=scrollbar-thumb
-  &::-webkit-scrollbar-thumb
-    @content
-
-=scrollbar-track-piece
-  &::-webkit-scrollbar-track-piece
-    @content
-
-//triangle
-=arr($width, $height, $bg, $direction)
-  width: 0px
-  height: 0px
-  border-style: solid
-  @if $direction == t
-    border-width: 0 $width / 2 + px $height + px $width / 2 + px
-    border-color: transparent transparent $bg transparent
-  @if $direction == r
-    border-width: $height / 2 + px 0 $height / 2 + px $width + px
-    border-color: transparent transparent transparent $bg
-  @if $direction == b
-    border-width: $height + px $width / 2 + px 0 $width / 2 + px
-    border-color: $bg transparent transparent transparent
-  @if $direction == l
-    border-width: $height / 2 + px $width + px $height / 2 + px 0
-    border-color: transparent $bg transparent transparent
-  @if $direction == tl
-    border-width: $height + px $width + px 0 0
-    border-color: $bg transparent transparent transparent
-  @if $direction == tr
-    border-width: 0 $width + px $height + px 0
-    border-color: transparent $bg transparent transparent
-  @if $direction == br
-    border-width: 0 0 $height + px $width + px
-    border-color: transparent transparent $bg transparent
-  @if $direction == bl
-    border-width: $height + px 0 0 $width + px
-    border-color: transparent transparent transparent $bg
-// example
-// +arr(500,50, #000, l)
-// +arr(500,50, #000, bl)
-
-=blur($var)
-  filter: blur($var)
-    
-=scale($var)
-  transform: scale($var)
-
-=counter($var)
-  counter-reset: $var
-  > li, > dt
-    &:before
-      content: counter($var)
-      counter-increment: $var
-
-@function makelongshadow($color)
-  $val: 0px 0px $color
-  @for $i from 1 through 200
-    $val: #{$val}, #{$i}px #{$i}px #{$color}
-  @return $val
-
-=longshadow($color)
-  text-shadow: makelongshadow($color)
-
-=br($radius) 
-  border-radius: $radius
-    
-=bs($bshadow)
-  box-shadow: $bshadow
-
-=ts($string) 
-  text-shadow: $string
-
-=links($link, $visit, $hover, $active)
-  a
-    color: $link
-    &:visited
-      color: $visit
-    &:hover
-      color: $hover
-    &:active
-      color: $active
-            
-=opacity($trans)
-  opacity: $trans
-  filter: alpha(opactiy=($trans * 100))
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})"
 
 =col($value, $grid-cols: 24)
   position: relative
@@ -318,8 +68,10 @@
   padding-right: $columns-margin
   float: left
   width: 100% * $value / $grid-cols
+
 =offset($value, $grid-cols: 24)
   margin-left: 100% * $value / $grid-cols
+
 =ic
   .ic
     display: inline-block
@@ -354,6 +106,7 @@
     width: 1em
     height: 1em
     fill: currentColor
+
 //sprite mixin
 =bs($sprite)
   $sprite-offset-x: nth($sprite, 3)
@@ -367,6 +120,7 @@
   height: $sprite-height
   background: url(../img/#{$sprite-image}) $sprite-offset-x $sprite-offset-y no-repeat
 //sprite mixin
+
 =bsvg($sprite)
   $sprite-offset-x: nth($sprite, 4) - 5
   $sprite-offset-y: nth($sprite, 5) - 5
@@ -388,6 +142,7 @@
 
   width: $sprite-width
   height: $sprite-height
+
 =debug
   *
     outline: 2px dotted red !important
@@ -409,6 +164,7 @@
 @function append-str ($string, $statement)
   $text: $string + $statement + ' '
   @return $text
+
 =comment($text)
   $string: to_upper_case("#{$text}")
   $length: str-length($string)
@@ -429,6 +185,7 @@
   @else if $list_length < 80
     $separator_length: $list_length
   // generate separator line
+
   @for $i from 1 through $separator_length
     $separator: $separator + '-' 
   /* #{$separator} */
