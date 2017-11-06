@@ -59,16 +59,16 @@
     "gulp-watch": "^4.3.11",
     "gulp.spritesmith": "^6.4.0",
     "imagemin-pngquant": "^5.0.0",
+    "popper.js": "^1.12.6",
     "vinyl-ftp": "^0.6.0"
   },
   "dependencies": {
-    "bootstrap": "4.0.0-alpha.6",
+    "bootstrap": "4.0.0-beta.2",
     "bootstrap-validator": "^0.11.9",
     "fancybox": "^3.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "jquery.cookie": "^1.4.1",
-    "onepage-scroll": "^1.3.0",
-    "tether": "^1.4.0"
+    "onepage-scroll": "^1.3.0"
   }
 }
