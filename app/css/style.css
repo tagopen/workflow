@@ -267,3 +267,8 @@
 /* ---------------------------------------- */
 /* H O M E    P A G E    S T Y L E          */
 /* ---------------------------------------- */
+@media only screen and (min-width: 200px) {
+  .main {
+    background: red;
+  }
+}

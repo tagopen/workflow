@@ -1,18 +1,35 @@
 
 // Media Query width
-=r($width, $max-width: 0)
-  @media only screen and (min-width: $width+ "px")
-    @content
-=rx($width)
-  @media only screen and (max-width: $width+ "px")
+=r($min-width, $max-width: false)
+  $units: 1px !default
+
+  @if ($max-width)
+    @media only screen and (min-width: if(unitless($min-width), $min-width * $units, $min-width)) and (max-width: if(unitless($max-width), $max-width * $units, $max-width))
+      @content
+  @else
+    @media only screen and (min-width: if(unitless($min-width), $min-width * $units, $min-width))
+      @content
+=rx($max-width)
+  $units: 1px !default
+
+  @media only screen and (max-width: if(unitless($max-width), $max-width * $units, $max-width))
     @content
 
 // Media Query height
-=rh($height)
-  @media only screen and (min-height: $height + "px")
-    @content
-=rhx($height)
-  @media only screen and (max-height: $height + "px")
+=rh($min-height, $max-height: false)
+  $units: 1px !default
+
+  @if ($max-height)
+    @media only screen and (min-height: if(unitless($min-height), $min-height * $units, $min-height)) and (max-height: if(unitless($max-height), $max-height * $units, $max-height))
+      @content
+  @else
+    @media only screen and (min-height: if(unitless($min-height), $min-height * $units, $min-height))
+      @content
+
+=rhx($max-height)
+  $units: 1px !default
+
+  @media only screen and (max-height: if(unitless($max-height), $max-height * $units, $max-height))
     @content
 
 // Обрезание текста с 3 точиями
