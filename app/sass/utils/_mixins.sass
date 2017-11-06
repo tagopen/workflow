@@ -1,6 +1,6 @@
 
 // Media Query width
-=r($min-width, $max-width: false)
+=r($min-width, $max-width: null)
   $units: 1px !default
 
   @if ($max-width)
@@ -16,7 +16,7 @@
     @content
 
 // Media Query height
-=rh($min-height, $max-height: false)
+=rh($min-height, $max-height: null)
   $units: 1px !default
 
   @if ($max-height)
