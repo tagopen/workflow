@@ -46,7 +46,7 @@ const path = {
     template: dirs.src + '/views/**/*',
     pug: dirs.src + '/views/**/[^_]*.pug',
     img: dirs.src + '/img/**/*.*',
-    spritePng: dirs.src + '/img/icons/**/*.png',
+    spritePng: dirs.src + '/img/icons/png/**/*.png',
     spriteSvg: dirs.src + '/img/icons/svg/**/*.svg',
     fonts: dirs.src + '/fonts/**/*.{woff,woff2}',
     mail: dirs.src + '/mail/**/*'
@@ -147,7 +147,7 @@ gulp.task('sprite', function() {
       imgName: 'sprite.png',
       //retinaSrcFilter: ['app/img/icons/*@2x.png'],
       //retinaImgName: 'sprite@2x.png',
-      cssName: '_sprite.sass',
+      cssName: '_sprite-png.sass',
       cssFormat: 'sass',
       padding: 10
     }))
@@ -200,7 +200,7 @@ gulp.task('svg', function() {
           bust: false,
           render: {
             scss: {
-              dest: "../sass/utils/_spriteSvg.scss",
+              dest: "../sass/utils/_sprite-svg.scss",
               template: path.src.svgTemplate
             }
           }
@@ -297,7 +297,7 @@ gulp.task('test', () => {
 });
 
 // watch
-gulp.task('watch', function() {
+gulp.task('watch', () => {
 
   $.watch([path.watch.spritePng], function(event, cb) {
     gulp.start('sprite');
@@ -323,35 +323,8 @@ gulp.task('watch', function() {
   $.watch([path.watch.js], function(event, cb) {
     browserSync.reload;
   });
-});
 
-//gulp.task('build', ['clean', 'pug', 'img', 'scripts', 'sass'], function() {
-//  var buildCss = gulp.src([
-//      'app/css/**/*.css'
-//    ])
-//    .pipe($.plumber())
-//    //.pipe(gulp.dest('dist/css'))   // if need not minified files
-//    .pipe($.cleanCSS())
-//    .pipe($.rename({suffix: '.min'}))
-//    .pipe(gulp.dest('dist/css'));
-//
-//  var buildFonts = gulp.src('app/font/**/*')
-//    .pipe(gulp.dest('dist/font'));
-//
-//  var buildJs = gulp.src('app/js/**/*.js')
-//    .pipe(gulp.dest('dist/js'))
-//    .pipe($.uglifyjs())
-//    .pipe($.rename({suffix: '.min'}))
-//    //.pipe($.concat('all.min.js')) // if need concat js
-//    //.pipe($.uglify())
-//    .pipe(gulp.dest('dist/js'));
-//
-//  var buildHtml = gulp.src('app/*.html')
-//    .pipe(useref())
-//    .pipe(gulpif('*.js', uglifyjs()))
-//    .pipe(gulpif('*.css', cleanCss()))
-//    .pipe(gulp.dest('dist'));
-//});
+});
 
 gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], () => {
 

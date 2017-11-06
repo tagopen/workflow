@@ -140,41 +140,6 @@
   fill: currentColor;
 }
 
-.svg--arrow-left {
-  width: 0.58688em;
-  height: 2em;
-}
-
-.svg--art {
-  width: 1.23313em;
-  height: 2em;
-}
-
-.svg--feature-1 {
-  width: 1.91688em;
-  height: 2em;
-}
-
-.svg--feature-2 {
-  width: 2em;
-  height: 2em;
-}
-
-.svg--feature-3 {
-  width: 2em;
-  height: 2em;
-}
-
-.svg--feature-5 {
-  width: 2em;
-  height: 2em;
-}
-
-.svg--feature-6 {
-  width: 2em;
-  height: 1.44687em;
-}
-
 /* form */
 .text-danger {
   color: #b94a48;
@@ -267,8 +232,3 @@
 /* ---------------------------------------- */
 /* H O M E    P A G E    S T Y L E          */
 /* ---------------------------------------- */
-@media only screen and (min-width: 200px) {
-  .main {
-    background: red;
-  }
-}
