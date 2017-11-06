@@ -95,6 +95,12 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('pug', () => {
+
+  const htmlVersionOptions = {
+    paramName: 'v',
+    paramType: 'timestamp',
+  }
+
   return gulp.src(path.watch.pug)
     .pipe($.plumber())
     .pipe($.plumberNotifier())
