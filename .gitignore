@@ -9,6 +9,7 @@ app/.sass-cache
 bower_components
 node_modules
 dist
+temp
 
 # bower libs
 app/libs
