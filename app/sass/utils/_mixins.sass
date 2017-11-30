@@ -89,6 +89,27 @@
 =offset($value, $grid-cols: 24)
   margin-left: 100% * $value / $grid-cols
 
+=font($family, $size: 1rem, $weight : normal, $color : black)
+  font-size: $size
+  font-family: $family
+  font-weight: $weight
+  color: $color
+=display-none
+  width: 1px
+  height: 1px
+  overflow: hidden
+  clip: rect(0 0 0 0)
+  position: absolute
+=display
+  clip: rect(auto auto auto auto)
+  overflow: visible
+  position: relative
+=background($url:'')
+  background-image: url($url)
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+
 =ic
   .ic
     display: inline-block
