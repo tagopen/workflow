@@ -316,7 +316,7 @@ gulp.task('watch', () => {
     gulp.start('pug:watch');
   });
 
-  $.watch([path.watch.fonts], function(event, cb) {
+  $.watch(path.watch.fonts, function(event, cb) {
     gulp.start('fonts');
   });
 
