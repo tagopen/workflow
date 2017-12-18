@@ -80,6 +80,7 @@ gulp.task('scripts', () => {
       'node_modules/jquery/dist/jquery.js',
       'node_modules/bootstrap-validator/dist/validator.js',
       'node_modules/wowjs/dist/wow.js',
+      'node_modules/slick-carousel/slick/slick.js',
       //'node_modules/onepage-scroll/jquery.onepage-scroll.js',
       //'node_modules/jquery.cookie/jquery.cookie.js',
       //'node_modules/matchHeight/dist/jquery.matchHeight.js',
