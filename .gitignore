@@ -22,3 +22,6 @@ settings.js
 
 # npm
 package-lock.json
+
+#Ignore mac files
+.DS_Store
