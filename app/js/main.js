@@ -50,6 +50,7 @@ var GRVE = GRVE || {};
   // ============================================================================= //
   GRVE.documentReady = {
     init: function() {
+      GRVE.outlineJS.init();
       GRVE.jReject.init();
 
     }
@@ -99,6 +100,40 @@ var GRVE = GRVE || {};
         closeMessage: 'Закрывая это уведомление вы соглашаетесь с тем, что сайт в вашем браузере может отображаться некорректно.',
         closeLink: 'Закрыть это уведомление',
       });
+    }
+  };
+
+  // # Remove outline on focus
+  // ============================================================================= //
+  GRVE.outlineJS = {
+    init: function() {
+      var self =             this;
+
+      this.styleElement =    document.createElement('STYLE'),
+      this.domEvents =       'addEventListener' in document;
+
+      document.getElementsByTagName('HEAD')[0].appendChild(this.styleElement);
+
+      // Using mousedown instead of mouseover, so that previously focused elements don't lose focus ring on mouse move
+      this.eventListner('mousedown', function() {
+        self.setCss(':focus{outline:0 !important;}');
+      });
+
+      this.eventListner('keydown', function() {
+        self.setCss('');
+      });
+    },
+    setCss: function(css_text) {
+      // Handle setting of <style> element contents in IE8
+      !!this.styleElement.styleSheet ? this.styleElement.styleSheet.cssText = css_text : this.styleElement.innerHTML = css_text;
+    },
+    eventListner: function(type, callback) {
+      // Basic cross-browser event handling
+      if (this.domEvents) {
+        document.addEventListener(type, callback);
+      } else {
+        document.attachEvent('on' + type, callback);
+      }
     }
   };
 
