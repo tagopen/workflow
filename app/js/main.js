@@ -137,6 +137,27 @@ var GRVE = GRVE || {};
     }
   };
 
+  // # Check window size in range
+  // ============================================================================= //
+  GRVE.isWindowSize = {
+    init: function(min = undefined, max = undefined) {
+      var media;
+
+      if (min !== undefined && max !== undefined) {
+        media = matchMedia('only screen and (min-width: ' + min + 'px) and (max-width: ' + max + 'px)');
+      } else if (min !== undefined && max === undefined) {
+        media = matchMedia('only screen and (min-width: ' + min + 'px)');
+      } else if (min === undefined && max !== undefined) {
+        media = matchMedia('only screen and (max-width: ' + max + 'px)');
+      } else {
+        return true;
+      }
+
+      return media.matches;
+
+    }
+  };
+
   // # Basic Elements
   // ============================================================================= //
   GRVE.basicElements = {
