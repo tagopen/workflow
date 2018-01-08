@@ -45,6 +45,10 @@ html.html(lang='ru' prefix='og: http://ogp.me/ns#')
     // Microformats Twitter Cards
     each value, key in (page.meta.twitter ? page.meta.twitter : content.site.meta.twitter)
       meta(name='twitter:' + key, content= value)/
+
+    // No cache
+    meta(http-equiv='cache-control', content='no-cache')
+    meta(http-equiv='expires', content='0')
     
     // build:css css/bundle.min.css
     
