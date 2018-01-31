@@ -432,8 +432,7 @@ gulp.task('build', [
   'fonts',
   'css',
   'js',
-  'imagemin',
-  'sitemap'
+  'imagemin'
 ]);
 
 gulp.task('default', ['build', 'watch', 'server']);
