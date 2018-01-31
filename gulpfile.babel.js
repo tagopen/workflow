@@ -289,7 +289,7 @@ gulp.task('critical', function() {
 });
 
 gulp.task('clean', function () {
-  return $.del.sync(pkg.path.dist.base);
+  return $.del.sync([pkg.path.dist.base, pkg.path.build.base]);
 });
 
 gulp.task('clear', function () {
@@ -432,7 +432,8 @@ gulp.task('build', [
   'fonts',
   'css',
   'js',
-  'imagemin'
+  'imagemin',
+  'sitemap'
 ]);
 
 gulp.task('default', ['build', 'watch', 'server']);
