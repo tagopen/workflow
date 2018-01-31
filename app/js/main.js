@@ -51,7 +51,6 @@ var GRVE = GRVE || {};
   GRVE.documentReady = {
     init: function() {
       GRVE.outlineJS.init();
-      GRVE.jReject.init();
 
     }
   };
@@ -166,25 +165,25 @@ var GRVE = GRVE || {};
     },
     carousel: function() {
 
-      var $element = $('.js-carousel');
+      var $element = $('.js-carousel')
 
       $element.each(function(){
 
-        var $carousel = $(this),
-          $nextNav = $carousel.find('.js-carousel-next'),
-          $prevNav = $carousel.find('.js-carousel-prev'),
-          sliderSpeed = ( parseInt( $carousel.attr('data-slider-speed') ) ) ? parseInt( $carousel.attr('data-slider-speed') ) : 3000,
-          pagination = $carousel.attr('data-pagination') != 'no' ? true : false,
-          paginationSpeed = ( parseInt( $carousel.attr('data-pagination-speed') ) ) ? parseInt( $carousel.attr('data-pagination-speed') ) : 400,
-          autoHeight = $carousel.attr('data-slider-autoheight') == 'yes' ? true : false,
-          autoPlay = $carousel.attr('data-slider-autoplay') != 'no' ? true : false,
-          sliderPause = $carousel.attr('data-slider-pause') == 'yes' ? true : false,
-          loop = $carousel.attr('data-slider-loop') != 'no' ? true : false,
-          itemNum = parseInt( $carousel.attr('data-items')),
-          tabletLandscapeNum = $carousel.attr('data-items-tablet-landscape') ? parseInt( $carousel.attr('data-items-tablet-landscape')) : 3,
-          tabletPortraitNum = $carousel.attr('data-items-tablet-portrait') ? parseInt( $carousel.attr('data-items-tablet-portrait')) : 3,
-          mobileNum = $carousel.attr('data-items-mobile') ? parseInt( $carousel.attr('data-items-mobile')) : 1,
-          gap = $carousel.hasClass('js-with-gap') && !isNaN( $carousel.data('gutter-size') ) ? Math.abs( $carousel.data('gutter-size') ) : 0;
+        var $carousel =     $(this)
+        var $nextNav =      $carousel.find('.js-carousel-next')
+        var $prevNav =      $carousel.find('.js-carousel-prev')
+        var sliderSpeed =   ( parseInt( $carousel.attr('data-slider-speed') ) ) ? parseInt( $carousel.attr('data-slider-speed') ) : 3000
+        var pagination = $carousel.attr('data-pagination') != 'no' ? true : false
+        var paginationSpeed = ( parseInt( $carousel.attr('data-pagination-speed') ) ) ? parseInt( $carousel.attr('data-pagination-speed') ) : 400
+        var autoHeight = $carousel.attr('data-slider-autoheight') == 'yes' ? true : false
+        var autoPlay = $carousel.attr('data-slider-autoplay') != 'no' ? true : false
+        var sliderPause = $carousel.attr('data-slider-pause') == 'yes' ? true : false
+        var loop = $carousel.attr('data-slider-loop') != 'no' ? true : false
+        var itemNum = parseInt( $carousel.attr('data-items'))
+        var tabletLandscapeNum = $carousel.attr('data-items-tablet-landscape') ? parseInt( $carousel.attr('data-items-tablet-landscape')) : 3
+        var tabletPortraitNum = $carousel.attr('data-items-tablet-portrait') ? parseInt( $carousel.attr('data-items-tablet-portrait')) : 3
+        var mobileNum = $carousel.attr('data-items-mobile') ? parseInt( $carousel.attr('data-items-mobile')) : 1
+        var gap = $carousel.hasClass('js-with-gap') && !isNaN( $carousel.data('gutter-size') ) ? Math.abs( $carousel.data('gutter-size') ) : 0
 
         // Carousel Init
         $carousel.owlCarousel({

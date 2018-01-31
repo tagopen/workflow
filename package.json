@@ -1,34 +1,122 @@
 {
-  "name": "start-tempalate",
-  "version": "1.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "workflow",
+  "version": "1.0.0",
+  "description": "Website for tagopen.com",
+  "main": "gulpfile.js",
+  "author": "{%name%}, {%company%} <{%email%}>",
+  "copyright": "tagopen",
+  "license": "UNLICENSED",
+  "private": true,
+  "path": {
+    "coFiles": "**/*.*",
+    "src": {
+      "base": "./app/",
+      "html": "./app/",
+      "js": "./app/js/",
+      "css": "./app/css/",
+      "img": "./app/img/",
+      "sass": "./app/sass/",
+      "pug": "./app/views/",
+      "fonts": "./app/fonts/",
+      "sprite": "./app/sass/utils/",
+      "svgTemplate": "./app/sass/utils/_sprite-svg-template.scss",
+      "htaccess": "./app/.htaccess",
+      "mail": "./app/mail/"
+    },
+    "dist": {
+      "base": "./dist/",
+      "img": "./dist/img/",
+      "css": "./dist/css/",
+      "js": "./dist/js/",
+      "html": "./dist/",
+      "fonts": "./dist/fonts/",
+      "htaccess": "./dist/",
+      "mail": "./dist/mail/"
+    },
+    "watch": {
+      "html": "./app/*.html",
+      "js": "./app/js/**/*.js",
+      "sass": "./app/sass/**/*.+(scss|sass)",
+      "css": "./app/css/**/*.css",
+      "template": "./app/views/**/*",
+      "pug": "./app/views/**/[^_]*.pug",
+      "img": "./app/img/**/*.{png,jpg,jpeg,gif,svg}",
+      "spritePng": "./app/img/icons/png/**/*.png",
+      "spriteSvg": "./app/img/icons/svg/**/*.svg",
+      "fonts": "./app/fonts/**/*.{woff,woff2}",
+      "fontawesome": "./app/fonts/font-awesome/**/*",
+      "mail": "./app/mail/**/*",
+      "htaccess": "./app/.htaccess"
+    },
+    "build": {
+      "base": "./build/",
+      "css": "./build/css/",
+      "fontello": "./build/fonts/fontello/",
+      "fonts": "./build/fonts/",
+      "js": "./build/js/",
+      "html": "./build/html/",
+      "img": "./build/img/"
+    },
+    "favicon": {
+      "src": "./app/img/logo/favicon.*",
+      "dest": "./dist/img/logo/"
+    },
+    "sass": []
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/tagopen/workflow.git"
+  "vars": {
+    "siteCssName": "site.combined.min.css",
+    "scssName": "style.scss",
+    "cssName": "style.css",
+    "jsName": "main.js"
   },
-  "author": "Security2431",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tagopen/workflow/issues"
+  "globs": {
+    "babelJs": [
+      "app/js/main.js"
+    ],
+    "distJs": [
+      "./node_modules/jquery/dist/jquery.min.js",
+      "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+      "./node_modules/wowjs/dist/wow.min.js",
+      "./node_modules/slick-carousel/slick/slick.min.js",
+      "./build/js/*.js"
+    ]
   },
   "homepage": "https://github.com/tagopen/workflow#readme",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "bootstrap-validator": "^0.11.9",
+    "fancybox": "^3.0.0",
+    "fg-loadcss": "^2.0.1",
+    "font-awesome": "^4.7.0",
+    "fontfaceobserver": "^2.0.13",
+    "jquery": "^3.2.1",
+    "jquery.cookie": "^1.4.1",
+    "lazysizes": "^4.0.1",
+    "loadjs": "^3.5.2",
+    "onepage-scroll": "^1.3.0",
+    "popper.js": "^1.12.6",
+    "slick-carousel": "^1.8.1",
+    "tiny-cookie": "^2.1.1",
+    "wowjs": "^1.1.3"
+  },
   "devDependencies": {
-    "autoprefixer": "^7.1.2",
     "babel-core": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.24.1",
     "bemto.pug": "^2.1.0",
     "browser-sync": "^2.18.8",
     "critical": "^0.8.4",
     "del": "^2.2.2",
+    "fancy-log": "^1.3.2",
+    "git-config": "0.0.7",
+    "git-rev-sync": "^1.9.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^7.0.1",
     "gulp-bower": "0.0.13",
     "gulp-cache": "^0.4.6",
+    "gulp-cached": "^1.1.1",
     "gulp-cheerio": "^0.6.2",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.0.0",
@@ -42,8 +130,10 @@
     "gulp-inject-string": "^1.1.0",
     "gulp-javascript-obfuscator": "^1.1.2",
     "gulp-load-plugins": "^1.5.0",
+    "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.1.0",
     "gulp-plumber-notifier": "0.0.3",
+    "gulp-print": "^2.0.1",
     "gulp-pug": "^3.3.0",
     "gulp-pxtorem": "^3.0.0",
     "gulp-rcs": "^1.0.1",
@@ -51,8 +141,11 @@
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^3.1.0",
     "gulp-selectors": "^0.1.9",
+    "gulp-size": "^3.0.0",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-svg-sprite": "^1.3.7",
     "gulp-svgmin": "^1.2.3",
+    "gulp-tinypng-nokey": "^1.1.0",
     "gulp-uglifyjs": "^0.6.2",
     "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.8",
@@ -61,16 +154,15 @@
     "imagemin-pngquant": "^5.0.0",
     "vinyl-ftp": "^0.6.0"
   },
-  "dependencies": {
-    "bootstrap": "4.0.0-beta.2",
-    "bootstrap-validator": "^0.11.9",
-    "fancybox": "^3.0.0",
-    "font-awesome": "^4.7.0",
-    "jquery": "^3.2.1",
-    "jquery.cookie": "^1.4.1",
-    "onepage-scroll": "^1.3.0",
-    "popper.js": "^1.12.6",
-    "slick-carousel": "^1.8.1",
-    "wowjs": "^1.1.3"
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tagopen/workflow.git"
+  },
+  "bugs": {
+    "email": "Artem2431@gmail.com"
   }
 }

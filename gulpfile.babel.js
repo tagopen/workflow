@@ -1,122 +1,163 @@
 'use strict';
 
-import gulp from 'gulp';
-import browserSync from 'browser-sync';
-import del from 'del';
-import pngquant from 'imagemin-pngquant';
-import critical from 'critical';
-import ftp from 'vinyl-ftp';
-import gulpLoadPlugins from 'gulp-load-plugins';
+// package vars
+const pkg = require("./package.json");
 
-const $ = gulpLoadPlugins({
-  scope: 'devDependencies',
-  lazy: 'false'
+// gulp
+import gulp             from 'gulp';
+
+// load all plugins in "devDependencies" into the variable $
+const $ = require('gulp-load-plugins')({
+  DEBUG: false,
+  scope: ['devDependencies'],
+  pattern: ['*'],
+  lazy: true,
+  rename: { 'vinyl-buffer'        : 'buffer',
+            'vinyl-source-stream' : 'soufrce' }
 });
 
-const dirs = {
-  src: './app',
-  dest: './dist'
+const onError = (err) => {
+  console.log(err);
 };
 
-const path = {
-  build: {
-    html: dirs.dest + '/',
-    js: dirs.dest + '/js/',
-    css: dirs.dest + '/css/',
-    img: dirs.dest + '/img/',
-    fonts: dirs.dest + '/fonts/',
-    mail: dirs.dest + '/mail/',
-    critical: dirs.dest + 'dist/css/bundle.min.css'
-  },
-  src: {
-    html: dirs.src + '/',
-    js: dirs.src + '/js/',
-    css: dirs.src + '/css/',
-    img: dirs.src + '/img/',
-    sass: dirs.src + '/sass/',
-    pug: dirs.src + '/views/',
-    fonts: dirs.src + '/fonts/',
-    sprite: dirs.src + '/sass/utils/',
-    svgTemplate: dirs.src + '/sass/utils/_sprite-svg-template.scss',
-  },
-  watch: {
-    html: dirs.src + '/*.html',
-    js: dirs.src + '/js/**/*.js',
-    sass: dirs.src + '/sass/**/*.+(scss|sass)',
-    template: dirs.src + '/views/**/*',
-    pug: dirs.src + '/views/**/[^_]*.pug',
-    img: dirs.src + '/img/**/*.*',
-    spritePng: dirs.src + '/img/icons/png/**/*.png',
-    spriteSvg: dirs.src + '/img/icons/svg/**/*.svg',
-    fonts: [dirs.src + '/fonts/**/*.{woff,woff2}', '!' + dirs.src + '/fonts/**/font-awesome.*'],
-    mail: dirs.src + '/mail/**/*'
-  },
-  clean: dirs.dest,
-  ftp: dirs.dest + '**/*',
-  outputDir: dirs.src
-};
+// .gitconfig vars
+const gitconfig = $.gitConfig.sync();
 
-gulp.task('sass', () => {
-  return gulp.src([path.watch.sass])
-    .pipe($.plumber())
+// uglified & compressed when type '--producton' behind gulp init command
+const prod    = !!$.util.env.production;
+console.log('production: ' + $.util.env.production);
+
+// sass - build the sass to the build folder, including the required paths, and writing out a sourcemap
+gulp.task("sass", () => {
+  $.fancyLog("-> Building sass");
+  return gulp.src([pkg.path.watch.sass])
+    .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
+    .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe($.sass({
-      css: path.src.css,
-      sass: path.src.sass,
-      image: path.src.img,
+      css: pkg.path.src.css,
+      sass: pkg.path.src.sass,
+      image: pkg.path.src.img,
       outputStyle: 'expanded'
-    }))
-    .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {
-      cascade: true
-    }))
-    .pipe(gulp.dest(path.src.css))
-    .pipe(browserSync.stream());
+    })
+    .on("error", $.sass.logError))
+    .pipe($.cached("sass_compile"))
+    .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
+    .pipe($.sourcemaps.write("./"))
+    .pipe(gulp.dest(pkg.path.build.css))
+    .pipe($.browserSync.stream());
 });
 
-gulp.task('scripts', () => {
-  return gulp.src([
-      'node_modules/popper.js/dist/umd/popper.js',
-      'node_modules/bootstrap/dist/js/bootstrap.js',
-      'node_modules/jquery/dist/jquery.js',
-      'node_modules/bootstrap-validator/dist/validator.js',
-      'node_modules/wowjs/dist/wow.js',
-      'node_modules/slick-carousel/slick/slick.js',
-      //'node_modules/onepage-scroll/jquery.onepage-scroll.js',
-      //'node_modules/jquery.cookie/jquery.cookie.js',
-      //'node_modules/matchHeight/dist/jquery.matchHeight.js',
-      //'node_modules/bootstrap-slider/dist/bootstrap-slider.js',
-      //'node_modules/slick-carousel/slick/slick.js',
-      //'node_modules/select2/dist/js/select2.js',
-      //'node_modules/jquery-tags-input/src/jquery.tagsinput.js',
-      //'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-      //'node_modules/bootstrap-datepicker/dist/locales/*'
-    ])
-    .pipe($.plumber())
+gulp.task("css", ["sass"], () => {
+  const cssnanoConfig = {
+    discardComments: true,
+    discardEmpty: true,
+    discardUnused: { fontFace: false },
+    minifyFontValues: false,
+    zindex: false
+  };
+
+  $.fancyLog("-> Building css");
+  return gulp.src([pkg.path.watch.css, pkg.path.build.css + "*.css"])
+    .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
-    .pipe(gulp.dest(path.src.js));
+    .pipe($.newer({dest: pkg.path.dist.css}))
+    .pipe($.cssnano(cssnanoConfig))
+    .pipe(gulp.dest(pkg.path.dist.css))
+    .pipe(prod ? $.rename({suffix: '.min', prefix : ''}) : $.util.noop())
+    .pipe(prod ? $.header(banner, {pkg: pkg}) : $.util.noop())
+    .pipe(prod ? $.size({gzip: true, showFiles: true}) : $.util.noop())
+    .pipe(prod ? gulp.dest(pkg.path.dist.css) : $.util.noop())
+    .pipe($.browserSync.stream());
 });
+
+// babel js task - transpile our Javascript into the build directory
+gulp.task("js-babel", () => {
+  $.fancyLog("-> Transpiling Javascript via Babel...");
+  return gulp.src(pkg.globs.babelJs)
+    .pipe($.plumber({errorHandler: onError}))
+    .pipe($.plumberNotifier())
+    .pipe($.newer({dest: pkg.path.watch.js}))
+    .pipe($.babel())
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(pkg.path.dist.js));
+});
+
+// js task - minimize any distribution Javascript into the public js folder, and add our banner to it
+gulp.task("js", ["js-babel"], () => {
+  $.fancyLog("-> Building js");
+  return gulp.src(pkg.globs.distJs)
+    .pipe($.plumber({errorHandler: onError}))
+    .pipe($.plumberNotifier())
+    .pipe($.if(["*.js", "!*.min.js"],
+      $.newer({dest: pkg.path.dist.js, ext: ".min.js"}),
+      $.newer({dest: pkg.path.dist.js})
+    ))
+    .pipe($.if(["*.js", "!*.min.js"],
+      $.uglifyjs()
+    ))
+    .pipe($.concat({path: 'plugins.min.js', cwd: ''}) )
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(pkg.path.dist.js))
+    .pipe(prod ? $.uglifyjs() : $.util.noop())
+    .pipe(prod ? $.rename({suffix: '.min', prefix : ''}) : $.util.noop())
+    .pipe(prod ? $.header(banner, {pkg: pkg}) : $.util.noop())
+    .pipe(prod ? $.size({gzip: true, showFiles: true}) : $.util.noop())
+    .pipe(prod ? gulp.dest(pkg.path.dist.js) : $.util.noop())
+    .pipe($.browserSync.stream());
+});
+
 
 gulp.task('pug', () => {
+  const options = {
+    collapseWhitespace:               true, 
+    collapseInlineTagWhitespace:      true,
+    removeAttributeQuotes:            true,
+    conservativeCollapse:             true,
+    processConditionalComments:       true, 
+    removeComments:                   true,
+    removeEmptyAttributes:            true,
+    sortAttributes:                   true,
+    sortClassName:                    true,
+    removeStyleLinkTypeAttributes:    true,
+    removeScriptTypeAttributes:       true,
+    minifyJS:                         true,
+    minifyCSS:                        true
+  }
+
+  const useminOptions = {
+    js: {
+        suffix: '.min',
+        enable: true
+    },
+    css: {
+        suffix: '.min',
+        enable: true
+    }
+  }
 
   const htmlVersionOptions = {
     paramName: 'v',
     paramType: 'timestamp',
   }
 
-  return gulp.src(path.watch.pug)
-    .pipe($.plumber())
-    .pipe($.plumberNotifier())
-    .pipe($.data(function(file) {
-      return {
-        relativePath: file.history[0].replace(file.base, '').split(".")[0]
-      }
-    }))
-    .pipe($.pug({
-      basedir: path.src.pug,
-      pretty: true
-    }))
-    .pipe($.htmlVersion(htmlVersionOptions))
-    .pipe(gulp.dest(path.src.html));
+  $.fancyLog("-> Building pug");
+  return gulp.src(pkg.path.watch.pug)
+  .pipe($.plumber({errorHandler: onError}))
+  .pipe($.plumberNotifier())
+  .pipe($.data(function (file) {
+    return {
+      relativePath: file.history[0].replace(file.base, '').split(".")[0]
+    }
+  }))
+  .pipe($.pug({
+    basedir:     pkg.path.src.pug,
+    pretty:      true
+  }))
+  .pipe($.htmlVersion(htmlVersionOptions))
+  .pipe(prod ? $.useminHtml(useminOptions) : $.util.noop())
+  .pipe(prod ? $.htmlMinifier(options) : $.util.noop())
+  .pipe(gulp.dest(pkg.path.dist.html));
 });
 
 // create a task that ensures the `js` task is complete before
@@ -126,45 +167,43 @@ gulp.task('pug:watch', ['pug'], function(done) {
   done();
 });
 
-gulp.task('fonts', () => {
-  return gulp.src(path.watch.fonts)
-    .pipe($.font2css.default())
-    .pipe($.concat({
-      path: 'fonts.css',
-      cwd: ''
-    }))
-    .pipe(gulp.dest(path.src.css))
-    .pipe(browserSync.stream());
+gulp.task('fontawesome', () => {
+ return gulp.src([pkg.path.watch.fontawesome])
+   .pipe(gulp.dest(pkg.path.dist.fonts));
 });
 
-gulp.task('bower', () => {
-  return $.bower();
+gulp.task('fonts', ['fontawesome'], () => {
+ return gulp.src([pkg.path.watch.fonts])
+   .pipe($.font2css.default())
+   .pipe($.concat({path: 'fonts.css', cwd: ''}))
+   .pipe(gulp.dest(pkg.path.dist.css))
+   .pipe($.browserSync.stream());
 });
 
 gulp.task('sprite', function() {
-  gulp.src(path.watch.spritePng)
-    .pipe($.plumber())
+  gulp.src(pkg.path.watch.spritePng)
+    .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
     .pipe($.spritesmith({
       imgName: 'sprite.png',
       //retinaSrcFilter: ['app/img/icons/*@2x.png'],
       //retinaImgName: 'sprite@2x.png',
-      cssName: '_sprite-png.sass',
+      cssName: '_sprite.sass',
       cssFormat: 'sass',
       padding: 10
     }))
-    .pipe($.if('*.png',
-      gulp.dest(path.src.img)
+    .pipe($.if('*.png', 
+      gulp.dest(pkg.path.src.img)
     ))
-    .pipe($.if('*.css',
-      $.replace(/^\.icon-/gm, '.ic--'),
-      gulp.dest(path.src.sprite)
+    .pipe($.if('*.css', 
+      $.replace(/^\.icon-/gm, '.ic--'), 
+      gulp.dest(pkg.path.src.sprite)
     ));
 });
 
-gulp.task('svg', function() {
-  return gulp.src(path.watch.spriteSvg)
-    .pipe($.plumber())
+gulp.task('svg', function () {
+ return gulp.src(pkg.path.watch.spriteSvg)
+    .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
     .pipe($.svgmin({
       js2svg: {
@@ -172,54 +211,52 @@ gulp.task('svg', function() {
       }
     }))
     .pipe($.cheerio({
-      run: function($) {
+      run: function ($) {
         $('[fill]').removeAttr('fill');
         $('[stroke]').removeAttr('stroke');
         $('[style]').removeAttr('style');
       },
-      parserOptions: {
-        xmlMode: true
-      }
+      parserOptions: {xmlMode: true}
     }))
     .pipe($.replace('&gt;', '>'))
     // build svg sprite
-    .pipe($.svgSprite({
-      shape: {
-        spacing: {
-          padding: 0,
-        },
-        dimension: { // Set maximum dimensions
-          maxWidth: 32,
-          maxHeight: 32,
-        },
+   .pipe($.svgSprite({
+    shape: {
+      spacing: {
+        padding: 0,
       },
-      mode: {
-        view: false,
-        symbol: {
-          dest: "./",
-          layout: "packed",
-          sprite: "sprite.svg",
-          bust: false,
-          render: {
-            scss: {
-              dest: "../sass/utils/_sprite-svg.scss",
-              template: path.src.svgTemplate
-            }
+      dimension   : {     // Set maximum dimensions
+        maxWidth  : 32,
+        maxHeight : 32,
+      },
+    },
+    mode: {
+      view: false,
+      symbol: {
+        dest: "./",
+        layout: "packed",
+        sprite: "sprite.svg",
+        bust: false,
+        render: {
+          scss: {
+            dest: "../sass/utils/_spriteSvg.scss",
+            template: pkg.path.src.svgTemplate
           }
-        },
-        inline: true,
+        }
       },
-      variables: {
-        mapname: "icons"
-      }
-    }))
-    .pipe(gulp.dest(path.src.img));
+      inline: true,
+    },
+    variables: {
+      mapname: "icons"
+    }
+  }))
+   .pipe(gulp.dest(pkg.path.dist.img));
 });
 
 gulp.task('server', function() {
-  browserSync({
+  $.browserSync({
     server: {
-      baseDir: dirs.src,
+      baseDir: pkg.path.dist.base,
       reloadDelay: 2000,
       browser: "google chrome"
     },
@@ -230,7 +267,7 @@ gulp.task('server', function() {
 // Generate & Inline Critical-path CSS
 gulp.task('critical', function() {
   return gulp.src(path.build.html)
-    .pipe(critical.stream({
+    .pipe($.critical.stream({
       base: 'dist/',
       inline: true,
       dimensions: [{
@@ -251,47 +288,52 @@ gulp.task('critical', function() {
     .pipe(gulp.dest(dirs.dest));
 });
 
-gulp.task('clean', function() {
-  return del.sync(path.clean);
+gulp.task('clean', function () {
+  return $.del.sync(pkg.path.dist.base);
 });
 
-gulp.task('clear', function() {
+gulp.task('clear', function () {
   return $.cache.clearAll();
 });
 
-gulp.task('img', function() {
-  return gulp.src(path.watch.img)
+gulp.task('htaccess:build', () => {
+  gulp.src(pkg.path.src.htaccess)
+    .pipe(gulp.dest(pkg.path.dist.htaccess))
+});
+
+gulp.task('mail:build', () => {
+  gulp.src(pkg.path.watch.mail)
+    .pipe(gulp.dest(pkg.path.dist.mail))
+});
+
+// imagemin task
+gulp.task("imagemin", () => {
+  return gulp.src([pkg.path.watch.img])
     .pipe($.plumber())
     .pipe($.plumberNotifier())
-    .pipe($.cache($.imagemin({
-      interlaced: true,
-      progressive: true,
-      svgoPlugins: [{
-        removeViewBox: false
-      }],
-      use: [pngquant()]
-    })))
-    .pipe(gulp.dest(path.build.img));
-})
+    .pipe($.newer({dest: pkg.path.src.img}))
+    .pipe($.tinypngNokey({
+    }))
+    .pipe(gulp.dest(pkg.path.dist.img));
+});
 
 gulp.task('ftp', () => {
-  const options = require('./settings.js');
 
-  let conn = ftp.create({
-    host: options.host,
-    user: options.user,
-    password: options.password,
-    parallel: 3,
-    log: $.util.log
+  const conn = $.vinylFtp.create({
+    host:       gitconfig.ftp.host,
+    user:       gitconfig.ftp.login,
+    password:   gitconfig.ftp.password,
+    secure:     false,
+    parallel:   3,
+    log:        $.util.log
   });
 
-  return gulp.src([path.ftp], {
-      base: dirs.dest,
-      buffer: false
-    })
-    //.pipe(conn.clean(options.uploadPath)) // remove files
-    .pipe(conn.newer(options.uploadPath)) // only upload newer files 
-    .pipe(conn.dest(options.uploadPath));
+  const dest = gitconfig.ftp.path + pkg.name;
+
+  return gulp.src( [pkg.path.dist.base + pkg.path.coFiles], { base: pkg.path.dist.base, buffer: false } )
+   // .pipe(conn.clean(dest)) // remove files
+    .pipe(conn.newer(dest)) // only upload newer files 
+    .pipe(conn.dest(dest));
 });
 
 gulp.task('test', () => {
@@ -301,29 +343,32 @@ gulp.task('test', () => {
 // watch
 gulp.task('watch', () => {
 
-  $.watch([path.watch.spritePng], function(event, cb) {
+  $.watch([pkg.path.watch.spritePng], function(event, cb) {
     gulp.start('sprite');
   });
 
-  $.watch([path.watch.spriteSvg], function(event, cb) {
+  $.watch([pkg.path.watch.spriteSvg], function(event, cb) {
     gulp.start('svg');
   });
-
-  $.watch([path.watch.sass], function(event, cb) {
-    gulp.start('sass');
+  
+  $.watch([pkg.path.watch.sass], function(event, cb) {
+    gulp.start('css');
   });
 
-  $.watch([path.watch.template], function(event, cb) {
+  $.watch([pkg.path.watch.js], function(event, cb) {
+    gulp.start('js');
+  });
+
+  $.watch([pkg.path.watch.img], function(event, cb) {
+    gulp.start('imagemin');
+  });
+
+  $.watch([pkg.path.watch.template], function(event, cb) {
     gulp.start('pug:watch');
   });
 
-  $.watch(path.watch.fonts, function(event, cb) {
+  $.watch([pkg.path.watch.fonts], function(event, cb) {
     gulp.start('fonts');
-  });
-
-  //билдим js в случае изменения
-  $.watch([path.watch.js], function(event, cb) {
-    browserSync.reload;
   });
 
 });
@@ -375,13 +420,14 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
 });
 
 gulp.task('build', [
+  'clean',
   'sprite',
   'svg',
-  'scripts',
   'pug',
-  'sass',
   'fonts',
-  //'img',
+  'css',
+  'js',
+  'imagemin'
 ]);
 
 gulp.task('default', ['build', 'watch', 'server']);
