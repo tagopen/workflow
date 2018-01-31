@@ -301,6 +301,11 @@ gulp.task('htaccess:build', () => {
     .pipe(gulp.dest(pkg.path.dist.htaccess))
 });
 
+gulp.task('sitemap', () => {
+  gulp.src(pkg.path.src.sitemap)
+    .pipe(gulp.dest(pkg.path.dist))
+});
+
 gulp.task('mail:build', () => {
   gulp.src(pkg.path.watch.mail)
     .pipe(gulp.dest(pkg.path.dist.mail))

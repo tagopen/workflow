@@ -21,7 +21,8 @@
       "sprite": "./app/sass/utils/",
       "svgTemplate": "./app/sass/utils/_sprite-svg-template.scss",
       "htaccess": "./app/.htaccess",
-      "mail": "./app/mail/"
+      "mail": "./app/mail/",
+      "sitemap": "./app/sitemap.php"
     },
     "dist": {
       "base": "./dist/",
