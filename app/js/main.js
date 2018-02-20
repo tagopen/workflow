@@ -1,31 +1,35 @@
 
-(function($,sr){
+(($, sr) => {
 
   // debouncing function from John Hann
   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
-  var debounce = function (func, threshold, execAsap) {
-    var timeout;
+  const debounce = (func, threshold, execAsap) => {
+    let timeout
 
     return function debounced () {
-      var obj = this, args = arguments;
+      const obj =    this
+      const args =   arguments
       function delayed () {
-        if (!execAsap)
-          func.apply(obj, args);
-        timeout = null;
-      };
+        if (!execAsap) {
+          func.apply(obj, args)
+        }
 
-      if (timeout)
-        clearTimeout(timeout);
-      else if (execAsap)
-        func.apply(obj, args);
+        timeout = null
+      }
 
-      timeout = setTimeout(delayed, threshold || 100);
-    };
+      if (timeout) {
+        clearTimeout(timeout)
+      } else if (execAsap) {
+        func.apply(obj, args)
+      }
+
+      timeout = setTimeout(delayed, threshold || 100)
+    }
   }
   // smartresize
-  jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+  jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr) }
 
-})(jQuery,'smartresize');
+})(jQuery,'smartresize')
 
 // ================================================================================== //
 
@@ -35,159 +39,290 @@
   // # Document on Load
 
   // # Old browser notification
-  // # 
+  // # Anchor scroll
+  // # Phone masked input
+  // # Ajax form send
+  // # Basic Elements
 
 // ================================================================================== //
 
 
-var GRVE = GRVE || {};
+const GRVE = GRVE || {};
 
-(function($){
 
-  "use strict";
-
+(($ => {
   // # Document on Ready
   // ============================================================================= //
   GRVE.documentReady = {
-    init: function() {
-      GRVE.outlineJS.init();
-
+    init() {
+      GRVE.outlineJS.init()
+      GRVE.anchorScroll.init('a[data-scroll][href*="#"]:not([href="#"])')
+      GRVE.basicElements.init()
+      GRVE.phoneMask.init()
+      GRVE.ajax.init()
     }
-  };
+  }
 
   // # Document on Resize
   // ============================================================================= //
   GRVE.documentResize = {
-    init: function() {
+    init() {
 
     }
-  };
+  }
 
   // # Document on Scroll
   // ============================================================================= //
   GRVE.documentScroll = {
-    init: function() {
+    init() {
 
     }
-  };
+  }
 
   // # Document on Load
   // ============================================================================= //
   GRVE.documentLoad = {
-    init: function() {
+    init() {
 
     }
-  };
-
-  // # Old browser notification
-  // ============================================================================= //
-  GRVE.jReject = {
-    init : function() {
-      $.reject({
-        reject: {
-          msie: 10
-        },
-        imagePath: 'img/icons/jReject/',
-        display: [ 'chrome','firefox','safari','opera' ],
-        closeCookie: true,
-        cookieSettings: {
-          expires: 60*60*24*365
-        },
-        header: 'Ваш браузер устарел!',
-        paragraph1: 'Вы пользуетесь устаревшим браузером, который не поддерживает современные веб-стандарты и представляет угрозу вашей безопасности.',
-        paragraph2: 'Пожалуйста, установите современный браузер:',
-        closeMessage: 'Закрывая это уведомление вы соглашаетесь с тем, что сайт в вашем браузере может отображаться некорректно.',
-        closeLink: 'Закрыть это уведомление',
-      });
-    }
-  };
+  }
 
   // # Remove outline on focus
   // ============================================================================= //
   GRVE.outlineJS = {
-    init: function() {
-      var self =             this;
+    init() {
+      const self =           this
 
       this.styleElement =    document.createElement('STYLE'),
-      this.domEvents =       'addEventListener' in document;
+      this.domEvents =       'addEventListener' in document
 
-      document.getElementsByTagName('HEAD')[0].appendChild(this.styleElement);
+      document.getElementsByTagName('HEAD')[0].appendChild(this.styleElement)
 
       // Using mousedown instead of mouseover, so that previously focused elements don't lose focus ring on mouse move
-      this.eventListner('mousedown', function() {
-        self.setCss(':focus{outline:0 !important;}');
-      });
+      this.eventListner('mousedown', () => {
+        self.setCss(':focus{outline:0 !important}')
+      })
 
-      this.eventListner('keydown', function() {
-        self.setCss('');
-      });
+      this.eventListner('keydown', () => {
+        self.setCss('')
+      })
     },
-    setCss: function(css_text) {
+    setCss(css_text) {
       // Handle setting of <style> element contents in IE8
-      !!this.styleElement.styleSheet ? this.styleElement.styleSheet.cssText = css_text : this.styleElement.innerHTML = css_text;
+      !!this.styleElement.styleSheet ? this.styleElement.styleSheet.cssText = css_text : this.styleElement.innerHTML = css_text
     },
-    eventListner: function(type, callback) {
+    eventListner(type, callback) {
       // Basic cross-browser event handling
       if (this.domEvents) {
-        document.addEventListener(type, callback);
+        document.addEventListener(type, callback)
       } else {
-        document.attachEvent('on' + type, callback);
+        document.attachEvent(`on${type}`, callback)
       }
     }
-  };
+  }
+
 
   // # Check window size in range
   // ============================================================================= //
   GRVE.isWindowSize = {
-    init: function(min = undefined, max = undefined) {
-      var media;
+    init(min = undefined, max = undefined) {
+      let media
 
       if (min !== undefined && max !== undefined) {
-        media = matchMedia('only screen and (min-width: ' + min + 'px) and (max-width: ' + max + 'px)');
+        media = matchMedia(`only screen and (min-width: ${min}px) and (max-width: ${max}px)`)
       } else if (min !== undefined && max === undefined) {
-        media = matchMedia('only screen and (min-width: ' + min + 'px)');
+        media = matchMedia(`only screen and (min-width: ${min}px)`)
       } else if (min === undefined && max !== undefined) {
-        media = matchMedia('only screen and (max-width: ' + max + 'px)');
+        media = matchMedia(`only screen and (max-width: ${max}px)`)
       } else {
-        return true;
+        return true
       }
 
-      return media.matches;
+      return media.matches
 
     }
-  };
+  }
+
+  // # Anchor scrolling effect
+  // ============================================================================= //
+  GRVE.anchorScroll = {
+    init(selector) {
+      const $selector = $(selector)
+
+      if (!$selector.length) return
+
+      $selector.on('click', () => {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+          let target = $(this.hash)
+          target = target.length ? target : $(`[name=${this.hash.slice(1)}]`)
+
+          if (target.length) {
+            $('html, body').animate({
+              scrollTop: (target.offset().top + 3)
+            }, 1000)
+            return false
+          }
+        }
+      })
+    }
+  }
+
+  // # Phone masked input
+  // ============================================================================= //
+  GRVE.phoneMask = {
+    init() {
+      $('[type="tel"]').mask('+38 (099) 999 99 99')
+    }
+  }
+
+  // # Ajax send Form
+  // ============================================================================= //
+  GRVE.ajax = {
+    init() {
+      const self = this
+      const parsleyOptions = {
+        excluded:                'input[type=button], input[type=submit], input[type=reset], [disabled]',
+        successClass:            'form-group--success',
+        errorClass:              'form-group--error',
+        errorsMessagesDisabled:  true,
+        classHandler(el) {
+          return el.$element.closest(".form-group")
+        }
+      }
+      this.customValidation()
+      const $forms = $('.js-form')
+
+      if (!$forms.length) return false
+      $forms.parsley(parsleyOptions)
+      $forms.on('submit', function(e) {
+        const $form = $(this)
+        $form.parsley().validate()
+
+        if ($form.parsley().isValid()) {
+          self.send( $(this) )
+        }
+
+        e.preventDefault()
+      })
+    },
+    send($form) {
+      const self =        this
+
+      const $submit =     $form.find('[type=submit]')
+      const url =         $form.attr('action')
+      const data =        new FormData($form[0])
+      const formName =    $submit.val()
+      const redirect =    $form.data("redirect")
+
+      this.$result =      $form.find('.result')
+      this.$submit =      $submit
+
+      data.append('form', formName)
+
+      $.ajax({
+        url:              (url !== undefined && url !== "") ? url : '/wp-admin/admin-ajax.php',
+        action:           'site_form',
+        type:             'post',
+        data,
+        dataType:         'json',
+        processData:      false,
+        contentType:      false,
+        cache:            false,
+        beforeSend() {
+          self.progress('hide')
+        },
+        complete() {
+          self.progress('show')
+        },
+        success(data) {
+          if (!data.success) {
+            const error = "Возникли проблемы с сервером. Сообщите нам о ошибке, мы постараемся устранить её в ближайшее время."
+            console.log(error)
+            self.submitFail(error)
+          } else if (data.success) {
+            $('.modal').modal('hide')
+            $('#success').modal('show')
+            if (redirect || data.redirect) {
+              document.location.href = redirect
+            }
+            $form.trigger("reset")
+          }
+        },
+
+        error(XMLHttpRequest, textStatus, errorThrown) {
+          self.submitFail(textStatus || errorThrown)
+        }
+      })
+    },
+    submitFail(msg) {
+      this.alert(msg, "danger")
+      return false
+    },
+    submitDone(msg) {
+      this.alert(msg, "success")
+      return true
+    },
+    alert(msg, status) {
+      const self =   this
+      const $alert = `<div class="alert alert-${status} alert-dismissable fade show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times</span></button>${msg}</div>`
+
+      this.$result.html($alert)
+      if (status === "success") {
+        setTimeout(() => {
+          self.$result.slideUp(() => {
+            self.$result.html('')
+          })
+        }, 3000)
+      }
+    },
+    progress(status) {
+      if (status === 'hide') {
+        this.$submit.prop('disabled', true).button('loading')
+      } else if (status === 'show') {
+        this.$submit.prop('disabled', false).button('reset')
+      }
+    },
+    customValidation() {
+      window.Parsley.addValidator('robots', {
+        validateString(value) {
+          return (value === '') ? true : false
+        }
+      })
+    },
+  }
+
 
   // # Basic Elements
   // ============================================================================= //
   GRVE.basicElements = {
-    init: function() {
-      this.carousel();
-    },
-    carousel: function() {
+    init() {
 
-      var $element = $('.js-carousel')
+    },
+    carousel() {
+
+      const $element = $('.js-carousel')
 
       $element.each(function(){
 
-        var $carousel =     $(this)
-        var $nextNav =      $carousel.find('.js-carousel-next')
-        var $prevNav =      $carousel.find('.js-carousel-prev')
-        var sliderSpeed =   ( parseInt( $carousel.attr('data-slider-speed') ) ) ? parseInt( $carousel.attr('data-slider-speed') ) : 3000
-        var pagination = $carousel.attr('data-pagination') != 'no' ? true : false
-        var paginationSpeed = ( parseInt( $carousel.attr('data-pagination-speed') ) ) ? parseInt( $carousel.attr('data-pagination-speed') ) : 400
-        var autoHeight = $carousel.attr('data-slider-autoheight') == 'yes' ? true : false
-        var autoPlay = $carousel.attr('data-slider-autoplay') != 'no' ? true : false
-        var sliderPause = $carousel.attr('data-slider-pause') == 'yes' ? true : false
-        var loop = $carousel.attr('data-slider-loop') != 'no' ? true : false
-        var itemNum = parseInt( $carousel.attr('data-items'))
-        var tabletLandscapeNum = $carousel.attr('data-items-tablet-landscape') ? parseInt( $carousel.attr('data-items-tablet-landscape')) : 3
-        var tabletPortraitNum = $carousel.attr('data-items-tablet-portrait') ? parseInt( $carousel.attr('data-items-tablet-portrait')) : 3
-        var mobileNum = $carousel.attr('data-items-mobile') ? parseInt( $carousel.attr('data-items-mobile')) : 1
-        var gap = $carousel.hasClass('js-with-gap') && !isNaN( $carousel.data('gutter-size') ) ? Math.abs( $carousel.data('gutter-size') ) : 0
+        const $carousel =     $(this)
+        const $nextNav =      $carousel.find('.js-carousel-next')
+        const $prevNav =      $carousel.find('.js-carousel-prev')
+        const sliderSpeed =   ( parseInt( $carousel.attr('data-slider-speed') ) ) ? parseInt( $carousel.attr('data-slider-speed') ) : 3000
+        const pagination = $carousel.attr('data-pagination') != 'no' ? true : false
+        const paginationSpeed = ( parseInt( $carousel.attr('data-pagination-speed') ) ) ? parseInt( $carousel.attr('data-pagination-speed') ) : 400
+        const autoHeight = $carousel.attr('data-slider-autoheight') == 'yes' ? true : false
+        const autoPlay = $carousel.attr('data-slider-autoplay') != 'no' ? true : false
+        const sliderPause = $carousel.attr('data-slider-pause') == 'yes' ? true : false
+        const loop = $carousel.attr('data-slider-loop') != 'no' ? true : false
+        const itemNum = parseInt( $carousel.attr('data-items'))
+        const tabletLandscapeNum = $carousel.attr('data-items-tablet-landscape') ? parseInt( $carousel.attr('data-items-tablet-landscape')) : 3
+        const tabletPortraitNum = $carousel.attr('data-items-tablet-portrait') ? parseInt( $carousel.attr('data-items-tablet-portrait')) : 3
+        const mobileNum = $carousel.attr('data-items-mobile') ? parseInt( $carousel.attr('data-items-mobile')) : 1
+        const gap = $carousel.hasClass('js-with-gap') && !isNaN( $carousel.data('gutter-size') ) ? Math.abs( $carousel.data('gutter-size') ) : 0
 
         // Carousel Init
         $carousel.owlCarousel({
-          loop : loop,
+          loop,
           autoplay : autoPlay,
           autoplayTimeout : sliderSpeed,
           autoplayHoverPause : sliderPause,
@@ -208,25 +343,86 @@ var GRVE = GRVE || {};
             }
           },
           margin : gap
-        });
+        })
 
-        $carousel.css('visibility','visible');
+        $carousel.css('visibility','visible')
 
         // Go to the next item
-        $nextNav.click(function() {
-          $carousel.trigger('next.owl.carousel');
+        $nextNav.click(() => {
+          $carousel.trigger('next.owl.carousel')
         })
         // Go to the previous item
-        $prevNav.click(function() {
-          $carousel.trigger('prev.owl.carousel');
+        $prevNav.click(() => {
+          $carousel.trigger('prev.owl.carousel')
         })
-      });
+      })
     },
-  };
+    countdown() {
+      $('[data-countdown]').each(function() {
+        const $this =                $(this)
+        const finalDate =            $this.data('countdown')
+        const delimeter =            (!!$this.data('countdown-delimeter') == true)  ? ':' : null
+        const hoursCount =           $this.data('countdown-hours')
+        const countdownFormat =      $this.data('countdown-format').split('|')
+        let countdownItems =         ''
+        let text =                   ''
 
-  $(document).ready(function(){ GRVE.documentReady.init(); });
-  $(window).smartresize(function(){ GRVE.documentResize.init(); });
-  $(window).on('load', function(){ GRVE.documentLoad.init(); });
-  $(window).on('scroll', function() { GRVE.documentScroll.init(); });
 
-})(jQuery); // End of use strict
+        $.each( countdownFormat, (index, value) => {
+          switch (value) {
+            case 'w':
+              text = "Недель"
+              break
+            case 'D':
+            case 'd':
+            case 'n':
+              text = "Дней"
+              break
+            case 'H':
+              text = "Часов"
+              break
+            case 'M':
+              text = "Минут"
+              break
+            case 'S':
+              text = "Секунд"
+              break
+            default:
+              text = ''
+          }
+         
+          countdownItems += '<div class="timer__item">'
+          countdownItems += `<div class="timer__time">%${value}</div>`
+          countdownItems += `<div class="timer__text">${text}</div>`
+          countdownItems += '</div>'
+
+          if (index === countdownFormat.length - 1) {
+            return
+          }
+
+          if (delimeter) {
+            countdownItems += '<div class="timer__item">'
+            countdownItems += `<div class="timer__time">${delimeter}</div>`
+            countdownItems += '</div>'
+          }
+
+        })
+
+        $this.countdown(finalDate, function(event) {
+          if (hoursCount) {
+            const hours = event.offset.totalDays * 24 + event.offset.hours
+            countdownItems = countdownItems.replace("%H", hours)
+          }
+
+          $(this).html(event.strftime( countdownItems ))
+        })
+      })
+    },
+  }
+
+
+  $(document).ready(() => { GRVE.documentReady.init() })
+  $(window).smartresize(() => { GRVE.documentResize.init() })
+  $(window).on('load', () => { GRVE.documentLoad.init() })
+  $(window).on('scroll', () => { GRVE.documentScroll.init() })
+}))(jQuery)
