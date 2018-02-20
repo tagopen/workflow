@@ -41,7 +41,7 @@
       "css": "./app/css/**/*.css",
       "template": "./app/views/**/*",
       "pug": "./app/views/**/[^_]*.pug",
-      "img": "./app/img/**/*.{png,jpg,jpeg,gif,svg}",
+      "img": "./app/img/**/*.{png,jpg,jpeg,gif}",
       "spritePng": "./app/img/icons/png/**/*.png",
       "spriteSvg": "./app/img/icons/svg/**/*.svg",
       "fonts": "./app/fonts/**/*.{woff,woff2}",
