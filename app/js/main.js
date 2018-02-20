@@ -57,6 +57,7 @@ const GRVE = GRVE || {};
     init() {
       GRVE.outlineJS.init()
       GRVE.anchorScroll.init('a[data-scroll][href*="#"]:not([href="#"])')
+      GRVE.pageSettings.init()
       GRVE.basicElements.init()
       GRVE.phoneMask.init()
       GRVE.ajax.init()
@@ -289,6 +290,18 @@ const GRVE = GRVE || {};
         }
       })
     },
+  }
+
+
+  // # Page Settings
+  // ============================================================================= //
+  GRVE.pageSettings = {
+    init() {
+      this.svgPolifill()
+    },
+    svgPolifill() {
+      svg4everybody()
+    }
   }
 
 
