@@ -165,7 +165,7 @@ gulp.task('pug', () => {
 // create a task that ensures the `js` task is complete before
 // reloading browsers
 gulp.task('pug:watch', ['pug'], function(done) {
-  browserSync.reload();
+  $.browserSync.reload();
   done();
 });
 
