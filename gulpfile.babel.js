@@ -150,10 +150,12 @@ gulp.task('pug', () => {
       relativePath: file.history[0].replace(file.base, '').split(".")[0]
     }
   }))
+  .pipe($.cached('pug'))
   .pipe($.pug({
     basedir:     pkg.path.src.pug,
     pretty:      true
   }))
+  .pipe($.remember('pug'))
   .pipe($.htmlVersion(htmlVersionOptions))
   .pipe(prod ? $.useminHtml(useminOptions) : $.util.noop())
   .pipe(prod ? $.htmlMinifier(options) : $.util.noop())
