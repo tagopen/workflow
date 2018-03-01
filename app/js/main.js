@@ -298,9 +298,28 @@ const GRVE = GRVE || {};
   GRVE.pageSettings = {
     init() {
       this.svgPolifill()
+      this.rangeSlider("[data-range-slider]")
     },
     svgPolifill() {
       svg4everybody()
+    },
+    rangeSlider(target) {
+      const $rangeSlider =  $(target)
+
+      const min =      ( parseInt( $rangeSlider.attr("min")) ) ? parseInt( $rangeSlider.attr("min") ) : 0
+      const max =      ( parseInt( $rangeSlider.attr("max")) ) ? parseInt( $rangeSlider.attr("max") ) : 1
+      const step =     ( parseInt( $rangeSlider.attr("step")) ) ? parseInt( $rangeSlider.attr("step") ) : 1
+      const from =    ( parseInt( $rangeSlider.attr("value")) ) ? parseInt( $rangeSlider.attr("value") ) : 0
+
+      $rangeSlider.ionRangeSlider({
+        type: "single",
+        grid: false,
+        step: step,
+        min: min,
+        max: max,
+        from: from,
+        hide_min_max: true,
+      });
     }
   }
 
