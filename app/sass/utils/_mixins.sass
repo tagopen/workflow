@@ -78,13 +78,26 @@
   word-break: break-word
   hyphens: auto
 
-=col($value, $grid-cols: 24)
+=colf($value, $grid-cols: 24)
   position: relative
   min-height: 1px
   padding-left: $columns-margin
   padding-right: $columns-margin
   float: left
   width: 100% * $value / $grid-cols
+
+=col($value: null, $grid-cols: 24)
+  @if $value == null
+    flex-basis: 0
+    flex-grow: 1
+    max-width: 100%
+  @else if $value == 'auto'
+    flex: 0 0 auto
+    width: auto
+    max-width: none
+  @else
+    flex: 0 0 100% * $value / $grid-cols
+    max-width: 100% * $value / $grid-cols
 
 =offset($value, $grid-cols: 24)
   margin-left: 100% * $value / $grid-cols
