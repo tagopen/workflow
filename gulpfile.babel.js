@@ -83,8 +83,18 @@ gulp.task("js-babel", () => {
     .pipe(gulp.dest(pkg.path.dist.js));
 });
 
+// inline js task - minimize the inline Javascript into _inlinejs in the templates path
+gulp.task("js-inline", () => {
+  $.fancyLog("-> Copying inline js");
+  return gulp.src(pkg.globs.inlineJs)
+    .pipe($.plumber({errorHandler: onError}))
+    .pipe($.plumberNotifier())
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(pkg.path.dist.js))
+});
+
 // js task - minimize any distribution Javascript into the public js folder, and add our banner to it
-gulp.task("js", ["js-babel"], () => {
+gulp.task("js", ["js-babel", "js-inline"], () => {
   $.fancyLog("-> Building js");
   return gulp.src(pkg.globs.distJs)
     .pipe($.plumber({errorHandler: onError}))
@@ -150,12 +160,10 @@ gulp.task('pug', () => {
       relativePath: file.history[0].replace(file.base, '').split(".")[0]
     }
   }))
-  .pipe($.cached('pug'))
   .pipe($.pug({
     basedir:     pkg.path.src.pug,
     pretty:      true
   }))
-  .pipe($.remember('pug'))
   .pipe($.htmlVersion(htmlVersionOptions))
   .pipe(prod ? $.useminHtml(useminOptions) : $.util.noop())
   .pipe(prod ? $.htmlMinifier(options) : $.util.noop())
@@ -214,8 +222,8 @@ gulp.task('svg', function () {
     }))
     .pipe($.cheerio({
       run: function ($) {
-        $('[fill]').removeAttr('fill');
-        $('[stroke]').removeAttr('stroke');
+        //$('[fill]').removeAttr('fill');
+        //$('[stroke]').removeAttr('stroke');
         $('[style]').removeAttr('style');
       },
       parserOptions: {xmlMode: true}
@@ -241,7 +249,7 @@ gulp.task('svg', function () {
         bust: false,
         render: {
           scss: {
-            dest: "../sass/utils/_spriteSvg.scss",
+            //dest: "../app/sass/utils/_spriteSvg.scss",
             template: pkg.path.src.svgTemplate
           }
         }
@@ -314,11 +322,41 @@ gulp.task('mail:build', () => {
 });
 
 // imagemin task
-gulp.task("imagemin", () => {
+
+/*gulp.task('img', function() {
+  return gulp.src(path.watch.img)
+    .pipe($.plumber())
+    .pipe($.plumberNotifier())
+    .pipe($.cache($.imagemin({
+      interlaced: true,
+      progressive: true,
+      svgoPlugins: [{
+        removeViewBox: false
+      }],
+      use: [pngquant()]
+    })))
+    .pipe(gulp.dest(path.build.img));
+})*/
+
+gulp.task("svgmin", () => {
+  return gulp.src([pkg.path.watch.svg])
+    .pipe($.plumber())
+    .pipe($.plumberNotifier())
+    .pipe($.cache($.imagemin({
+        interlaced: true,
+        progressive: true,
+        svgoPlugins: [{
+        removeViewBox: false
+      }],
+    })))
+    .pipe(gulp.dest(pkg.path.dist.img));
+});
+
+gulp.task("imagemin", ["svgmin"], () => {
   return gulp.src([pkg.path.watch.img])
     .pipe($.plumber())
     .pipe($.plumberNotifier())
-    .pipe($.newer({dest: pkg.path.src.img}))
+    .pipe($.newer({dest: pkg.path.dist.img}))
     .pipe($.tinypngNokey({
     }))
     .pipe(gulp.dest(pkg.path.dist.img));
@@ -366,10 +404,9 @@ gulp.task('watch', () => {
     gulp.start('js');
   });
 
-  $.watch([pkg.path.watch.img], function(event, cb) {
+  $.watch([pkg.path.watch.img, pkg.path.watch.svg], function(event, cb) {
     gulp.start('imagemin');
   });
-
   $.watch([pkg.path.watch.template], function(event, cb) {
     gulp.start('pug:watch');
   });
