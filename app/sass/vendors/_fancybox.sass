@@ -1,453 +1,461 @@
-.fancybox-enabled
+body.compensate-for-scrollbar
   overflow: hidden
-  body
-    overflow: visible
-    height: 100%
+
+.fancybox-active
+  height: auto
+
+.fancybox-is-hidden
+  left: -9999px
+  margin: 0
+  position: absolute !important
+  top: -9999px
+  visibility: hidden
 
 .fancybox-container
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  z-index: 99993
   -webkit-backface-visibility: hidden
   backface-visibility: hidden
-  ~ .fancybox-container
-    z-index: 99992
-
-/* Make sure that the first one is on the top
-
-.fancybox-bg
-  position: absolute
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'
+  height: 100%
+  left: 0
+  position: fixed
+  -webkit-tap-highlight-color: transparent
   top: 0
-  right: 0
+  -webkit-transform: translateZ(0)
+  transform: translateZ(0)
+  width: 100%
+  z-index: 99992
+  *
+    box-sizing: border-box
+
+.fancybox-outer, .fancybox-inner, .fancybox-bg, .fancybox-stage
   bottom: 0
   left: 0
-  background: #0f0f11
-  opacity: 0
-  transition-timing-function: cubic-bezier(0.55, 0.06, 0.68, 0.19)
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
+  position: absolute
+  right: 0
+  top: 0
 
-.fancybox-container--ready .fancybox-bg
-  opacity: 0.87
+.fancybox-outer
+  -webkit-overflow-scrolling: touch
+  overflow-y: auto
+
+.fancybox-bg
+  background: #1e1e1e
+  opacity: 0
+  transition-duration: inherit
+  transition-property: opacity
+  transition-timing-function: cubic-bezier(0.47, 0, 0.74, 0.71)
+
+.fancybox-is-open .fancybox-bg
+  opacity: .87
   transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1)
 
-.fancybox-controls
-  position: absolute
-  top: 0
-  left: 0
-  right: 0
-  text-align: center
-  opacity: 0
-  z-index: 99994
-  transition: opacity .2s
-  pointer-events: none
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
+.fancybox-infobar, .fancybox-toolbar, .fancybox-caption, .fancybox-navigation .fancybox-button
   direction: ltr
+  opacity: 0
+  position: absolute
+  transition: opacity .25s, visibility 0s linear .25s
+  visibility: hidden
+  z-index: 99997
 
-.fancybox-show-controls .fancybox-controls
+.fancybox-show-infobar .fancybox-infobar, .fancybox-show-toolbar .fancybox-toolbar, .fancybox-show-caption .fancybox-caption, .fancybox-show-nav .fancybox-navigation .fancybox-button
   opacity: 1
+  transition: opacity .25s, visibility 0s
+  visibility: visible
 
 .fancybox-infobar
-  display: none
-
-.fancybox-show-infobar .fancybox-infobar
-  display: inline-block
-  pointer-events: all
-
-.fancybox-infobar__body
-  display: inline-block
-  width: 70px
-  line-height: 44px
+  color: #ccc
   font-size: 13px
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
-  text-align: center
-  color: #ddd
-  background-color: rgba(30, 30, 30, 0.7)
+  -webkit-font-smoothing: subpixel-antialiased
+  height: 44px
+  left: 0
+  line-height: 44px
+  min-width: 44px
+  mix-blend-mode: difference
+  padding: 0 10px
   pointer-events: none
+  text-align: center
+  top: 0
+  -webkit-touch-callout: none
   -webkit-user-select: none
   -moz-user-select: none
   -ms-user-select: none
   user-select: none
-  -webkit-touch-callout: none
-  -webkit-tap-highlight-color: transparent
-  -webkit-font-smoothing: subpixel-antialiased
 
-.fancybox-buttons
-  position: absolute
-  top: 0
+.fancybox-toolbar
   right: 0
-  display: none
-  pointer-events: all
+  top: 0
 
-.fancybox-show-buttons .fancybox-buttons
-  display: block
-
-.fancybox-slider-wrap
-  overflow: hidden
+.fancybox-stage
   direction: ltr
-  position: absolute
-  top: 0
-  left: 0
-  bottom: 0
-  right: 0
-  padding: 0
-  margin: 0
-  z-index: 99993
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
-  -webkit-tap-highlight-color: transparent
+  overflow: visible
+  -webkit-transform: translate3d(0, 0, 0)
+  z-index: 99994
 
-.fancybox-slider
-  position: absolute
-  top: 0
-  left: 0
-  bottom: 0
-  right: 0
-  padding: 0
-  margin: 0
-  z-index: 99993
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
-  -webkit-tap-highlight-color: transparent
+.fancybox-is-open .fancybox-stage
+  overflow: hidden
 
 .fancybox-slide
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
+  -webkit-backface-visibility: hidden
+  backface-visibility: hidden
+  display: none
   height: 100%
-  margin: 0
-  padding: 0
-  overflow: auto
+  left: 0
   outline: none
-  white-space: normal
-  box-sizing: border-box
-  text-align: center
-  z-index: 99994
+  overflow: auto
   -webkit-overflow-scrolling: touch
+  padding: 44px
+  position: absolute
+  text-align: center
+  top: 0
+  transition-property: opacity, -webkit-transform
+  transition-property: transform, opacity
+  transition-property: transform, opacity, -webkit-transform
+  white-space: normal
+  width: 100%
+  z-index: 99994
   &::before
     content: ''
     display: inline-block
-    vertical-align: middle
     height: 100%
-    width: 0
-  > *
-    display: inline-block
-    position: relative
-    padding: 24px
-    margin: 44px 0 44px
-    border-width: 0
+    margin-right: -.25em
     vertical-align: middle
-    text-align: left
-    background-color: #fff
-    overflow: auto
-    box-sizing: border-box
+    width: 0
+
+.fancybox-is-sliding .fancybox-slide, .fancybox-slide--previous, .fancybox-slide--current
+  display: block
+
+.fancybox-slide--next
+  display: block
+  z-index: 99995
 
 .fancybox-slide--image
-  overflow: hidden
+  overflow: visible
+  padding: 44px 0
   &::before
     display: none
 
+.fancybox-slide--html
+  padding: 6px 6px 0 6px
+
+.fancybox-slide--iframe
+  padding: 44px 44px 0
+
 .fancybox-content
-  display: inline-block
-  position: relative
-  margin: 44px auto
-  padding: 0
-  border: 0
-  width: 80%
-  height: calc(100% - 88px)
-  vertical-align: middle
-  line-height: normal
-  text-align: left
-  white-space: normal
-  outline: none
-  font-size: 16px
-  font-family: Arial, sans-serif
-  box-sizing: border-box
-  -webkit-tap-highlight-color: transparent
-  -webkit-overflow-scrolling: touch
-
-.fancybox-iframe
-  display: block
-  margin: 0
-  padding: 0
-  border: 0
-  width: 100%
-  height: 100%
   background: #fff
+  display: inline-block
+  margin: 0 0 6px 0
+  max-width: 100%
+  overflow: auto
+  padding: 0
+  padding: 24px
+  position: relative
+  text-align: left
+  vertical-align: middle
 
-.fancybox-slide--video
-  .fancybox-content, .fancybox-iframe
-    background: transparent
-
-.fancybox-placeholder
-  position: absolute
-  top: 0
+.fancybox-slide--image .fancybox-content
+  -webkit-animation-timing-function: cubic-bezier(0.5, 0, 0.14, 1)
+  animation-timing-function: cubic-bezier(0.5, 0, 0.14, 1)
+  -webkit-backface-visibility: hidden
+  backface-visibility: hidden
+  background: transparent
+  background-repeat: no-repeat
+  background-size: 100% 100%
   left: 0
   margin: 0
-  padding: 0
-  border: 0
-  z-index: 99995
-  background: transparent
-  cursor: default
+  max-width: none
   overflow: visible
+  padding: 0
+  position: absolute
+  top: 0
   -webkit-transform-origin: top left
   -ms-transform-origin: top left
   transform-origin: top left
-  background-size: 100% 100%
-  background-repeat: no-repeat
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
+  transition-property: opacity, -webkit-transform
+  transition-property: transform, opacity
+  transition-property: transform, opacity, -webkit-transform
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  z-index: 99995
 
-.fancybox-image, .fancybox-spaceball
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  margin: 0
-  padding: 0
-  border: 0
-  max-width: none
-  max-height: none
-  background: transparent
-  background-size: 100% 100%
-
-.fancybox-controls--canzoomOut .fancybox-placeholder
+.fancybox-can-zoomOut .fancybox-content
   cursor: -webkit-zoom-out
   cursor: zoom-out
 
-.fancybox-controls--canzoomIn .fancybox-placeholder
+.fancybox-can-zoomIn .fancybox-content
   cursor: -webkit-zoom-in
   cursor: zoom-in
 
-.fancybox-controls--canGrab .fancybox-placeholder
+.fancybox-can-drag .fancybox-content
   cursor: -webkit-grab
   cursor: grab
 
-.fancybox-controls--isGrabbing .fancybox-placeholder
+.fancybox-is-dragging .fancybox-content
   cursor: -webkit-grabbing
   cursor: grabbing
 
-.fancybox-spaceball
-  z-index: 1
+.fancybox-container [data-selectable='true']
+  cursor: text
 
-.fancybox-tmp
-  position: absolute
-  top: -9999px
-  left: -9999px
-  visibility: hidden
-
-.fancybox-error
-  position: absolute
+.fancybox-image
+  background: transparent
+  border: 0
+  height: 100%
+  left: 0
   margin: 0
-  padding: 40px
-  top: 50%
-  left: 50%
-  width: 380px
-  max-width: 100%
-  -webkit-transform: translate(-50%, -50%)
-  -ms-transform: translate(-50%, -50%)
-  transform: translate(-50%, -50%)
-  background: #fff
-  cursor: default
-  p
-    margin: 0
-    padding: 0
-    color: #444
-    font: 16px/20px "Helvetica Neue",Helvetica,Arial,sans-serif
-
-.fancybox-close-small
+  max-height: none
+  max-width: none
+  padding: 0
   position: absolute
   top: 0
-  right: 0
-  width: 44px
-  height: 44px
-  padding: 0
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  width: 100%
+
+.fancybox-spaceball
+  background: transparent
+  border: 0
+  height: 100%
+  left: 0
   margin: 0
+  max-height: none
+  max-width: none
+  padding: 0
+  position: absolute
+  top: 0
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  width: 100%
+  z-index: 1
+
+.fancybox-slide--html .fancybox-content
+  margin-bottom: 6px
+
+.fancybox-slide--video .fancybox-content, .fancybox-slide--map .fancybox-content, .fancybox-slide--iframe .fancybox-content
+  height: 100%
+  margin: 0
+  overflow: visible
+  padding: 0
+  width: 100%
+
+.fancybox-slide--video .fancybox-content
+  background: #000
+
+.fancybox-slide--map .fancybox-content
+  background: #e5e3df
+
+.fancybox-slide--iframe .fancybox-content
+  background: #fff
+  height: calc(100% - 44px)
+  margin-bottom: 44px
+
+.fancybox-video
+  background: transparent
+  border: 0
+  height: 100%
+  margin: 0
+  overflow: hidden
+  padding: 0
+  width: 100%
+
+.fancybox-iframe
+  background: transparent
+  border: 0
+  height: 100%
+  margin: 0
+  overflow: hidden
+  padding: 0
+  width: 100%
+  vertical-align: top
+
+.fancybox-error
+  background: #fff
+  cursor: default
+  max-width: 400px
+  padding: 40px
+  width: 100%
+  p
+    color: #444
+    font-size: 16px
+    line-height: 20px
+    margin: 0
+    padding: 0
+
+/* Buttons */
+
+.fancybox-button
+  background: rgba(30, 30, 30, 0.6)
   border: 0
   border-radius: 0
-  outline: none
-  background: transparent
-  z-index: 10
   cursor: pointer
-  &:after
-    content: '×'
-    position: absolute
-    top: 5px
-    right: 5px
-    width: 30px
-    height: 30px
-    font: 20px/30px Arial,"Helvetica Neue",Helvetica,sans-serif
+  display: inline-block
+  height: 44px
+  margin: 0
+  outline: none
+  padding: 10px
+  transition: color .2s
+  vertical-align: top
+  width: 44px
+  color: #ccc
+  &:visited, &:link
+    color: #ccc
+  &:focus, &:hover
+    color: #fff
+  &.disabled, &[disabled]
     color: #888
-    font-weight: 300
-    text-align: center
-    border-radius: 50%
-    border-width: 0
-    background: #fff
-    transition: background .2s
-    box-sizing: border-box
-    z-index: 2
-  &:focus:after
-    outline: 1px dotted #888
+    cursor: default
+    &:hover
+      color: #888
+      cursor: default
+  svg
+    display: block
+    overflow: visible
+    position: relative
+    shape-rendering: geometricPrecision
+    path
+      fill: transparent
+      stroke: currentColor
+      stroke-linejoin: round
+      stroke-width: 3
 
-.fancybox-slide--video .fancybox-close-small
-  top: -36px
-  right: -36px
-  background: transparent
+.fancybox-button--play svg path:nth-child(2), .fancybox-button--pause svg path:nth-child(1)
+  display: none
 
-.fancybox-close-small:hover:after
-  color: #555
-  background: #eee
+.fancybox-button--play svg path, .fancybox-button--share svg path, .fancybox-button--thumbs svg path
+  fill: currentColor
 
-/* Caption
+.fancybox-button--share svg path
+  stroke-width: 1
 
-.fancybox-caption-wrap
-  position: absolute
-  bottom: 0
-  left: 0
-  right: 0
-  padding: 60px 30px 0 30px
-  z-index: 99998
-  -webkit-backface-visibility: hidden
-  backface-visibility: hidden
-  box-sizing: border-box
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.2) 40%, rgba(0, 0, 0, 0.6) 80%, rgba(0, 0, 0, 0.8) 100%)
+/* Navigation arrows */
+
+.fancybox-navigation .fancybox-button
+  height: 38px
   opacity: 0
-  transition: opacity .2s
-  pointer-events: none
+  padding: 6px
+  position: absolute
+  top: 50%
+  width: 38px
 
-.fancybox-show-caption .fancybox-caption-wrap
-  opacity: 1
+.fancybox-show-nav .fancybox-navigation .fancybox-button
+  transition: opacity .25s, visibility 0s, color .25s
+
+.fancybox-navigation
+  .fancybox-button::after
+    content: ''
+    left: -25px
+    padding: 50px
+    position: absolute
+    top: -25px
+  .fancybox-button--arrow_left
+    left: 6px
+  .fancybox-button--arrow_right
+    right: 6px
+
+/* Close button on the top right corner of html content */
+
+.fancybox-close-small
+  background: transparent
+  border: 0
+  border-radius: 0
+  color: #555
+  cursor: pointer
+  height: 44px
+  margin: 0
+  padding: 6px
+  position: absolute
+  right: 0
+  top: 0
+  width: 44px
+  z-index: 10
+  svg
+    fill: transparent
+    opacity: .8
+    stroke: currentColor
+    stroke-width: 1.5
+    transition: stroke .1s
+  &:focus
+    outline: none
+  &:hover svg
+    opacity: 1
+
+.fancybox-slide--image .fancybox-close-small, .fancybox-slide--video .fancybox-close-small, .fancybox-slide--iframe .fancybox-close-small
+  color: #ccc
+  padding: 5px
+  right: -12px
+  top: -44px
+
+.fancybox-slide--image .fancybox-close-small:hover svg, .fancybox-slide--video .fancybox-close-small:hover svg, .fancybox-slide--iframe .fancybox-close-small:hover svg
+  background: transparent
+  color: #fff
+
+.fancybox-is-scaling .fancybox-close-small, .fancybox-is-zoomable.fancybox-can-drag .fancybox-close-small
+  display: none
+
+/* Caption */
 
 .fancybox-caption
-  padding: 30px 0
-  border-top: 1px solid rgba(255, 255, 255, 0.4)
+  bottom: 0
+  color: #fff
   font-size: 14px
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
-  color: #fff
-  line-height: 20px
-  -webkit-text-size-adjust: none
-  a, button
-    pointer-events: all
-  a
-    color: #fff
-    text-decoration: underline
-
-/* Buttons
-
-.fancybox-button
-  display: inline-block
-  position: relative
-  width: 44px
-  height: 44px
-  line-height: 44px
-  margin: 0
-  padding: 0
-  border: 0
-  border-radius: 0
-  cursor: pointer
-  background: transparent
-  color: #fff
-  box-sizing: border-box
-  vertical-align: top
-  outline: none
-
-.fancybox-button--disabled
-  cursor: default
-  pointer-events: none
-
-.fancybox-infobar__body
-  background: rgba(30, 30, 30, 0.6)
-
-.fancybox-button
-  background: rgba(30, 30, 30, 0.6)
-  &:hover
-    background: rgba(0, 0, 0, 0.8)
-  &::before, &::after
+  font-weight: 400
+  left: 0
+  line-height: 1.5
+  padding: 25px 44px 25px 44px
+  right: 0
+  &::before
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAEtCAQAAABjBcL7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHRJREFUKM+Vk8EOgDAIQ0vj/3+xBw8qIZZueFnIKC90MCAI8DlrkHGeqqGIU6lVigrBtpCWqeRWoHDNqs0F7VNVBVxmHRlvoVqjaYkdnDIaivH2HqZ5+oZj3JUzWB+cOz4G48Bg+tsJ/tqu4dLC/4Xb+0GcF5BwBC0AA53qAAAAAElFTkSuQmCC)
+    background-repeat: repeat-x
+    background-size: contain
+    bottom: 0
     content: ''
+    display: block
+    left: 0
     pointer-events: none
     position: absolute
-    border-color: #fff
-    background-color: currentColor
-    color: currentColor
-    opacity: 0.9
-    box-sizing: border-box
-    display: inline-block
-
-.fancybox-button--disabled
-  &::before, &::after
-    opacity: 0.5
-
-.fancybox-button--left::after
-  left: 20px
-  top: 18px
-  width: 6px
-  height: 6px
-  background: transparent
-  border-top: solid 2px currentColor
-  border-right: solid 2px currentColor
-  -webkit-transform: rotate(-135deg)
-  -ms-transform: rotate(-135deg)
-  transform: rotate(-135deg)
-
-.fancybox-button--right::after
-  right: 20px
-  top: 18px
-  width: 6px
-  height: 6px
-  background: transparent
-  border-top: solid 2px currentColor
-  border-right: solid 2px currentColor
-  -webkit-transform: rotate(45deg)
-  -ms-transform: rotate(45deg)
-  transform: rotate(45deg)
-
-.fancybox-button--left
-  border-bottom-left-radius: 5px
-
-.fancybox-button--right
-  border-bottom-right-radius: 5px
-
-.fancybox-button--close
-  float: right
-  &::before, &::after
-    content: ''
-    display: inline-block
-    position: absolute
-    height: 2px
-    width: 16px
-    top: calc(50% - 1px)
-    left: calc(50% - 8px)
-  &::before
-    -webkit-transform: rotate(45deg)
-    -ms-transform: rotate(45deg)
-    transform: rotate(45deg)
+    right: 0
+    top: -25px
+    z-index: -1
   &::after
-    -webkit-transform: rotate(-45deg)
-    -ms-transform: rotate(-45deg)
-    transform: rotate(-45deg)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3)
+    content: ''
+    display: block
+    left: 44px
+    position: absolute
+    right: 44px
+    top: 0
+  a
+    color: #ccc
+    text-decoration: none
+    &:link, &:visited
+      color: #ccc
+      text-decoration: none
+    &:hover
+      color: #fff
+      text-decoration: underline
 
-/* Loading spinner
+/* Loading indicator */
 
 .fancybox-loading
-  border: 6px solid rgba(100, 100, 100, 0.4)
-  border-top: 6px solid rgba(255, 255, 255, 0.6)
-  border-radius: 100%
-  height: 50px
-  width: 50px
   -webkit-animation: fancybox-rotate .8s infinite linear
   animation: fancybox-rotate .8s infinite linear
   background: transparent
+  border: 6px solid rgba(100, 100, 100, 0.5)
+  border-radius: 100%
+  border-top-color: #fff
+  height: 60px
+  left: 50%
+  margin: -30px 0 0 -30px
+  opacity: .6
+  padding: 0
   position: absolute
   top: 50%
-  left: 50%
-  margin-top: -25px
-  margin-left: -25px
+  width: 60px
   z-index: 99999
 
 @-webkit-keyframes fancybox-rotate
@@ -470,145 +478,273 @@
     transform: rotate(359deg)
 
 
-/* Styling for Small-Screen Devices
-@media all and (max-width: 800px)
-  .fancybox-controls
-    text-align: left
-  .fancybox-button--left, .fancybox-button--right, .fancybox-buttons button:not(.fancybox-button--close)
-    display: none !important
-  .fancybox-caption
-    padding: 20px 0
-    margin: 0
+/* Transition effects */
 
-/* Fullscreen
+.fancybox-animated
+  transition-timing-function: cubic-bezier(0, 0, 0.25, 1)
 
-.fancybox-button--fullscreen::before
-  width: 15px
-  height: 11px
-  left: 15px
-  top: 16px
-  border: 2px solid
-  background: none
+/* transitionEffect: slide */
 
-/* Slideshow button
-
-.fancybox-button--play::before
-  top: 16px
-  left: 18px
-  width: 0
-  height: 0
-  border-top: 6px inset transparent
-  border-bottom: 6px inset transparent
-  border-left: 10px solid
-  border-radius: 1px
-  background: transparent
-
-.fancybox-button--pause::before
-  top: 16px
-  left: 18px
-  width: 7px
-  height: 11px
-  border-style: solid
-  border-width: 0 2px 0 2px
-  background: transparent
-
-/* Thumbs
-
-.fancybox-button--thumbs
-  span
-    font-size: 23px
-  &::before
-    top: 20px
-    left: 21px
-    width: 3px
-    height: 3px
-    box-shadow: 0 -4px 0, -4px -4px 0, 4px -4px 0, 0 0 0 32px inset, -4px 0 0, 4px 0 0, 0 4px 0, -4px 4px 0, 4px 4px 0
-
-.fancybox-container--thumbs
-  .fancybox-controls, .fancybox-slider-wrap, .fancybox-caption-wrap
-    right: 220px
-
-.fancybox-thumbs
-  position: absolute
-  top: 0
-  right: 0
-  bottom: 0
-  left: auto
-  width: 220px
-  margin: 0
-  padding: 5px 5px 0 0
-  background: #fff
-  z-index: 99993
-  word-break: normal
-  -webkit-overflow-scrolling: touch
-  -webkit-tap-highlight-color: transparent
-  box-sizing: border-box
-  > ul
-    list-style: none
-    position: absolute
-    position: relative
-    width: 100%
-    height: 100%
-    margin: 0
-    padding: 0
-    overflow-x: hidden
-    overflow-y: auto
-    font-size: 0
-    > li
-      float: left
-      overflow: hidden
-      max-width: 50%
-      padding: 0
-      margin: 0
-      width: 105px
-      height: 75px
-      position: relative
-      cursor: pointer
-      outline: none
-      border: 5px solid #fff
-      border-top-width: 0
-      border-right-width: 0
-      -webkit-tap-highlight-color: transparent
-      -webkit-backface-visibility: hidden
-      backface-visibility: hidden
-      box-sizing: border-box
-
-li.fancybox-thumbs-loading
-  background: rgba(0, 0, 0, 0.1)
-
-.fancybox-thumbs > ul > li
-  > img
-    position: absolute
-    top: 0
-    left: 0
-    min-width: 100%
-    min-height: 100%
-    max-width: none
-    max-height: none
-    -webkit-touch-callout: none
-    -webkit-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    user-select: none
-  &:before
-    content: ''
-    position: absolute
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
-    border-radius: 2px
-    border: 4px solid #4ea7f9
-    z-index: 99991
+.fancybox-fx-slide
+  &.fancybox-slide--previous
     opacity: 0
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-  &.fancybox-thumbs-active:before
+    -webkit-transform: translate3d(-100%, 0, 0)
+    transform: translate3d(-100%, 0, 0)
+  &.fancybox-slide--next
+    opacity: 0
+    -webkit-transform: translate3d(100%, 0, 0)
+    transform: translate3d(100%, 0, 0)
+  &.fancybox-slide--current
+    opacity: 1
+    -webkit-transform: translate3d(0, 0, 0)
+    transform: translate3d(0, 0, 0)
+
+/* transitionEffect: fade */
+
+.fancybox-fx-fade
+  &.fancybox-slide--previous, &.fancybox-slide--next
+    opacity: 0
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1)
+  &.fancybox-slide--current
     opacity: 1
 
-/* Styling for Small-Screen Devices
+/* transitionEffect: zoom-in-out */
+
+.fancybox-fx-zoom-in-out
+  &.fancybox-slide--previous
+    opacity: 0
+    -webkit-transform: scale3d(1.5, 1.5, 1.5)
+    transform: scale3d(1.5, 1.5, 1.5)
+  &.fancybox-slide--next
+    opacity: 0
+    -webkit-transform: scale3d(0.5, 0.5, 0.5)
+    transform: scale3d(0.5, 0.5, 0.5)
+  &.fancybox-slide--current
+    opacity: 1
+    -webkit-transform: scale3d(1, 1, 1)
+    transform: scale3d(1, 1, 1)
+
+/* transitionEffect: rotate */
+
+.fancybox-fx-rotate
+  &.fancybox-slide--previous
+    opacity: 0
+    -webkit-transform: rotate(-360deg)
+    -ms-transform: rotate(-360deg)
+    transform: rotate(-360deg)
+  &.fancybox-slide--next
+    opacity: 0
+    -webkit-transform: rotate(360deg)
+    -ms-transform: rotate(360deg)
+    transform: rotate(360deg)
+  &.fancybox-slide--current
+    opacity: 1
+    -webkit-transform: rotate(0deg)
+    -ms-transform: rotate(0deg)
+    transform: rotate(0deg)
+
+/* transitionEffect: circular */
+
+.fancybox-fx-circular
+  &.fancybox-slide--previous
+    opacity: 0
+    -webkit-transform: scale3d(0, 0, 0) translate3d(-100%, 0, 0)
+    transform: scale3d(0, 0, 0) translate3d(-100%, 0, 0)
+  &.fancybox-slide--next
+    opacity: 0
+    -webkit-transform: scale3d(0, 0, 0) translate3d(100%, 0, 0)
+    transform: scale3d(0, 0, 0) translate3d(100%, 0, 0)
+  &.fancybox-slide--current
+    opacity: 1
+    -webkit-transform: scale3d(1, 1, 1) translate3d(0, 0, 0)
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0)
+
+/* transitionEffect: tube */
+
+.fancybox-fx-tube
+  &.fancybox-slide--previous
+    -webkit-transform: translate3d(-100%, 0, 0) scale(0.1) skew(-10deg)
+    transform: translate3d(-100%, 0, 0) scale(0.1) skew(-10deg)
+  &.fancybox-slide--next
+    -webkit-transform: translate3d(100%, 0, 0) scale(0.1) skew(10deg)
+    transform: translate3d(100%, 0, 0) scale(0.1) skew(10deg)
+  &.fancybox-slide--current
+    -webkit-transform: translate3d(0, 0, 0) scale(1)
+    transform: translate3d(0, 0, 0) scale(1)
+
+/* Share */
+
+.fancybox-share
+  background: #f4f4f4
+  border-radius: 3px
+  max-width: 90%
+  padding: 30px
+  text-align: center
+  h1
+    color: #222
+    font-size: 35px
+    font-weight: 700
+    margin: 0 0 20px 0
+  p
+    margin: 0
+    padding: 0
+
+.fancybox-share__button
+  border: 0
+  border-radius: 3px
+  display: inline-block
+  font-size: 14px
+  font-weight: 700
+  line-height: 40px
+  margin: 0 5px 10px 5px
+  min-width: 130px
+  padding: 0 15px
+  text-decoration: none
+  transition: all .2s
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  white-space: nowrap
+  &:visited, &:link
+    color: #fff
+  &:hover
+    text-decoration: none
+
+.fancybox-share__button--fb
+  background: #3b5998
+  &:hover
+    background: #344e86
+
+.fancybox-share__button--pt
+  background: #bd081d
+  &:hover
+    background: #aa0719
+
+.fancybox-share__button--tw
+  background: #1da1f2
+  &:hover
+    background: #0d95e8
+
+.fancybox-share__button svg
+  height: 25px
+  margin-right: 7px
+  position: relative
+  top: -1px
+  vertical-align: middle
+  width: 25px
+  path
+    fill: #fff
+
+.fancybox-share__input
+  background: transparent
+  border: 0
+  border-bottom: 1px solid #d7d7d7
+  border-radius: 0
+  color: #5d5b5b
+  font-size: 14px
+  margin: 10px 0 0 0
+  outline: none
+  padding: 10px 15px
+  width: 100%
+
+/* Thumbs */
+
+.fancybox-thumbs
+  background: #fff
+  bottom: 0
+  display: none
+  margin: 0
+  -webkit-overflow-scrolling: touch
+  -ms-overflow-style: -ms-autohiding-scrollbar
+  padding: 2px 2px 4px 2px
+  position: absolute
+  right: 0
+  -webkit-tap-highlight-color: transparent
+  top: 0
+  width: 212px
+  z-index: 99995
+
+.fancybox-thumbs-x
+  overflow-x: auto
+  overflow-y: hidden
+
+.fancybox-show-thumbs
+  .fancybox-thumbs
+    display: block
+  .fancybox-inner
+    right: 212px
+
+.fancybox-thumbs > ul
+  font-size: 0
+  height: 100%
+  list-style: none
+  margin: 0
+  overflow-x: hidden
+  overflow-y: auto
+  padding: 0
+  position: absolute
+  position: relative
+  white-space: nowrap
+  width: 100%
+
+.fancybox-thumbs-x > ul
+  overflow: hidden
+
+.fancybox-thumbs-y > ul
+  &::-webkit-scrollbar
+    width: 7px
+  &::-webkit-scrollbar-track
+    background: #fff
+    border-radius: 10px
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3)
+  &::-webkit-scrollbar-thumb
+    background: #2a2a2a
+    border-radius: 10px
+
+.fancybox-thumbs > ul > li
+  -webkit-backface-visibility: hidden
+  backface-visibility: hidden
+  cursor: pointer
+  float: left
+  height: 75px
+  margin: 2px
+  max-height: calc(100% - 8px)
+  max-width: calc(50% - 4px)
+  outline: none
+  overflow: hidden
+  padding: 0
+  position: relative
+  -webkit-tap-highlight-color: transparent
+  width: 100px
+
+.fancybox-thumbs-loading
+  background: rgba(0, 0, 0, 0.1)
+
+.fancybox-thumbs
+  > ul > li
+    background-position: center center
+    background-repeat: no-repeat
+    background-size: cover
+    &:before
+      border: 4px solid #4ea7f9
+      bottom: 0
+      content: ''
+      left: 0
+      opacity: 0
+      position: absolute
+      right: 0
+      top: 0
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      z-index: 99991
+  .fancybox-thumbs-active:before
+    opacity: 1
+
+/* Styling for Small-Screen Devices */
 @media all and (max-width: 800px)
   .fancybox-thumbs
-    display: none !important
-  .fancybox-container--thumbs
-    .fancybox-controls, .fancybox-slider-wrap, .fancybox-caption-wrap
-      right: 0
+    width: 110px
+  .fancybox-show-thumbs .fancybox-inner
+    right: 110px
+  .fancybox-thumbs > ul > li
+    max-width: calc(100% - 10px)
