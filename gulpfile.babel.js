@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 // package vars
-const pkg = require("./package.json");
+const pkg = require("./package.json")
 
 // gulp
-import gulp             from 'gulp';
+import gulp             from 'gulp'
 
 // load all plugins in "devDependencies" into the variable $
 const $ = require('gulp-load-plugins')({
@@ -14,22 +14,22 @@ const $ = require('gulp-load-plugins')({
   lazy: true,
   rename: { 'vinyl-buffer'        : 'buffer',
             'vinyl-source-stream' : 'soufrce' }
-});
+})
 
 const onError = (err) => {
-  console.log(err);
-};
+  console.log(err)
+}
 
 // .gitconfig vars
-const gitconfig = $.gitConfig.sync();
+const gitconfig = $.gitConfig.sync()
 
 // uglified & compressed when type '--producton' behind gulp init command
-const prod    = !!$.util.env.production;
-console.log('production: ' + $.util.env.production);
+const prod    = !!$.util.env.production
+console.log('production: ' + $.util.env.production)
 
 // sass - build the sass to the build folder, including the required paths, and writing out a sourcemap
 gulp.task("sass", () => {
-  $.fancyLog("-> Building sass");
+  $.fancyLog("-> Building sass")
   return gulp.src([pkg.path.watch.sass])
     .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
@@ -45,8 +45,8 @@ gulp.task("sass", () => {
     .pipe($.autoprefixer(['last 15 versions', '>1%', 'ie 10'], {cascade: true}))
     .pipe($.sourcemaps.write("./"))
     .pipe(gulp.dest(pkg.path.build.css))
-    .pipe($.browserSync.stream());
-});
+    .pipe($.browserSync.stream())
+})
 
 gulp.task("css", ["sass"], () => {
   const cssnanoConfig = {
@@ -55,9 +55,9 @@ gulp.task("css", ["sass"], () => {
     discardUnused: { fontFace: false },
     minifyFontValues: false,
     zindex: false
-  };
+  }
 
-  $.fancyLog("-> Building css");
+  $.fancyLog("-> Building css")
   return gulp.src([pkg.path.watch.css, pkg.path.build.css + "*.css"])
     .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
@@ -68,34 +68,34 @@ gulp.task("css", ["sass"], () => {
     .pipe(prod ? $.header(banner, {pkg: pkg}) : $.util.noop())
     .pipe(prod ? $.size({gzip: true, showFiles: true}) : $.util.noop())
     .pipe(prod ? gulp.dest(pkg.path.dist.css) : $.util.noop())
-    .pipe($.browserSync.stream());
-});
+    .pipe($.browserSync.stream())
+})
 
 // babel js task - transpile our Javascript into the build directory
 gulp.task("js-babel", () => {
-  $.fancyLog("-> Transpiling Javascript via Babel...");
+  $.fancyLog("-> Transpiling Javascript via Babel...")
   return gulp.src(pkg.globs.babelJs)
     .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
     .pipe($.newer({dest: pkg.path.watch.js}))
     .pipe($.babel())
     .pipe($.size({gzip: true, showFiles: true}))
-    .pipe(gulp.dest(pkg.path.dist.js));
-});
+    .pipe(gulp.dest(pkg.path.dist.js))
+})
 
 // inline js task - minimize the inline Javascript into _inlinejs in the templates path
 gulp.task("js-inline", () => {
-  $.fancyLog("-> Copying inline js");
+  $.fancyLog("-> Copying inline js")
   return gulp.src(pkg.globs.inlineJs)
     .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
     .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(pkg.path.dist.js))
-});
+})
 
 // js task - minimize any distribution Javascript into the public js folder, and add our banner to it
 gulp.task("js", ["js-babel", "js-inline"], () => {
-  $.fancyLog("-> Building js");
+  $.fancyLog("-> Building js")
   return gulp.src(pkg.globs.distJs)
     .pipe($.plumber({errorHandler: onError}))
     .pipe($.plumberNotifier())
@@ -114,8 +114,8 @@ gulp.task("js", ["js-babel", "js-inline"], () => {
     .pipe(prod ? $.header(banner, {pkg: pkg}) : $.util.noop())
     .pipe(prod ? $.size({gzip: true, showFiles: true}) : $.util.noop())
     .pipe(prod ? gulp.dest(pkg.path.dist.js) : $.util.noop())
-    .pipe($.browserSync.stream());
-});
+    .pipe($.browserSync.stream())
+})
 
 
 gulp.task('pug', () => {
@@ -151,7 +151,7 @@ gulp.task('pug', () => {
     paramType: 'timestamp',
   }
 
-  $.fancyLog("-> Building pug");
+  $.fancyLog("-> Building pug")
   return gulp.src(pkg.path.watch.pug)
   .pipe($.plumber({errorHandler: onError}))
   .pipe($.plumberNotifier())
@@ -167,28 +167,28 @@ gulp.task('pug', () => {
   .pipe($.htmlVersion(htmlVersionOptions))
   .pipe(prod ? $.useminHtml(useminOptions) : $.util.noop())
   .pipe(prod ? $.htmlMinifier(options) : $.util.noop())
-  .pipe(gulp.dest(pkg.path.dist.html));
-});
+  .pipe(gulp.dest(pkg.path.dist.html))
+})
 
 // create a task that ensures the `js` task is complete before
 // reloading browsers
 gulp.task('pug:watch', ['pug'], function(done) {
-  $.browserSync.reload();
-  done();
-});
+  $.browserSync.reload()
+  done()
+})
 
 gulp.task('fontawesome', () => {
  return gulp.src([pkg.path.watch.fontawesome])
-   .pipe(gulp.dest(pkg.path.dist.fonts));
-});
+   .pipe(gulp.dest(pkg.path.dist.fonts))
+})
 
 gulp.task('fonts', ['fontawesome'], () => {
  return gulp.src([pkg.path.watch.fonts])
    .pipe($.font2css.default())
    .pipe($.concat({path: 'fonts.css', cwd: ''}))
    .pipe(gulp.dest(pkg.path.dist.css))
-   .pipe($.browserSync.stream());
-});
+   .pipe($.browserSync.stream())
+})
 
 gulp.task('sprite', function() {
   gulp.src(pkg.path.watch.spritePng)
@@ -208,8 +208,8 @@ gulp.task('sprite', function() {
     .pipe($.if('*.css', 
       $.replace(/^\.icon-/gm, '.ic--'), 
       gulp.dest(pkg.path.src.sprite)
-    ));
-});
+    ))
+})
 
 gulp.task('svg', function () {
  return gulp.src(pkg.path.watch.spriteSvg)
@@ -222,13 +222,13 @@ gulp.task('svg', function () {
     }))
     .pipe($.cheerio({
       run: function ($) {
-        //$('[fill]').removeAttr('fill');
-        //$('[stroke]').removeAttr('stroke');
-        $('[style]').removeAttr('style');
+        //$('[fill]').removeAttr('fill')
+        //$('[stroke]').removeAttr('stroke')
+        $('[style]').removeAttr('style')
       },
       parserOptions: {xmlMode: true}
     }))
-    .pipe($.replace('&gt;', '>'))
+    .pipe($.replace('&gt', '>'))
     // build svg sprite
    .pipe($.svgSprite({
     shape: {
@@ -260,8 +260,8 @@ gulp.task('svg', function () {
       mapname: "icons"
     }
   }))
-   .pipe(gulp.dest(pkg.path.dist.img));
-});
+   .pipe(gulp.dest(pkg.path.dist.img))
+})
 
 gulp.task('server', function() {
   $.browserSync({
@@ -271,8 +271,8 @@ gulp.task('server', function() {
       browser: "google chrome"
     },
     notify: false
-  });
-});
+  })
+})
 
 // Generate & Inline Critical-path CSS
 gulp.task('critical', function() {
@@ -295,31 +295,31 @@ gulp.task('critical', function() {
       extract: false,
       ignore: ['font-face']
     }))
-    .pipe(gulp.dest(dirs.dest));
-});
+    .pipe(gulp.dest(dirs.dest))
+})
 
 gulp.task('clean', function () {
-  return $.del.sync([pkg.path.dist.base, pkg.path.build.base]);
-});
+  return $.del.sync([pkg.path.dist.base, pkg.path.build.base])
+})
 
 gulp.task('clear', function () {
-  return $.cache.clearAll();
-});
+  return $.cache.clearAll()
+})
 
 gulp.task('htaccess:build', () => {
   gulp.src(pkg.path.src.htaccess)
     .pipe(gulp.dest(pkg.path.dist.htaccess))
-});
+})
 
 gulp.task('sitemap', () => {
   gulp.src(pkg.path.src.sitemap)
     .pipe(gulp.dest(pkg.path.dist))
-});
+})
 
 gulp.task('mail:build', () => {
   gulp.src(pkg.path.watch.mail)
     .pipe(gulp.dest(pkg.path.dist.mail))
-});
+})
 
 // imagemin task
 
@@ -335,7 +335,7 @@ gulp.task('mail:build', () => {
       }],
       use: [pngquant()]
     })))
-    .pipe(gulp.dest(path.build.img));
+    .pipe(gulp.dest(path.build.img))
 })*/
 
 gulp.task("svgmin", () => {
@@ -349,8 +349,8 @@ gulp.task("svgmin", () => {
         removeViewBox: false
       }],
     })))
-    .pipe(gulp.dest(pkg.path.dist.img));
-});
+    .pipe(gulp.dest(pkg.path.dist.img))
+})
 
 gulp.task("imagemin", ["svgmin"], () => {
   return gulp.src([pkg.path.watch.img])
@@ -359,8 +359,8 @@ gulp.task("imagemin", ["svgmin"], () => {
     .pipe($.newer({dest: pkg.path.dist.img}))
     .pipe($.tinypngNokey({
     }))
-    .pipe(gulp.dest(pkg.path.dist.img));
-});
+    .pipe(gulp.dest(pkg.path.dist.img))
+})
 
 gulp.task('ftp', () => {
 
@@ -371,62 +371,62 @@ gulp.task('ftp', () => {
     secure:     false,
     parallel:   3,
     log:        $.util.log
-  });
+  })
 
-  const dest = gitconfig.ftp.path + pkg.name;
+  const dest = gitconfig.ftp.path + pkg.name
 
   return gulp.src( [pkg.path.dist.base + pkg.path.coFiles], { base: pkg.path.dist.base, buffer: false } )
    // .pipe(conn.clean(dest)) // remove files
     .pipe(conn.newer(dest)) // only upload newer files 
-    .pipe(conn.dest(dest));
-});
+    .pipe(conn.dest(dest))
+})
 
 gulp.task('test', () => {
-  console.log($);
-});
+  console.log($)
+})
 
 // watch
 gulp.task('watch', () => {
 
   $.watch([pkg.path.watch.spritePng], function(event, cb) {
-    gulp.start('sprite');
-  });
+    gulp.start('sprite')
+  })
 
   $.watch([pkg.path.watch.spriteSvg], function(event, cb) {
-    gulp.start('svg');
-  });
+    gulp.start('svg')
+  })
   
   $.watch([pkg.path.watch.sass], function(event, cb) {
-    gulp.start('css');
-  });
+    gulp.start('css')
+  })
 
   $.watch([pkg.path.watch.js], function(event, cb) {
-    gulp.start('js');
-  });
+    gulp.start('js')
+  })
 
   $.watch([pkg.path.watch.img, pkg.path.watch.svg], function(event, cb) {
-    gulp.start('imagemin');
-  });
+    gulp.start('imagemin')
+  })
   $.watch([pkg.path.watch.template], function(event, cb) {
-    gulp.start('pug:watch');
-  });
+    gulp.start('pug:watch')
+  })
 
   $.watch([pkg.path.watch.fonts], function(event, cb) {
-    gulp.start('fonts');
-  });
+    gulp.start('fonts')
+  })
 
-});
+})
 
 gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], () => {
 
   let buildmail = gulp.src(path.watch.mail)
-    .pipe(gulp.dest(path.build.mail));
+    .pipe(gulp.dest(path.build.mail))
 
   return gulp.src(path.watch.html)
     .pipe($.plumber({
       handleError: function(err) {
-        console.log(err);
-        this.emit('end');
+        console.log(err)
+        this.emit('end')
       }
     }))
     .pipe($.plumberNotifier())
@@ -460,8 +460,8 @@ gulp.task('dev', ['clean', 'pug', 'fonts', 'sprite', 'img', 'sass', 'scripts'], 
         minifyCSS: true
       })
     ))
-    .pipe(gulp.dest(dirs.dest));
-});
+    .pipe(gulp.dest(dirs.dest))
+})
 
 gulp.task('build', [
   'clean',
@@ -472,6 +472,6 @@ gulp.task('build', [
   'css',
   'js',
   'imagemin'
-]);
+])
 
-gulp.task('default', ['build', 'watch', 'server']);
+gulp.task('default', ['build', 'watch', 'server'])
