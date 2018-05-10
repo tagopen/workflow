@@ -1,0 +1,48 @@
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-cols:                                           24
+
+$xs:                                                  320px
+$sm:                                                  576px
+$md:                                                  768px
+$lg:                                                  992px
+$wd:                                                  1024px
+$xl:                                                  1200px
+
+// Bootstrap overrides
+//
+// Copy variables from `_variables.scss` to this file to override default values
+// without modifying source files.
+
+$grid-breakpoints:                                    (xs: 0, sm: $sm, md: $md, lg: $lg, xl: $xl)
+$container-max-widths:                                (sm: $sm - 36, md: $md - 48, lg: $lg - 32, xl: $xl - 30)
+$grid-columns:                                        $grid-cols
+$grid-gutter-width-base:                              30px
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+$preloader-bg:                                        #17607d
+$preloader-color:                                     #fff
+
+$base-font-size:                                      16px
+
+$font-sans-serif:                                     sans-serif
+$main-font:                                           '', $font-sans-serif
+
+$text-danger:                                         #b94a48
+$form-control-error-border-color:                     #b94a48
+
+//== Buttons
+//
+//## For each buttons, define text, background and border color.
+
+$btn-default-color:                                    #333
+$btn-default-bg:                                       #fff
+$btn-default-border:                                   #ccc
+$btn-submit-loading-bg:                                linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent)
+
