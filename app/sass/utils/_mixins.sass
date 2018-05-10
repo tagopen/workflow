@@ -86,20 +86,23 @@
   float: left
   width: 100% * $value / $grid-cols
 
-=col($value: null, $grid-cols: 24)
+=col($value: null)
   @if $value == null
     flex-basis: 0
     flex-grow: 1
     max-width: 100%
-  @else if $value == 'auto'
+  @else if $value == auto
     flex: 0 0 auto
     width: auto
     max-width: none
-  @else
+  @else if unitless($value) and $value <= $grid-cols
     flex: 0 0 100% * $value / $grid-cols
     max-width: 100% * $value / $grid-cols
+  @else
+    flex: 0 0 $value
+    max-width: $value
 
-=offset($value, $grid-cols: 24)
+=offset($value)
   margin-left: 100% * $value / $grid-cols
 
 =font($family, $size: 1rem, $weight : normal, $color : black)
