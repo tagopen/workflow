@@ -211,6 +211,7 @@ const GRVE = GRVE || {};
 
       const $submit =     $form.find('[type=submit]')
       const url =         $form.attr('action')
+      const type =        $form.attr('method')
       const data =        new FormData($form[0])
       const formName =    $submit.val()
       const redirect =    $form.data("redirect")
@@ -223,7 +224,7 @@ const GRVE = GRVE || {};
       $.ajax({
         url:              (url !== undefined && url !== "") ? url : '/wp-admin/admin-ajax.php',
         action:           'site_form',
-        type:             'post',
+        type:             (type !== undefined) ? type : 'post',
         data,
         dataType:         'json',
         processData:      false,
@@ -298,7 +299,7 @@ const GRVE = GRVE || {};
   GRVE.pageSettings = {
     init() {
       this.svgPolifill()
-      this.rangeSlider("[data-range-slider]")
+      //this.rangeSlider("[data-range-slider]")
     },
     svgPolifill() {
       svg4everybody()
