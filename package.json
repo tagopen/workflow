@@ -81,7 +81,6 @@
     "distJs": [
       "node_modules/wowjs/dist/wow.min.js",
       "node_modules/svg4everybody/dist/svg4everybody.min.js",
-      "node_modules/owl.carousel/dist/owl.carousel.min.js",
       "node_modules/jquery.maskedinput/src/jquery.maskedinput.js",
       "node_modules/parsleyjs/dist/parsley.js",
       "//node_modules/select2/dist/js/select2.full.min.js",
@@ -93,6 +92,7 @@
       "//node_modules/vue/dist/vue.min.js",
       "//node_modules/vue-carousel-3d/dist/vue-carousel-3d.min.js",
       "//node_modules/jquery-countdown/dist/jquery.countdown.min.js",
+      "//node_modules/owl.carousel/dist/owl.carousel.min.js",
       "./build/js/*.js"
     ]
   },
