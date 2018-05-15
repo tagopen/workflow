@@ -50,6 +50,25 @@
   min-height: 100vh
 .main
   flex-grow: 1
+.link
+  text-decoration: none
+  transition: all .3s ease-out
+  &:hover,
+  &:focus
+    text-decoration: none
+.btn
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  border-radius: 0
+  background-color: transparent
+  @extend .link
+  &:focus
+    box-shadow: none
+  &--default
+  &--primary
+  &--secondary
+  &--simple
 
 +cm("Typography")
 .hidden-accessible
