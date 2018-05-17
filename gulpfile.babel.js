@@ -79,6 +79,7 @@ gulp.task("js-babel", () => {
     .pipe($.plumberNotifier())
     .pipe($.newer({dest: pkg.path.watch.js}))
     .pipe($.babel())
+    .pipe($.prettier({ singleQuote: true }))
     .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(pkg.path.dist.js))
 })

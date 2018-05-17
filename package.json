@@ -160,6 +160,7 @@
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.1.0",
     "gulp-plumber-notifier": "0.0.3",
+    "gulp-prettier": "^2.0.0",
     "gulp-print": "^5.0.0",
     "gulp-pug": "^4.0.1",
     "gulp-pxtorem": "^3.0.0",
