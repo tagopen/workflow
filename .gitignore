@@ -24,6 +24,7 @@ settings.js
 
 # npm
 package-lock.json
+yarn.lock
 
 #Ignore mac files
 .DS_Store
