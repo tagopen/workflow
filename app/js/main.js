@@ -176,7 +176,7 @@ const GRVE = GRVE || {};
     }
   }
 
-  // # Ajax send Form
+// # Ajax send Form
   // ============================================================================= //
   GRVE.ajax = {
     init() {
@@ -186,6 +186,7 @@ const GRVE = GRVE || {};
         successClass:            'form-group--success',
         errorClass:              'form-group--error',
         errorsMessagesDisabled:  true,
+        minlength:               2,
         classHandler(el) {
           return el.$element.closest(".form-group")
         }
@@ -209,9 +210,10 @@ const GRVE = GRVE || {};
     send($form) {
       const self =        this
 
+      const isWP =        $form.is("[data-form-ajax=\"wp\"]")
       const $submit =     $form.find('[type=submit]')
-      const url =         $form.attr('action')
-      const type =        $form.attr('method')
+      const url =         isWP ? '/wp-admin/admin-ajax.php' : $form.attr('action')
+      const type =        ($form.attr('method')) ? $form.attr('method') : 'post'
       const data =        new FormData($form[0])
       const formName =    $submit.val()
       const redirect =    $form.data("redirect")
@@ -219,12 +221,12 @@ const GRVE = GRVE || {};
       this.$result =      $form.find('.result')
       this.$submit =      $submit
 
+      isWP && data.append('action', 'site_form')
       data.append('form', formName)
 
       $.ajax({
-        url:              (url !== undefined && url !== "") ? url : '/wp-admin/admin-ajax.php',
-        action:           'site_form',
-        type:             (type !== undefined) ? type : 'post',
+        url:              url,
+        type:             type,
         data,
         dataType:         'json',
         processData:      false,
@@ -279,9 +281,9 @@ const GRVE = GRVE || {};
     },
     progress(status) {
       if (status === 'hide') {
-        this.$submit.prop('disabled', true).button('loading')
+        this.$submit.prop('disabled', true)
       } else if (status === 'show') {
-        this.$submit.prop('disabled', false).button('reset')
+        this.$submit.prop('disabled', false)
       }
     },
     customValidation() {
@@ -292,7 +294,6 @@ const GRVE = GRVE || {};
       })
     },
   }
-
 
   // # Page Settings
   // ============================================================================= //
