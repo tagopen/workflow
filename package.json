@@ -101,7 +101,7 @@
   "dependencies": {
     "@fancyapps/fancybox": "~3.3.5",
     "air-datepicker": "~2.2.3",
-    "bootstrap": "~4.1.1",
+    "bootstrap": "~4.4.1",
     "bootstrap-validator": "~0.11.9",
     "fancybox": "~3.0.1",
     "fg-loadcss": "~2.0.1",
